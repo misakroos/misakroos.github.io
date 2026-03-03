@@ -12,7 +12,6 @@
       --line:rgba(255,255,255,.10);
       --shadow: 0 14px 40px rgba(0,0,0,.55);
       --shadow2: 0 10px 26px rgba(0,0,0,.45);
-
       --wa:#25D366;
 
       /* Neón (glow sutil) */
@@ -42,6 +41,9 @@
 
       --electric1:#3aa6ff;
       --electric2:#7b2ff7;
+
+      /* Header heights (JS actualiza) */
+      --headerH: 120px;
     }
 
     *{box-sizing:border-box}
@@ -53,28 +55,31 @@
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans";
     }
 
-    /* Topbar (reordenado) */
-    .topbar{
+    /* ========= HEADER STICKY (2 niveles) ========= */
+    .header{
       position: sticky;
-      top:0;
-      z-index: 30;
-      padding: 14px 12px;
+      top: 0;
+      z-index: 50;
       background: rgba(10,10,15,.92);
       border-bottom:1px solid var(--line);
       backdrop-filter: blur(10px);
     }
-    .top-row{
-      width:100%;
+
+    .header-inner{
+      width: 100%;
       max-width: 520px;
-      margin:0 auto;
+      margin: 0 auto;
+      padding: 12px 12px 10px;
+    }
+
+    /* Fila 1: SIEMPRE visible */
+    .brand-bar{
       display:flex;
       align-items:flex-start;
       justify-content:space-between;
       gap:12px;
     }
-    .brand{
-      min-width: 0;
-    }
+    .brand{ min-width:0; }
     .brand-title{
       font-weight: 950;
       letter-spacing:.3px;
@@ -98,11 +103,10 @@
       font-size:12px;
       color: rgba(233,238,246,.86);
       margin-top:4px;
-      font-weight: 850;
+      font-weight: 900;
       letter-spacing:.2px;
+      text-transform: uppercase;
     }
-
-    /* micro "flicker" */
     .brand-title::after{
       content:"";
       display:block;
@@ -123,23 +127,37 @@
       66%{ filter:none; }
     }
 
-    /* Acciones a la derecha (menú país + limpiar) */
-    .top-actions{
+    /* Fila 2: Menú país + Limpiar (colapsable) */
+    .tools-bar{
+      margin-top: 10px;
       display:flex;
-      flex-direction:column;
-      gap:8px;
-      align-items:flex-end;
-      justify-content:flex-start;
-      padding-top: 2px;
-      flex: 0 0 auto;
+      justify-content:flex-end;
+      gap:10px;
+      align-items:center;
+
+      transform-origin: top;
+      transition: height .22s ease, opacity .18s ease, transform .22s ease, margin-top .22s ease;
+      height: 48px;
+      opacity: 1;
     }
+    .tools-bar.collapsed{
+      height: 0px;
+      opacity: 0;
+      transform: translateY(-6px);
+      margin-top: 0;
+      pointer-events: none;
+    }
+
     .menu-label{
       font-size:11px;
       color: var(--muted);
       font-weight: 900;
       letter-spacing:.15px;
-      text-align:right;
+      margin-right: 6px;
+      white-space: nowrap;
     }
+
+    .select-wrap{ position:relative; display:flex; align-items:center; }
     .select{
       appearance:none;
       -webkit-appearance:none;
@@ -153,11 +171,9 @@
       font-size: 13px;
       cursor:pointer;
       line-height: 1;
-      position:relative;
       outline:none;
       box-shadow: 0 8px 18px rgba(0,0,0,.30);
     }
-    .select-wrap{ position:relative; }
     .select-wrap:after{
       content:"▾";
       position:absolute;
@@ -169,6 +185,7 @@
       font-size: 12px;
       font-weight: 950;
     }
+
     .btn{
       border:1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.06);
@@ -180,18 +197,20 @@
       font-size: 13px;
       -webkit-tap-highlight-color: transparent;
       box-shadow: 0 8px 18px rgba(0,0,0,.30);
+      white-space: nowrap;
     }
     .btn:active{ transform: scale(.99); }
 
-    /* Screen container */
+    /* ========= CONTENIDO ========= */
     .screen{
       width: 100%;
       max-width: 520px;
       margin: 12px auto 132px;
       padding: 0 12px;
+      /* por si el sticky tapa algo: */
+      scroll-margin-top: var(--headerH);
     }
 
-    /* Landing copy (nuevo) */
     .hero{
       border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.04);
@@ -214,7 +233,7 @@
     }
     .hero .muted{
       color: rgba(154,164,178,.95);
-      font-weight: 700;
+      font-weight: 750;
     }
     .hero-chips{
       margin-top: 10px;
@@ -243,11 +262,8 @@
       font-weight: 700;
     }
 
-    /* Category blocks */
-    .cat{
-      margin-top: 14px;
-      padding-top: 6px;
-    }
+    /* Categorías */
+    .cat{ margin-top: 14px; padding-top: 6px; }
     .cat-title{
       font-weight: 950;
       letter-spacing: .2px;
@@ -261,10 +277,10 @@
       font-weight: 700;
     }
 
-    /* Grid 4 columns */
+    /* ========= GRID 3 COLUMNAS ========= */
     .grid{
       display:grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 14px 12px;
       padding: 8px 0 0;
     }
@@ -279,8 +295,8 @@
       -webkit-tap-highlight-color: transparent;
     }
     .icon-box{
-      width: 64px;
-      height: 64px;
+      width: 66px;
+      height: 66px;
       border-radius: 18px;
       border: 1.5px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.04);
@@ -306,7 +322,7 @@
       font-weight: 950;
       text-align:center;
       line-height: 1.1;
-      max-width: 84px;
+      max-width: 92px;
       color: rgba(233,238,246,.92);
     }
     .badge{
@@ -323,7 +339,7 @@
       border: 1px solid rgba(0,0,0,.08);
     }
 
-    /* Brand border/glow */
+    /* Glow por marca */
     .icon-box[data-brand]{
       border-color: color-mix(in oklab, var(--brand) 75%, white 0%);
       box-shadow:
@@ -351,7 +367,7 @@
     .icon-box[data-brand="m365"]{ --brand: var(--c-m365); }
     .icon-box[data-brand="picsart"]{ --brand: var(--c-picsart); }
 
-    /* Degradés */
+    /* Degradés Canva / Adobe */
     .icon-box[data-brand="canva"]{
       border-color: transparent;
       background:
@@ -375,7 +391,7 @@
         0 0 18px rgba(255,164,27,.12);
     }
 
-    /* Floating WhatsApp (SIEMPRE visible, no se "apaga") */
+    /* ========= BOTÓN WHATSAPP (siempre visible) ========= */
     .wa-float{
       position: fixed;
       right: 14px;
@@ -412,7 +428,7 @@
       border-radius: 999px;
     }
 
-    /* Bottom sheet */
+    /* ========= BOTTOM SHEET ========= */
     .sheet-overlay{
       position:fixed;
       inset:0;
@@ -422,7 +438,6 @@
       padding: 10px;
     }
     .sheet-overlay.show{ display:block; }
-
     .sheet{
       position: absolute;
       left: 50%;
@@ -478,7 +493,6 @@
     .sheet-close:active{ transform: scale(.98); }
 
     .sheet-options{ padding: 12px; display:grid; gap: 10px; }
-
     button{ color: inherit; font-family: inherit; }
     .option{
       display:flex;
@@ -529,7 +543,7 @@
     }
 
     @media (max-width: 380px){
-      .icon-box{ width: 58px; height: 58px; border-radius: 16px; }
+      .icon-box{ width: 62px; height: 62px; border-radius: 16px; }
       .icon-box img{ width: 28px; height: 28px; }
       .wa-float{ width: 170px; }
       .brand-title{ font-size: 21px; }
@@ -538,15 +552,20 @@
 </head>
 <body>
 
-  <header class="topbar">
-    <div class="top-row">
-      <div class="brand">
-        <div class="brand-title">MISAKROOS</div>
-        <div class="brand-sub">SERVICIOS DIGITALES</div>
+  <!-- HEADER STICKY -->
+  <header id="appHeader" class="header">
+    <div class="header-inner">
+      <!-- Fila 1 (siempre visible) -->
+      <div class="brand-bar">
+        <div class="brand">
+          <div class="brand-title">MISAKROOS</div>
+          <div class="brand-sub">SERVICIOS DIGITALES</div>
+        </div>
       </div>
 
-      <div class="top-actions">
-        <div class="menu-label">Menú país</div>
+      <!-- Fila 2 (colapsable) -->
+      <div id="toolsBar" class="tools-bar">
+        <span class="menu-label">Menú país</span>
         <div class="select-wrap">
           <select id="countrySelect" class="select" aria-label="Menú país">
             <option value="AR">🇦🇷 Argentina (ARS)</option>
@@ -679,14 +698,17 @@
 
     const CATEGORY_ORDER = ["Streaming","Música","Software","Gaming","Internet"];
 
-    const LS_COUNTRY = "misakroos_country_hdr_v1";
-    const LS_SELECTIONS = "misakroos_selections_hdr_v1";
+    const LS_COUNTRY = "misakroos_country_hdr2_v1";
+    const LS_SELECTIONS = "misakroos_selections_hdr2_v1";
 
     const state = {
       country: null,
       selections: {},
       activeServiceKey: null,
     };
+
+    const $header = document.getElementById("appHeader");
+    const $toolsBar = document.getElementById("toolsBar");
 
     const $catalog = document.getElementById("catalog");
     const $countrySelect = document.getElementById("countrySelect");
@@ -764,8 +786,6 @@
       }
 
       const total = computeTotal();
-
-      // Si no seleccionó nada, igual abre WhatsApp con un mensaje genérico (para que NO se "apague" el botón)
       const msg =
 `Hola MISAKROOS 👋
 Soy de: ${countryText}
@@ -967,14 +987,40 @@ ${lines.length ? `Quiero contratar:\n${lines.join("\n")}\n\nTotal: ${formatMoney
       updateWhatsAppButton();
     });
 
+    // Colapsar tools-bar al scrollear hacia abajo (mostrar al subir)
+    let lastY = 0;
+    function onScroll(){
+      const y = window.scrollY || 0;
+      const goingDown = y > lastY + 2;
+      const goingUp = y < lastY - 2;
+
+      if (goingDown && y > 24){
+        $toolsBar.classList.add("collapsed");
+      } else if (goingUp){
+        $toolsBar.classList.remove("collapsed");
+      }
+      lastY = y;
+
+      // actualizar altura real del header para scroll-margin/padding si hiciera falta
+      requestAnimationFrame(updateHeaderHeightVar);
+    }
+
+    function updateHeaderHeightVar(){
+      const h = $header.getBoundingClientRect().height;
+      document.documentElement.style.setProperty("--headerH", `${Math.ceil(h)}px`);
+    }
+
     (function init(){
       loadState();
-
       if (!state.country) state.country = "AR";
       $countrySelect.value = state.country;
 
       renderCatalog();
       updateWhatsAppButton();
+
+      updateHeaderHeightVar();
+      window.addEventListener("scroll", onScroll, { passive:true });
+      window.addEventListener("resize", updateHeaderHeightVar);
     })();
   </script>
 </body>
