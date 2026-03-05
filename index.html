@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MISAKROOS Catálogo</title>
+
+<style>
+
+body{
+background:#0a0a0f;
+color:white;
+font-family:system-ui;
+margin:0;
+}
+
+/* HEADER */
+
+.header{
+text-align:center;
+padding:20px;
+border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.brand-title{
+font-size:26px;
+font-weight:900;
+letter-spacing:1px;
+}
+
+.brand-sub{
+font-size:12px;
+opacity:.8;
+}
+
+/* GRID */
+
+.catalog{
+max-width:500px;
+margin:auto;
+padding:20px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:16px;
+margin-top:20px;
+}
+
+/* ICONOS */
+
+.icon{
+display:flex;
+flex-direction:column;
+align-items:center;
+cursor:pointer;
+text-align:center;
+}
+
+.icon-box{
+width:70px;
+height:70px;
+border-radius:18px;
+background:#121218;
+display:flex;
+align-items:center;
+justify-content:center;
+position:relative;
+}
+
+/* BORDE CON COLOR */
+
+.icon-box::before{
+content:"";
+position:absolute;
+inset:0;
+padding:2px;
+border-radius:18px;
+background:linear-gradient(135deg,var(--brand),transparent,var(--brand));
+
+-webkit-mask:
+linear-gradient(#000 0 0) content-box,
+linear-gradient(#000 0 0);
+
+-webkit-mask-composite:xor;
+mask-composite:exclude;
+}
+
+.icon img{
+width:34px;
+filter:invert(1);
+}
+
+.icon-label{
+margin-top:6px;
+font-size:12px;
+font-weight:700;
+}
+
+/* BOTON WHATSAPP */
+
+.wa{
+position:fixed;
+right:20px;
+bottom:20px;
+background:#25D366;
+color:black;
+padding:12px 18px;
+border-radius:14px;
+font-weight:900;
+text-decoration:none;
+}
+
+/* FLOAT MENU */
+
+.tools{
+position:fixed;
+left:20px;
+bottom:20px;
+display:flex;
+gap:10px;
+}
+
+.tools select,
+.tools button{
+padding:10px;
+border-radius:10px;
+border:none;
+font-weight:700;
+}
+
+/* BOTTOM SHEET */
+
+.sheet{
+position:fixed;
+bottom:-100%;
+left:0;
+right:0;
+background:#111;
+padding:20px;
+border-radius:20px 20px 0 0;
+transition:.3s;
+}
+
+.sheet.active{
+bottom:0;
+}
+
+.option{
+background:#1a1a1f;
+padding:12px;
+margin-top:10px;
+border-radius:10px;
+cursor:pointer;
+}
+
+.option.selected{
+border:2px solid #25D366;
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<div class="header">
+<div class="brand-title">MISAKROOS</div>
+<div class="brand-sub">SERVICIOS DIGITALES</div>
+</div>
+
+
+<div class="catalog">
+
+<div class="grid" id="grid"></div>
+
+</div>
+
+
+<div class="tools">
+
+<select id="country">
+
+<option value="AR">🇦🇷 ARS</option>
+<option value="UY">🇺🇾 UYU</option>
+
+</select>
+
+<button id="clear">Limpiar</button>
+
+</div>
+
+
+<a id="wa" class="wa">WhatsApp</a>
+
+
+<div id="sheet" class="sheet">
+
+<h3 id="serviceTitle"></h3>
+<p id="serviceDesc"></p>
+
+<div id="options"></div>
+
+</div>
+
+
+<script>
+
+
+const SERVICES=[
+
+{
+name:"Netflix",
+brand:"#E50914",
+icon:"netflix",
+desc:"Plataforma de series y películas.",
+options:[
+{label:"1 perfil",priceAR:7500,priceUY:250},
+{label:"2 perfiles",priceAR:12900,priceUY:450}
+]
+},
+
+{
+name:"Disney+",
+brand:"#1fb6ff",
+icon:"disneyplus",
+desc:"Contenido Disney, Pixar y Marvel.",
+options:[
+{label:"1 perfil",priceAR:6000,priceUY:280},
+{label:"2 perfiles",priceAR:12900,priceUY:500}
+]
+},
+
+{
+name:"Prime Video",
+brand:"#39b7ff",
+icon:"primevideo",
+desc:"Series y películas Prime.",
+options:[
+{label:"1 perfil",priceAR:4500,priceUY:130},
+{label:"2 perfiles",priceAR:7990,priceUY:250}
+]
+}
+
+]
+
+
+let selections={}
+let country="AR"
+
+
+const grid=document.getElementById("grid")
+const sheet=document.getElementById("sheet")
+const title=document.getElementById("serviceTitle")
+const desc=document.getElementById("serviceDesc")
+const optionsDiv=document.getElementById("options")
+
+
+
+function render(){
+
+grid.innerHTML=""
+
+SERVICES.forEach(service=>{
+
+const el=document.createElement("div")
+el.className="icon"
+
+el.innerHTML=`
+<div class="icon-box" style="--brand:${service.brand}">
+<img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/${service.icon}.svg">
+</div>
+<div class="icon-label">${service.name}</div>
+`
+
+el.onclick=()=>openSheet(service)
+
+grid.appendChild(el)
+
+})
+
+}
+
+
+function openSheet(service){
+
+title.innerText=service.name
+desc.innerText=service.desc
+
+optionsDiv.innerHTML=""
+
+service.options.forEach(opt=>{
+
+const el=document.createElement("div")
+el.className="option"
+
+const price=country=="AR"?opt.priceAR:opt.priceUY
+
+el.innerText=`${opt.label} - $${price}`
+
+el.onclick=()=>{
+
+if(selections[service.name]==opt.label){
+
+delete selections[service.name]
+
+}else{
+
+selections[service.name]=opt.label
+
+}
+
+updateWA()
+
+}
+
+optionsDiv.appendChild(el)
+
+})
+
+sheet.classList.add("active")
+
+}
+
+
+function updateWA(){
+
+let msg="Hola quiero contratar:%0A"
+
+Object.entries(selections).forEach(([k,v])=>{
+
+msg+=`- ${k} ${v}%0A`
+
+})
+
+document.getElementById("wa").href=
+`https://wa.me/5492645182955?text=${msg}`
+
+}
+
+
+document.getElementById("clear").onclick=()=>{
+
+selections={}
+updateWA()
+
+}
+
+
+document.getElementById("country").onchange=e=>{
+
+country=e.target.value
+
+}
+
+
+render()
+
+
+</script>
+
+</body>
+</html>
