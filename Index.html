@@ -1,0 +1,1247 @@
+Index.html
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>MISAKROOS — Catálogo</title>
+  <style>
+    :root{
+      --bg:#0a0a0f;
+      --muted:#9aa4b2;
+      --text:#e9eef6;
+      --line:rgba(255,255,255,.10);
+      --shadow: 0 14px 40px rgba(0,0,0,.55);
+      --wa:#25D366;
+
+      /* Colores marca */
+      --c-netflix:#E50914;
+      --c-disney:#1fb6ff;
+      --c-prime:#39b7ff;
+      --c-max:#8B5CF6;
+      --c-paramount:#2F6BFF;
+      --c-vix:#FF7A00;
+      --c-crunchy:#FF7A00;
+      --c-apple:#BFC6D4;
+      --c-universal:#FFD400;
+      --c-mubi:#2F6BFF;
+      --c-flujo:#FF7A00;
+      --c-spotify:#1DB954;
+      --c-deezer:#7C3AED;
+      --c-youtube:#FF0033;
+      --c-xbox:#22C55E;
+      --c-personal:#39b7ff;
+      --c-capcut:#BFC6D4;
+      --c-canva1:#00C4CC;
+      --c-canva2:#7B2FF7;
+      --c-adobe1:#FF2E63;
+      --c-adobe2:#FFA41B;
+      --c-m365:#A855F7;
+      --c-picsart:#A855F7;
+
+      --electric1:#3aa6ff;
+      --electric2:#7b2ff7;
+
+      --headerH: 120px;
+      --sheetBrand: #25D366;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: var(--bg);
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans";
+    }
+
+    /* ===== Header sticky (solo marca, fijo) ===== */
+    .header{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(10,10,15,.92);
+      border-bottom:1px solid var(--line);
+      backdrop-filter: blur(10px);
+    }
+    .header-inner{
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 12px 12px 12px;
+    }
+    .brand-bar{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .brand{ min-width:0; }
+    .brand-title{
+      font-weight: 950;
+      letter-spacing:.3px;
+      font-size: 22px;
+      line-height: 1.05;
+
+      background: linear-gradient(90deg, var(--electric1), var(--text), var(--electric2));
+      background-size: 220% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+
+      text-shadow:
+        0 0 10px rgba(58,166,255,.22),
+        0 0 18px rgba(123,47,247,.18);
+
+      animation: electricSweep 4.6s ease-in-out infinite;
+    }
+    .brand-sub{
+      font-size:12px;
+      color: rgba(233,238,246,.86);
+      margin-top:4px;
+      font-weight: 900;
+      letter-spacing:.2px;
+      text-transform: uppercase;
+    }
+    .brand-title::after{
+      content:"";
+      display:block;
+      height:0;
+      width:0;
+      animation: flicker 6.8s infinite;
+    }
+    @keyframes electricSweep{
+      0%{ background-position: 0% 50%; filter: brightness(1); }
+      50%{ background-position: 100% 50%; filter: brightness(1.05); }
+      100%{ background-position: 0% 50%; filter: brightness(1); }
+    }
+    @keyframes flicker{
+      0%, 100%{ filter:none; }
+      62%{ filter: brightness(1.2); }
+      63%{ filter: brightness(.95); }
+      64%{ filter: brightness(1.18); }
+      66%{ filter:none; }
+    }
+
+    /* ===== Contenido ===== */
+    .screen{
+      width: 100%;
+      max-width: 520px;
+      margin: 12px auto 132px;
+      padding: 0 12px;
+      scroll-margin-top: var(--headerH);
+    }
+
+    .hero{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      border-radius: 18px;
+      padding: 14px 14px;
+      box-shadow: 0 10px 22px rgba(0,0,0,.35);
+    }
+    .hero h2{
+      margin:0;
+      font-size: 16px;
+      font-weight: 950;
+      letter-spacing:.1px;
+    }
+    .hero p{
+      margin:8px 0 0;
+      color: rgba(233,238,246,.88);
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+    .hero .muted{
+      color: rgba(154,164,178,.95);
+      font-weight: 750;
+    }
+    .hero-chips{
+      margin-top: 10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .chip{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      color: rgba(233,238,246,.92);
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 950;
+    }
+    .hint{
+      margin-top: 12px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 12px 14px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    /* Categorías */
+    .cat{ margin-top: 14px; padding-top: 6px; }
+    .cat-title{
+      font-weight: 950;
+      letter-spacing: .2px;
+      margin: 10px 4px 6px;
+      color: rgba(233,238,246,.96);
+    }
+    .cat-sub{
+      margin: 0 4px 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* ===== Grid 3 columnas ===== */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px 12px;
+      padding: 8px 0 0;
+    }
+    .icon-tile{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap: 8px;
+      text-decoration:none;
+      color: var(--text);
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ===== Iconos estilo premium (Borde con color, NO relleno) ===== */
+    .icon-box{
+      width: 66px;
+      height: 66px;
+      border-radius: 18px;
+      position: relative;
+      overflow: hidden;
+
+      /* base oscura */
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.22));
+      border: 1px solid rgba(255,255,255,.10);
+
+      /* sombras */
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.10),
+        inset 0 -12px 18px rgba(0,0,0,.35),
+        0 10px 22px rgba(0,0,0,.45),
+        0 0 14px color-mix(in oklab, var(--brand) 18%, transparent 82%);
+
+      display:grid;
+      place-items:center;
+    }
+
+    /* Borde degradé SOLO en bordes (ring), centro limpio */
+    .icon-box::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius: 18px;
+      padding: 1.7px; /* grosor del borde */
+      background:
+        linear-gradient(135deg,
+          color-mix(in oklab, var(--brand) 90%, white 0%),
+          color-mix(in oklab, var(--brand) 35%, transparent 65%),
+          color-mix(in oklab, var(--brand) 90%, white 0%)
+        );
+
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+
+      opacity: .98;
+      pointer-events:none;
+    }
+
+    /* Línea finita arriba */
+    .icon-box::after{
+      content:"";
+      position:absolute;
+      left: 10px;
+      right: 10px;
+      top: 8px;
+      height: 1px;
+      background: rgba(255,255,255,.14);
+      border-radius: 999px;
+      opacity: .7;
+      pointer-events:none;
+    }
+
+    .icon-box img{
+      width: 30px;
+      height: 30px;
+      filter: invert(1);
+      opacity: .95;
+      position: relative;
+      z-index: 1;
+    }
+    .icon-fallback{
+      font-weight: 950;
+      letter-spacing: .5px;
+      color: rgba(233,238,246,.92);
+      position: relative;
+      z-index: 1;
+    }
+    .icon-label{
+      font-size: 12px;
+      font-weight: 950;
+      text-align:center;
+      line-height: 1.1;
+      max-width: 92px;
+      color: rgba(233,238,246,.92);
+    }
+    .badge{
+      position:absolute;
+      top: -7px;
+      right: -7px;
+      background: rgba(37,211,102,.95);
+      color: #062010;
+      font-weight: 950;
+      font-size: 11px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      box-shadow: 0 10px 20px rgba(0,0,0,.35);
+      border: 1px solid rgba(0,0,0,.08);
+      z-index: 2;
+    }
+
+    /* Marca -> define --brand */
+    .icon-box[data-brand="netflix"]{ --brand: var(--c-netflix); }
+    .icon-box[data-brand="disney"]{ --brand: var(--c-disney); }
+    .icon-box[data-brand="prime"]{ --brand: var(--c-prime); }
+    .icon-box[data-brand="max"]{ --brand: var(--c-max); }
+    .icon-box[data-brand="paramount"]{ --brand: var(--c-paramount); }
+    .icon-box[data-brand="vix"]{ --brand: var(--c-vix); }
+    .icon-box[data-brand="crunchy"]{ --brand: var(--c-crunchy); }
+    .icon-box[data-brand="apple"]{ --brand: var(--c-apple); }
+    .icon-box[data-brand="universal"]{ --brand: var(--c-universal); }
+    .icon-box[data-brand="mubi"]{ --brand: var(--c-mubi); }
+    .icon-box[data-brand="flujo"]{ --brand: var(--c-flujo); }
+    .icon-box[data-brand="spotify"]{ --brand: var(--c-spotify); }
+    .icon-box[data-brand="deezer"]{ --brand: var(--c-deezer); }
+    .icon-box[data-brand="youtube"]{ --brand: var(--c-youtube); }
+    .icon-box[data-brand="xbox"]{ --brand: var(--c-xbox); }
+    .icon-box[data-brand="personal"]{ --brand: var(--c-personal); }
+    .icon-box[data-brand="capcut"]{ --brand: var(--c-capcut); }
+    .icon-box[data-brand="m365"]{ --brand: var(--c-m365); }
+    .icon-box[data-brand="picsart"]{ --brand: var(--c-picsart); }
+
+    /* Canva / Adobe: borde degradé (solo borde) */
+    .icon-box[data-brand="canva"]{
+      --brand: var(--c-canva2);
+    }
+    .icon-box[data-brand="canva"]::before{
+      background: linear-gradient(135deg, var(--c-canva1), var(--c-canva2), var(--c-canva1));
+    }
+    .icon-box[data-brand="adobe"]{
+      --brand: var(--c-adobe2);
+    }
+    .icon-box[data-brand="adobe"]::before{
+      background: linear-gradient(135deg, var(--c-adobe1), var(--c-adobe2), var(--c-adobe1));
+    }
+
+    /* Ícono seleccionado -> glow extra (sin rellenar centro) */
+    .icon-box.selected{
+      border-color: rgba(255,255,255,.16);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.12),
+        inset 0 -12px 18px rgba(0,0,0,.35),
+        0 10px 22px rgba(0,0,0,.45),
+        0 0 18px color-mix(in oklab, var(--brand) 28%, transparent 72%);
+    }
+
+    /* ===== Floater País + Limpiar ===== */
+    .tools-float{
+      position: fixed;
+      left: 14px;
+      bottom: 16px;
+      z-index: 9999;
+
+      display:flex;
+      align-items:center;
+      gap:10px;
+
+      padding: 10px 10px;
+      border-radius: 16px;
+
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(0,0,0,.18));
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow:
+        0 10px 26px rgba(0,0,0,.45),
+        inset 0 1px 0 rgba(255,255,255,.10);
+
+      backdrop-filter: blur(10px);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .tools-float .select-wrap{ position:relative; display:flex; align-items:center; }
+    .tools-float .select{
+      appearance:none;
+      -webkit-appearance:none;
+      -moz-appearance:none;
+
+      padding: 10px 34px 10px 12px;
+      border-radius: 14px;
+      font-weight: 950;
+      font-size: 13px;
+
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      color: var(--text);
+      outline:none;
+      box-shadow:none;
+      cursor:pointer;
+      line-height: 1;
+    }
+    .tools-float .select-wrap:after{
+      content:"▾";
+      position:absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(233,238,246,.85);
+      pointer-events:none;
+      font-size: 12px;
+      font-weight: 950;
+    }
+    .tools-float .btn{
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 14px;
+      cursor:pointer;
+      font-weight: 950;
+      font-size: 13px;
+      box-shadow: none;
+    }
+    .tools-float .btn:active{ transform: scale(.99); }
+
+    /* ===== WhatsApp flotante ===== */
+    .wa-float{
+      position: fixed;
+      right: 14px;
+      bottom: 16px;
+      z-index: 9999;
+      width: 182px;
+      display:flex;
+      flex-direction: column;
+      align-items:center;
+      justify-content:center;
+      gap: 4px;
+      padding: 11px 12px;
+      border-radius: 16px;
+      text-decoration:none;
+      font-weight: 950;
+      -webkit-tap-highlight-color: transparent;
+
+      background: linear-gradient(180deg, color-mix(in oklab, var(--wa) 92%, white 8%), var(--wa));
+      color: #062010;
+      box-shadow:
+        0 10px 26px rgba(0,0,0,.45),
+        0 0 0 1px rgba(255,255,255,.10),
+        0 0 18px rgba(37,211,102,.22);
+      transition: transform .15s ease, filter .15s ease;
+      opacity: 1;
+    }
+    /* NO transparentar cuando está vacío */
+    .wa-float:hover{ transform: translateY(-1px); filter: brightness(.99); }
+    .wa-float:active{ transform: translateY(0px) scale(.99); }
+    .wa-text{ font-size: 12.5px; }
+    .wa-total{
+      font-size: 14px;
+      font-weight: 950;
+      background: rgba(0,0,0,.12);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    /* ===== Bottom sheet ===== */
+    .sheet-overlay{
+      position:fixed;
+      inset:0;
+      display:none;
+      background: rgba(0,0,0,.60);
+      z-index: 9998;
+      padding: 10px;
+    }
+    .sheet-overlay.show{ display:block; }
+    .sheet{
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 10px;
+      width: min(520px, calc(100% - 20px));
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(17,19,26,.98);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .sheet-handle{
+      width: 46px;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.18);
+      margin: 10px auto 6px;
+    }
+    .sheet-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 12px;
+      padding: 10px 12px 12px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .sheet-left{ display:flex; align-items:flex-start; gap: 10px; min-width:0; }
+    .sheet-icon{
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      position:relative;
+      flex: 0 0 auto;
+    }
+    .sheet-icon::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius: 14px;
+      padding: 1.6px;
+      background:
+        linear-gradient(135deg,
+          color-mix(in oklab, var(--sheetBrand) 90%, white 0%),
+          color-mix(in oklab, var(--sheetBrand) 35%, transparent 65%),
+          color-mix(in oklab, var(--sheetBrand) 90%, white 0%)
+        );
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      opacity:.95;
+      pointer-events:none;
+    }
+    .sheet-icon img{ width: 24px; height: 24px; filter: invert(1); position:relative; z-index:1; }
+
+    .sheet-title{ font-weight: 950; color: var(--text); }
+    .sheet-sub{ font-size: 12px; color: rgba(233,238,246,.76); margin-top:2px; font-weight: 700; }
+    .sheet-desc{
+      margin-top: 8px;
+      font-size: 12.5px;
+      line-height: 1.35;
+      color: rgba(233,238,246,.86);
+      font-weight: 700;
+      max-width: 320px;
+      text-wrap: balance;
+    }
+    .sheet-close{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-weight: 950;
+      -webkit-tap-highlight-color: transparent;
+      flex: 0 0 auto;
+    }
+    .sheet-close:active{ transform: scale(.98); }
+
+    .sheet-options{ padding: 12px; display:grid; gap: 10px; }
+
+    button{ color: inherit; font-family: inherit; }
+
+    /* Opciones estilo premium + buen contraste */
+    .option{
+      position: relative;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: 12px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.22));
+      cursor:pointer;
+      text-align:left;
+      -webkit-tap-highlight-color: transparent;
+      color: var(--text);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.10),
+        inset 0 -10px 16px rgba(0,0,0,.30),
+        0 10px 22px rgba(0,0,0,.35);
+    }
+    .option::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius: 16px;
+      padding: 1.6px;
+      background:
+        linear-gradient(135deg,
+          color-mix(in oklab, var(--sheetBrand) 80%, transparent 20%),
+          transparent,
+          color-mix(in oklab, var(--sheetBrand) 80%, transparent 20%)
+        );
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      opacity:.70;
+      pointer-events:none;
+    }
+    .option > *{ position:relative; z-index:1; }
+
+    .option:active{ transform: scale(.99); }
+    .opt-left{ display:flex; flex-direction:column; gap: 2px; }
+    .opt-title{ font-weight: 950; color: rgba(233,238,246,.98); }
+    .opt-sub{ font-size: 12px; color: rgba(233,238,246,.78); font-weight: 750; }
+    .opt-price{ font-weight: 950; white-space:nowrap; color: rgba(233,238,246,.98); }
+
+    .option.selected{
+      border-color: color-mix(in oklab, var(--sheetBrand) 55%, rgba(255,255,255,.12) 45%);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.12),
+        inset 0 -10px 16px rgba(0,0,0,.30),
+        0 10px 22px rgba(0,0,0,.38),
+        0 0 18px color-mix(in oklab, var(--sheetBrand) 28%, transparent 72%);
+    }
+    .option.disabled{
+      opacity: .45;
+      pointer-events: none;
+    }
+
+    .sheet-footer{
+      padding: 10px 12px 14px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      display:flex;
+      justify-content:flex-end;
+      gap: 10px;
+    }
+    .sheet-danger{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,70,70,.10);
+      color: rgba(255,210,210,.98);
+      padding: 10px 12px;
+      border-radius: 14px;
+      cursor:pointer;
+      font-weight: 950;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    @media (max-width: 380px){
+      .icon-box{ width: 62px; height: 62px; border-radius: 16px; }
+      .icon-box::before{ border-radius:16px; }
+      .icon-box img{ width: 28px; height: 28px; }
+      .wa-float{ width: 170px; }
+      .brand-title{ font-size: 21px; }
+      .tools-float{ left: 12px; bottom: 14px; padding: 9px 9px; gap: 8px; }
+      .tools-float .select{ font-size: 12.5px; }
+      .tools-float .btn{ font-size: 12.5px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header id="appHeader" class="header">
+    <div class="header-inner">
+      <div class="brand-bar">
+        <div class="brand">
+          <div class="brand-title">MISAKROOS</div>
+          <div class="brand-sub">SERVICIOS DIGITALES</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="screen">
+    <section class="hero">
+      <h2>Compartí tu suscripción y ahorrá.</h2>
+      <p class="muted">Servicios digitales para Argentina y Uruguay.</p>
+      <p>
+        Tenés tu propio perfil en una cuenta compartida, segura, confiable y renovable
+        a un precio mucho más accesible.
+      </p>
+      <p class="muted">
+        Elegí lo que querés, se calcula el total y lo enviás por WhatsApp.
+        A más servicios contratados, mejor es el precio.
+      </p>
+      <div class="hero-chips">
+        <div class="chip">⚡ Activación rápida</div>
+        <div class="chip">💬 Soporte por WhatsApp</div>
+        <div class="chip">🔁 Renovable</div>
+      </div>
+    </section>
+
+    <div class="hint">
+      Tocá un ícono para elegir plan. Abajo tenés “País / Limpiar” y el botón de WhatsApp con el total.
+    </div>
+
+    <div id="catalog"></div>
+  </main>
+
+  <!-- Bottom sheet -->
+  <div id="sheetOverlay" class="sheet-overlay" aria-hidden="true">
+    <div class="sheet" role="dialog" aria-modal="true">
+      <div class="sheet-handle" aria-hidden="true"></div>
+
+      <div class="sheet-head">
+        <div class="sheet-left">
+          <div id="sheetIcon" class="sheet-icon"></div>
+          <div style="min-width:0">
+            <div id="sheetTitle" class="sheet-title">Servicio</div>
+            <div id="sheetSub" class="sheet-sub">Elegí una opción</div>
+            <div id="sheetDesc" class="sheet-desc"></div>
+          </div>
+        </div>
+
+        <button id="sheetClose" class="sheet-close" type="button">✕</button>
+      </div>
+
+      <div id="sheetOptions" class="sheet-options"></div>
+
+      <div class="sheet-footer">
+        <button id="removeSelectionBtn" class="sheet-danger" type="button">Quitar selección</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floater País + Limpiar -->
+  <div class="tools-float" aria-label="Herramientas">
+    <div class="select-wrap">
+      <select id="countrySelectFloat" class="select" aria-label="Menú país (flotante)">
+        <option value="AR">🇦🇷 ARS</option>
+        <option value="UY">🇺🇾 UYU</option>
+      </select>
+    </div>
+    <button id="clearBtnFloat" class="btn" type="button">Limpiar</button>
+  </div>
+
+  <!-- WhatsApp flotante -->
+  <a id="waButton" class="wa-float" href="#" target="_blank" rel="noopener">
+    <span class="wa-text">Continuar con WhatsApp</span>
+    <span id="waTotal" class="wa-total">—</span>
+  </a>
+
+  <script>
+    const WHATSAPP_NUMBER = "5492645182955";
+
+    function iconUrl(slug){
+      return `https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/${slug}.svg`;
+    }
+
+    // Datos según tu lista (ARS / UYU)
+    const SERVICES = [
+      // STREAMING
+      { cat:"Streaming", key:"netflix", name:"Netflix", icon:"netflix", brand:"netflix",
+        desc:"Plataforma de series y películas a demanda.",
+        options:[
+          {id:"p1",label:"1 Perfil (1 pantalla)",ar:7500,uy:250,sum:true},
+          {id:"p2",label:"2 Perfiles (2 pantallas)",ar:12900,uy:450,sum:true},
+          {id:"c", label:"Más perfiles/pantallas (Consultar)", sum:false, consult:true}
+        ] },
+      { cat:"Streaming", key:"disney", name:"Disney+", icon:"disneyplus", brand:"disney",
+        desc:"Contenido de Disney, Pixar, Marvel, Star Wars y más.",
+        options:[
+          {id:"p1",label:"1 Perfil (1 pantalla)",ar:6000,uy:280,sum:true},
+          {id:"p2",label:"2 Perfiles (2 pantallas)",ar:12900,uy:500,sum:true},
+          {id:"c", label:"Más perfiles/pantallas (Consultar)", sum:false, consult:true}
+        ] },
+      { cat:"Streaming", key:"prime", name:"Prime Video", icon:"primevideo", brand:"prime",
+        desc:"Series, películas y contenido exclusivo de Prime Video.",
+        options:[
+          {id:"p1",label:"1 Perfil (1 pantalla)",ar:4500,uy:130,sum:true},
+          {id:"p2",label:"2 Perfiles (2 pantallas)",ar:7990,uy:250,sum:true},
+          {id:"c", label:"Más perfiles/pantallas (Consultar)", sum:false, consult:true}
+        ] },
+      { cat:"Streaming", key:"max", name:"Max", icon:"hbomax", brand:"max",
+        desc:"Series y películas de HBO, Warner y más (según catálogo).",
+        options:[
+          {id:"p1",label:"1 Perfil (1 pantalla)",ar:4500,uy:130,sum:true},
+          {id:"p2",label:"2 Perfiles (2 pantallas)",ar:7990,uy:250,sum:true},
+          {id:"c", label:"Más perfiles/pantallas (Consultar)", sum:false, consult:true}
+        ] },
+      { cat:"Streaming", key:"paramount", name:"Paramount+", icon:"paramountplus", brand:"paramount",
+        desc:"Series y películas de Paramount y catálogos asociados (según catálogo).",
+        options:[
+          {id:"p1",label:"1 Perfil (1 pantalla)",ar:4500,uy:130,sum:true},
+          {id:"p2",label:"2 Perfiles (2 pantallas)",ar:7990,uy:250,sum:true},
+          {id:"c", label:"Más perfiles/pantallas (Consultar)", sum:false, consult:true}
+        ] },
+      { cat:"Streaming", key:"vix", name:"Vix Premium", icon:null, brand:"vix",
+        desc:"Contenido en español: series y películas (según catálogo).",
+        options:[
+          {id:"p1",label:"1 Perfil (1 pantalla)",ar:4500,uy:130,sum:true},
+          {id:"p2",label:"2 Perfiles (2 pantallas)",ar:4500,uy:250,sum:true},
+          {id:"c", label:"Más perfiles/pantallas (Consultar)", sum:false, consult:true}
+        ] },
+      { cat:"Streaming", key:"apple", name:"Apple TV+", icon:"appletv", brand:"apple",
+        desc:"Series y películas originales de Apple TV+ (según catálogo).",
+        options:[
+          {id:"p1",label:"1 Perfil (1 pantalla)",ar:4500,uy:130,sum:true},
+          {id:"p2",label:"2 Perfiles (2 pantallas)",ar:7990,uy:250,sum:true},
+          {id:"c", label:"Más perfiles/pantallas (Consultar)", sum:false, consult:true}
+        ] },
+      { cat:"Streaming", key:"universal", name:"Universal+", icon:"universal", brand:"universal",
+        desc:"Películas y series de Universal (según disponibilidad).",
+        options:[
+          {id:"p1",label:"1 Perfil (1 pantalla)",ar:4500,uy:130,sum:true},
+          {id:"p2",label:"2 Perfiles (2 pantallas)",ar:7990,uy:250,sum:true},
+          {id:"c", label:"Más perfiles/pantallas (Consultar)", sum:false, consult:true}
+        ] },
+      { cat:"Streaming", key:"mubi", name:"MUBI Premium", icon:null, brand:"mubi",
+        desc:"Cine curado: catálogo seleccionado y estrenos rotativos.",
+        options:[
+          {id:"p1",label:"1 Perfil (1 pantalla)",ar:4500,uy:130,sum:true},
+          {id:"p2",label:"2 Perfiles (2 pantallas)",ar:7990,uy:130,sum:true},
+          {id:"c", label:"Más perfiles/pantallas (Consultar)", sum:false, consult:true}
+        ] },
+      { cat:"Streaming", key:"crunchy", name:"Crunchyroll", icon:"crunchyroll", brand:"crunchy",
+        desc:"Anime y simulcasts (según catálogo).",
+        options:[
+          {id:"p1",label:"1 Perfil (1 pantalla)",ar:4500,uy:130,sum:true},
+          {id:"p2",label:"2 Perfiles (2 pantallas)",ar:7990,uy:250,sum:true},
+          {id:"c", label:"Más perfiles/pantallas (Consultar)", sum:false, consult:true}
+        ] },
+      { cat:"Streaming", key:"flujo", name:"Flujo TV", icon:null, brand:"flujo",
+        desc:"TV en vivo y contenido (según pack).",
+        options:[
+          {id:"d3",label:"3 dispositivos (pantallas)",ar:7000,uy:300,sum:true},
+          {id:"c", label:"Más perfiles/pantallas (Consultar)", sum:false, consult:true}
+        ] },
+
+      // MÚSICA
+      { cat:"Música", key:"spotify", name:"Spotify Premium", icon:"spotify", brand:"spotify",
+        desc:"Música y podcasts sin anuncios (según plan).",
+        options:[
+          {id:"m1",label:"1 mes",ar:4500,uy:190,sum:true},
+          {id:"c", label:"Más cuentas (Consultar)", sum:false, consult:true}
+        ] },
+      { cat:"Música", key:"deezer", name:"Deezer Premium", icon:"deezer", brand:"deezer",
+        desc:"Música en streaming con funciones premium (según plan).",
+        options:[
+          {id:"m1",label:"1 Cuenta",ar:4500,uy:190,sum:true},
+          {id:"c", label:"Más cuentas (Consultar)", sum:false, consult:true}
+        ] },
+      { cat:"Música", key:"yt", name:"YouTube Premium", icon:"youtube", brand:"youtube",
+        desc:"YouTube sin anuncios y funciones premium (según plan).",
+        options:[
+          {id:"i",label:"1 Individual",ar:4500,uy:150,sum:true},
+          {id:"f",label:"1 Familiar",ar:6500,uy:250,sum:true},
+          {id:"c", label:"Más cuentas (Consultar)", sum:false, consult:true}
+        ] },
+
+      // SOFTWARE / APPS
+      { cat:"Software", key:"capcut", name:"CapCut Pro", icon:null, brand:"capcut",
+        desc:"Edición de video con funciones Pro (según versión).",
+        options:[
+          {id:"pc",label:"1 para PC",ar:4500,uy:200,sum:true},
+          {id:"full",label:"1 Completa",ar:7009,uy:300,sum:true},
+          {id:"c", label:"Más cuentas (Consultar)", sum:false, consult:true}
+        ] },
+      { cat:"Software", key:"canva", name:"Canva Pro", icon:"canva", brand:"canva",
+        desc:"Diseño premium con recursos Pro y herramientas avanzadas.",
+        options:[
+          {id:"m1",label:"1 mes",ar:4500,uy:200,sum:true},
+          {id:"m3",label:"3 meses",ar:7000,uy:300,sum:true},
+          {id:"c", label:"Más cuentas (Consultar)", sum:false, consult:true}
+        ] },
+      { cat:"Software", key:"adobe", name:"Adobe Creative Cloud", icon:"adobecreativecloud", brand:"adobe",
+        desc:"Suite creativa para diseño, foto y video (según plan).",
+        options:[
+          {id:"a1",label:"1 Cuenta",ar:12000,uy:400,sum:true},
+          {id:"c", label:"Más cuentas (Consultar)", sum:false, consult:true}
+        ] },
+      { cat:"Software", key:"m365", name:"Microsoft 365 Personal", icon:"microsoftoffice", brand:"m365",
+        desc:"Office + almacenamiento (según plan).",
+        options:[
+          {id:"anual",label:"Anual (garantía 30 días)",ar:10000,uy:300,sum:true},
+          {id:"c", label:"Más cuentas (Consultar)", sum:false, consult:true}
+        ] },
+      { cat:"Software", key:"picsart", name:"PicsArt Premium", icon:null, brand:"picsart",
+        desc:"Edición de fotos y herramientas premium (según plan).",
+        options:[
+          {id:"a1",label:"1 Cuenta",ar:4500,uy:200,sum:true},
+          {id:"c", label:"Más cuentas (Consultar)", sum:false, consult:true}
+        ] },
+
+      // GAMING
+      { cat:"Gaming", key:"xbox", name:"Xbox Game Pass Ultimate", icon:"xbox", brand:"xbox",
+        desc:"Acceso a catálogo de juegos y beneficios (según plan).",
+        options:[
+          {id:"m1",label:"1 mes",ar:25000,uy:700,sum:true},
+          {id:"m2",label:"2 Cuentas",ar:30000,uy:1000,sum:true},
+          {id:"c", label:"Más cuentas (Consultar)", sum:false, consult:true}
+        ] },
+
+      // INTERNET
+      { cat:"Internet", key:"personal", name:"Internet Ilimitado Argentina (Personal)", icon:null, brand:"personal",
+        desc:"Internet móvil ilimitado (según línea/plan).",
+        options:[
+          {id:"m1",label:"1 mes",ar:5500,uy:null,sum:true},
+          {id:"m3",label:"3 meses",ar:10000,uy:null,sum:true},
+          {id:"c", label:"Más líneas (Consultar)", sum:false, consult:true}
+        ] },
+    ];
+
+    const CATEGORY_ORDER = ["Streaming","Música","Software","Gaming","Internet"];
+    const LS_COUNTRY = "misakroos_country_v5";
+    const LS_SELECTIONS = "misakroos_selections_v5";
+
+    const state = {
+      country: null,
+      selections: {}, // { [serviceKey]: optionId }
+      activeServiceKey: null,
+    };
+
+    // DOM
+    const $header = document.getElementById("appHeader");
+    const $catalog = document.getElementById("catalog");
+
+    const $sheetOverlay = document.getElementById("sheetOverlay");
+    const $sheetClose = document.getElementById("sheetClose");
+    const $sheetIcon = document.getElementById("sheetIcon");
+    const $sheetTitle = document.getElementById("sheetTitle");
+    const $sheetSub = document.getElementById("sheetSub");
+    const $sheetDesc = document.getElementById("sheetDesc");
+    const $sheetOptions = document.getElementById("sheetOptions");
+    const $removeSelectionBtn = document.getElementById("removeSelectionBtn");
+
+    const $waButton = document.getElementById("waButton");
+    const $waTotal = document.getElementById("waTotal");
+
+    const $countrySelectFloat = document.getElementById("countrySelectFloat");
+    const $clearBtnFloat = document.getElementById("clearBtnFloat");
+
+    function loadState(){
+      const c = localStorage.getItem(LS_COUNTRY);
+      if (c === "AR" || c === "UY") state.country = c;
+
+      try{
+        const sel = JSON.parse(localStorage.getItem(LS_SELECTIONS) || "{}");
+        if (sel && typeof sel === "object") state.selections = sel;
+      }catch{
+        state.selections = {};
+      }
+    }
+    function saveState(){
+      localStorage.setItem(LS_COUNTRY, state.country || "");
+      localStorage.setItem(LS_SELECTIONS, JSON.stringify(state.selections || {}));
+    }
+
+    function formatMoney(n){
+      const currency = state.country === "UY" ? "UYU" : "ARS";
+      const num = Math.round(Number(n || 0));
+      const s = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      return `${currency} $${s}`;
+    }
+
+    function optionPrice(opt){
+      const v = state.country === "UY" ? opt.uy : opt.ar;
+      return (typeof v === "number") ? v : null;
+    }
+
+    function computeTotal(){
+      let total = 0;
+      for (const s of SERVICES){
+        const optId = state.selections[s.key];
+        if (!optId) continue;
+        const opt = s.options.find(o => o.id === optId);
+        if (!opt || !opt.sum) continue;
+        const p = optionPrice(opt);
+        if (p != null) total += p;
+      }
+      return total;
+    }
+
+    function buildWhatsAppUrl(){
+      const countryText = state.country === "UY" ? "Uruguay 🇺🇾" : "Argentina 🇦🇷";
+      const lines = [];
+
+      for (const s of SERVICES){
+        const optId = state.selections[s.key];
+        if (!optId) continue;
+        const opt = s.options.find(o => o.id === optId);
+        if (!opt) continue;
+
+        if (opt.consult){
+          lines.push(`- ${s.name}: ${opt.label}`);
+        } else {
+          const p = optionPrice(opt);
+          if (p == null) lines.push(`- ${s.name}: ${opt.label} (No disponible en este país)`);
+          else lines.push(`- ${s.name}: ${opt.label} (${formatMoney(p)})`);
+        }
+      }
+
+      const total = computeTotal();
+      const msg =
+`Hola MISAKROOS 👋
+Soy de: ${countryText}
+${lines.length ? `Quiero contratar:\n${lines.join("\n")}\n\nTotal: ${formatMoney(total)}` : "Quiero información del catálogo y cómo contratar. ✅"}`;
+
+      return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+    }
+
+    function updateWhatsAppButton(){
+      const total = computeTotal();
+      $waTotal.textContent = formatMoney(total);
+      $waButton.href = buildWhatsAppUrl();
+    }
+
+    function getService(key){ return SERVICES.find(s => s.key === key) || null; }
+
+    function badgeTextForSelection(service){
+      const optId = state.selections[service.key];
+      if (!optId) return "";
+      const opt = service.options.find(o => o.id === optId);
+      if (!opt) return "";
+      if (opt.consult) return "!";
+      return String(opt.id).toUpperCase();
+    }
+
+    function makeTile(service){
+      const a = document.createElement("a");
+      a.className = "icon-tile";
+      a.href = "#";
+
+      const box = document.createElement("div");
+      box.className = "icon-box";
+      if (service.brand) box.dataset.brand = service.brand;
+
+      if (state.selections[service.key]) box.classList.add("selected");
+
+      const badgeText = badgeTextForSelection(service);
+      if (badgeText){
+        const badge = document.createElement("div");
+        badge.className = "badge";
+        badge.textContent = badgeText;
+        box.appendChild(badge);
+      }
+
+      if (service.icon){
+        const img = document.createElement("img");
+        img.src = iconUrl(service.icon);
+        img.alt = service.name;
+        img.onerror = () => {
+          img.remove();
+          const fb = document.createElement("div");
+          fb.className = "icon-fallback";
+          fb.textContent = service.name.slice(0,2).toUpperCase();
+          box.appendChild(fb);
+        };
+        box.appendChild(img);
+      } else {
+        const fb = document.createElement("div");
+        fb.className = "icon-fallback";
+        fb.textContent = service.name.slice(0,2).toUpperCase();
+        box.appendChild(fb);
+      }
+
+      const label = document.createElement("div");
+      label.className = "icon-label";
+      label.textContent = service.name;
+
+      a.appendChild(box);
+      a.appendChild(label);
+
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        openSheet(service.key);
+      });
+
+      return a;
+    }
+
+    function renderCatalog(){
+      $catalog.innerHTML = "";
+      for (const catName of CATEGORY_ORDER){
+        const items = SERVICES.filter(s => s.cat === catName);
+        if (!items.length) continue;
+
+        const sec = document.createElement("section");
+        sec.className = "cat";
+
+        const t = document.createElement("div");
+        t.className = "cat-title";
+        t.textContent = catName.toUpperCase();
+
+        const sub = document.createElement("div");
+        sub.className = "cat-sub";
+        sub.textContent = "Tocá un ícono para ver planes";
+
+        const grid = document.createElement("div");
+        grid.className = "grid";
+        for (const s of items) grid.appendChild(makeTile(s));
+
+        sec.appendChild(t);
+        sec.appendChild(sub);
+        sec.appendChild(grid);
+        $catalog.appendChild(sec);
+      }
+    }
+
+    function setSheetBrandFromService(service){
+      // Lee --brand del icon-box para usarlo como color del sheet
+      const tmp = document.createElement("div");
+      tmp.className = "icon-box";
+      if (service.brand) tmp.dataset.brand = service.brand;
+      document.body.appendChild(tmp);
+      const brand = getComputedStyle(tmp).getPropertyValue("--brand").trim() || "#25D366";
+      document.body.removeChild(tmp);
+      document.documentElement.style.setProperty("--sheetBrand", brand);
+    }
+
+    function openSheet(serviceKey){
+      state.activeServiceKey = serviceKey;
+      const s = getService(serviceKey);
+      if (!s) return;
+
+      setSheetBrandFromService(s);
+
+      // icon
+      $sheetIcon.innerHTML = "";
+      if (s.icon){
+        const img = document.createElement("img");
+        img.src = iconUrl(s.icon);
+        img.alt = s.name;
+        img.onerror = () => {
+          $sheetIcon.innerHTML = `<div class="icon-fallback">${s.name.slice(0,2).toUpperCase()}</div>`;
+        };
+        $sheetIcon.appendChild(img);
+      } else {
+        $sheetIcon.innerHTML = `<div class="icon-fallback">${s.name.slice(0,2).toUpperCase()}</div>`;
+      }
+
+      $sheetTitle.textContent = s.name;
+      $sheetSub.textContent = "Elegí una opción";
+      $sheetDesc.textContent = s.desc || "";
+
+      const current = state.selections[serviceKey] || null;
+
+      $sheetOptions.innerHTML = "";
+      for (const opt of s.options){
+        const row = document.createElement("button");
+        row.type = "button";
+
+        const isSelected = current === opt.id;
+        row.className = "option" + (isSelected ? " selected" : "");
+
+        const left = document.createElement("div");
+        left.className = "opt-left";
+        left.innerHTML =
+          `<div class="opt-title">${opt.label}</div>` +
+          `<div class="opt-sub">${opt.consult ? "Consulta por WhatsApp" : (opt.sum ? "Se suma al total" : "No suma al total")}</div>`;
+
+        const right = document.createElement("div");
+        right.className = "opt-price";
+
+        if (opt.consult){
+          right.textContent = "Consultar";
+        } else {
+          const p = optionPrice(opt);
+          right.textContent = (p == null) ? "No disponible" : formatMoney(p);
+          if (p == null) row.classList.add("disabled");
+        }
+
+        row.appendChild(left);
+        row.appendChild(right);
+
+        // Toggle: si toca la misma opción -> deselecciona
+        row.addEventListener("click", () => {
+          const currentId = state.selections[serviceKey] || null;
+          if (currentId === opt.id){
+            delete state.selections[serviceKey];
+          } else {
+            state.selections[serviceKey] = opt.id;
+          }
+          saveState();
+          renderCatalog();
+          updateWhatsAppButton();
+          closeSheet();
+        });
+
+        $sheetOptions.appendChild(row);
+      }
+
+      $sheetOverlay.classList.add("show");
+      $sheetOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function closeSheet(){
+      state.activeServiceKey = null;
+      $sheetOverlay.classList.remove("show");
+      $sheetOverlay.setAttribute("aria-hidden", "true");
+    }
+
+    $sheetClose.addEventListener("click", closeSheet);
+    $sheetOverlay.addEventListener("click", (e) => { if (e.target === $sheetOverlay) closeSheet(); });
+
+    $removeSelectionBtn.addEventListener("click", () => {
+      const key = state.activeServiceKey;
+      if (!key) return;
+      delete state.selections[key];
+      saveState();
+      renderCatalog();
+      updateWhatsAppButton();
+      closeSheet();
+    });
+
+    function applyCountry(newCountry){
+      state.country = newCountry;
+      state.selections = {}; // limpiar al cambiar país
+      saveState();
+      renderCatalog();
+      updateWhatsAppButton();
+    }
+
+    function clearSelections(){
+      state.selections = {};
+      saveState();
+      renderCatalog();
+      updateWhatsAppButton();
+    }
+
+    // Flotante país
+    $countrySelectFloat.addEventListener("change", () => {
+      applyCountry($countrySelectFloat.value);
+    });
+
+    // Flotante limpiar
+    $clearBtnFloat.addEventListener("click", clearSelections);
+
+    function updateHeaderHeightVar(){
+      const h = $header.getBoundingClientRect().height;
+      document.documentElement.style.setProperty("--headerH", `${Math.ceil(h)}px`);
+    }
+
+    (function init(){
+      loadState();
+      if (!state.country) state.country = "AR";
+      $countrySelectFloat.value = state.country;
+
+      renderCatalog();
+      updateWhatsAppButton();
+
+      updateHeaderHeightVar();
+      window.addEventListener("resize", updateHeaderHeightVar);
+    })();
+  </script>
+</body>
+</html>
