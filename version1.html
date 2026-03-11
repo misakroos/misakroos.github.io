@@ -1,0 +1,1349 @@
+Put your HTML text here<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="MISAKROOS - Servicios digitales y plataformas premium" />
+  <title>MISAKROOS</title>
+  <style>
+    :root {
+      --bg: #06080d;
+      --bg-2: #0d1220;
+      --panel: #121826;
+      --panel-2: #1a2233;
+      --panel-3: #0f1522;
+      --text: #f5f7fb;
+      --muted: #9ea9c0;
+      --line: #26304a;
+      --accent: #25d366;
+      --accent-dark: #1ea952;
+      --blue: #3d7bff;
+      --blue-2: #65b2ff;
+      --blue-3: #8fd0ff;
+      --danger: #ff8b8b;
+      --warning: #ffd36a;
+      --ok: #8de1a9;
+      --radius: 18px;
+      --shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+      --hero-glow: 0 0 40px rgba(61, 123, 255, 0.22);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(61,123,255,0.12), transparent 25%),
+        linear-gradient(180deg, #04060a 0%, #0b1018 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 130px;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(10px);
+      background: rgba(6, 8, 13, 0.82);
+      border-bottom: 1px solid rgba(101, 178, 255, 0.12);
+    }
+
+    .sticky-inner {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .sticky-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .sticky-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      border: 1px solid rgba(101, 178, 255, 0.3);
+      background: linear-gradient(180deg, rgba(61,123,255,0.22), rgba(61,123,255,0.08));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--hero-glow);
+      flex-shrink: 0;
+      font-weight: bold;
+      color: white;
+    }
+
+    .sticky-brand-text {
+      min-width: 0;
+    }
+
+    .sticky-brand-text strong {
+      display: block;
+      font-size: 0.95rem;
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+    }
+
+    .sticky-brand-text span {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 180px;
+    }
+
+    .country-box {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 5px;
+      width: 132px;
+      flex-shrink: 0;
+    }
+
+    .country-box label {
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    select,
+    input,
+    button {
+      font: inherit;
+    }
+
+    select,
+    input[type="text"] {
+      width: 100%;
+      background: var(--panel-2);
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    input[type="text"]::placeholder {
+      color: #7f8796;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+    }
+
+    main {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 0 16px 36px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(101, 178, 255, 0.18);
+      border-radius: 0 0 28px 28px;
+      padding: 26px 18px 22px;
+      margin: 0 -16px 18px;
+      background:
+        radial-gradient(circle at center, rgba(61,123,255,0.18), transparent 40%),
+        linear-gradient(180deg, #06080d 0%, #0c1320 58%, #09111b 100%);
+      box-shadow: var(--hero-glow);
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(101,178,255,0.16), transparent 65%);
+      filter: blur(10px);
+      pointer-events: none;
+    }
+
+    .hero::before {
+      top: -40px;
+      left: -30px;
+    }
+
+    .hero::after {
+      right: -30px;
+      bottom: -60px;
+    }
+
+    .hero-logo-wrap {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-logo {
+      width: min(320px, 88%);
+      height: auto;
+      display: block;
+      margin: 0 auto 14px;
+      filter: drop-shadow(0 0 22px rgba(61, 123, 255, 0.35));
+    }
+
+    .hero-title {
+      text-align: center;
+      margin: 0;
+      font-size: 1.2rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .hero-subtitle {
+      text-align: center;
+      margin: 10px 0 0;
+      color: var(--blue-3);
+      font-size: 0.94rem;
+      line-height: 1.45;
+    }
+
+    .hero-tags {
+      margin: 14px 0 0;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hero-tag {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(101, 178, 255, 0.22);
+      background: rgba(12, 20, 34, 0.72);
+      color: #dbe9ff;
+      font-size: 0.8rem;
+    }
+
+    .block {
+      background: rgba(18, 24, 38, 0.92);
+      border: 1px solid rgba(101, 178, 255, 0.12);
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+    }
+
+    .promo-box {
+      background:
+        linear-gradient(180deg, rgba(61,123,255,0.18) 0%, rgba(61,123,255,0.08) 100%);
+      border: 1px solid rgba(101, 178, 255, 0.35);
+    }
+
+    .promo-box strong {
+      display: block;
+      font-size: 0.96rem;
+      margin-bottom: 6px;
+    }
+
+    .promo-box p,
+    .coupon-help,
+    .name-help {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.45;
+    }
+
+    .name-box h3,
+    .coupon-box h3 {
+      margin: 0 0 10px;
+      font-size: 0.96rem;
+    }
+
+    .coupon-row {
+      display: grid;
+      grid-template-columns: 1fr 110px;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .coupon-button {
+      background: var(--blue);
+      color: white;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-weight: bold;
+    }
+
+    .coupon-button:hover {
+      background: #346ef1;
+    }
+
+    .coupon-status,
+    .name-status {
+      margin: 10px 0 0;
+      font-size: 0.84rem;
+      line-height: 1.35;
+      min-height: 18px;
+    }
+
+    .coupon-status.ok,
+    .name-status.ok {
+      color: var(--ok);
+    }
+
+    .coupon-status.error,
+    .name-status.error {
+      color: var(--danger);
+    }
+
+    .coupon-status.warn,
+    .name-status.warn {
+      color: var(--warning);
+    }
+
+    .category-strip-wrap {
+      margin: 0 -16px 16px;
+      padding: 0 16px;
+      position: sticky;
+      top: 61px;
+      z-index: 25;
+      background: linear-gradient(180deg, rgba(6,8,13,0.96), rgba(6,8,13,0.72));
+      backdrop-filter: blur(8px);
+    }
+
+    .category-strip {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 10px 0 12px;
+      scrollbar-width: none;
+    }
+
+    .category-strip::-webkit-scrollbar {
+      display: none;
+    }
+
+    .category-link {
+      flex: 0 0 auto;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(101, 178, 255, 0.18);
+      background: var(--panel);
+      color: #dce8ff;
+      text-decoration: none;
+      font-size: 0.88rem;
+      white-space: nowrap;
+    }
+
+    .category-link:hover {
+      border-color: rgba(101, 178, 255, 0.36);
+      background: #182133;
+    }
+
+    .section-title {
+      margin: 24px 0 12px;
+      font-size: 1rem;
+      color: #d8e0ef;
+      letter-spacing: 0.02em;
+    }
+
+    .catalog-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .card {
+      background: rgba(18, 24, 38, 0.96);
+      border: 1px solid rgba(101, 178, 255, 0.12);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      border: 1px solid rgba(101, 178, 255, 0.18);
+      background: linear-gradient(180deg, #111722 0%, #0b1018 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      padding: 6px;
+      text-align: center;
+      font-weight: bold;
+      line-height: 1;
+      color: #ffffff;
+      box-shadow: 0 0 18px rgba(61,123,255,0.12);
+    }
+
+    .logo span {
+      display: block;
+      font-size: 0.84rem;
+      letter-spacing: 0.02em;
+    }
+
+    .logo.netflix span { font-size: 1.25rem; }
+    .logo.disney span { font-size: 1rem; }
+    .logo.prime span { font-size: 0.8rem; }
+    .logo.max span { font-size: 1rem; }
+    .logo.paramount span { font-size: 0.72rem; }
+    .logo.vix span { font-size: 1rem; }
+    .logo.apple span { font-size: 1rem; }
+    .logo.universal span { font-size: 0.68rem; }
+    .logo.crunchy span { font-size: 0.68rem; }
+    .logo.youtube span { font-size: 0.72rem; }
+    .logo.microsoft span { font-size: 0.7rem; }
+    .logo.adobe span { font-size: 0.78rem; }
+    .logo.capcut span { font-size: 0.78rem; }
+    .logo.canva span { font-size: 0.9rem; }
+    .logo.picsart span { font-size: 0.72rem; }
+    .logo.spotify span,
+    .logo.deezer span,
+    .logo.xbox span,
+    .logo.mubi span,
+    .logo.flujo span,
+    .logo.internet span {
+      font-size: 0.8rem;
+    }
+
+    .card-title h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .card-title p {
+      margin: 4px 0 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field label {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+
+    .summary {
+      margin-top: 22px;
+      background: rgba(18, 24, 38, 0.96);
+      border: 1px solid rgba(101, 178, 255, 0.12);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .summary h2 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+    }
+
+    .summary ul {
+      margin: 0 0 14px;
+      padding-left: 18px;
+      color: var(--text);
+    }
+
+    .summary li {
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .summary-empty {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .totals {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: var(--panel-3);
+    }
+
+    .total-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.94rem;
+    }
+
+    .total-row span:first-child {
+      color: var(--muted);
+    }
+
+    .discount-row strong {
+      color: var(--ok);
+    }
+
+    .coupon-row-summary strong {
+      color: var(--blue-2);
+    }
+
+    .final-row {
+      margin-top: 4px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+    }
+
+    .final-row strong {
+      font-size: 1.02rem;
+    }
+
+    .discount-info {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.35;
+    }
+
+    .floating-wa {
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      z-index: 50;
+      width: calc(100% - 28px);
+      max-width: 532px;
+      margin: 0 auto;
+      left: 50%;
+      transform: translateX(-50%);
+      text-decoration: none;
+    }
+
+    .floating-wa-inner {
+      width: 100%;
+      background: var(--accent);
+      color: #08140b;
+      border: none;
+      border-radius: 18px;
+      padding: 14px 16px;
+      box-shadow: 0 12px 30px rgba(37, 211, 102, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .floating-wa-inner:hover {
+      background: var(--accent-dark);
+    }
+
+    .wa-text {
+      min-width: 0;
+    }
+
+    .wa-text strong,
+    .wa-text span {
+      display: block;
+    }
+
+    .wa-text strong {
+      font-size: 0.98rem;
+      line-height: 1.2;
+    }
+
+    .wa-text span {
+      font-size: 0.84rem;
+      line-height: 1.25;
+      margin-top: 4px;
+    }
+
+    .wa-total {
+      flex-shrink: 0;
+      font-weight: bold;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      text-align: right;
+    }
+
+    @media (max-width: 420px) {
+      .coupon-row {
+        grid-template-columns: 1fr;
+      }
+
+      .country-box {
+        width: 120px;
+      }
+
+      .wa-total {
+        font-size: 0.82rem;
+      }
+
+      .sticky-brand-text span {
+        max-width: 130px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="sticky-header">
+    <div class="sticky-inner">
+      <div class="sticky-brand">
+        <div class="sticky-logo">M</div>
+        <div class="sticky-brand-text">
+          <strong>MISAKROOS</strong>
+          <span>Servicios digitales premium</span>
+        </div>
+      </div>
+
+      <div class="country-box">
+        <label for="countrySelect">País / Moneda</label>
+        <select id="countrySelect" aria-label="Seleccionar país">
+          <option value="ARS">Argentina</option>
+          <option value="UYU">Uruguay</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-logo-wrap">
+        <img
+          class="hero-logo"
+          src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAoHBwgHBgoICAkLCgkLDhgQDg0NDh0VFhEYIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQ0NDg0NDisZFRkrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIAWgB4AMBIgACEQEDEQH/xAAbAAADAQEBAQEAAAAAAAAAAAAABQcGAwQCAf/EAEAQAAIBAwIDBQUEBQQDAQAAAAECAwAEEQUSITFBBhMiUWFxFDKBkaGx8AcjQlLR4RUzYnKiM2OTorPC/8QAGQEAAwEBAQAAAAAAAAAAAAAAAAECAwQF/8QAJBEAAgICAgICAgMBAAAAAAAAAAECEQMhEjEEE0FRImFxFDL/2gAMAwEAAhEDEQA/APmOooor8MP3EKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//Z"
+          alt="Logo MISAKROOS"
+        />
+        <h1 class="hero-title">MISAKROOS</h1>
+        <p class="hero-subtitle">Servicios digitales premium para celular</p>
+        <div class="hero-tags">
+          <span class="hero-tag">Streaming</span>
+          <span class="hero-tag">Música</span>
+          <span class="hero-tag">Gaming</span>
+          <span class="hero-tag">Software</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="block promo-box">
+      <strong>🔥 Lanzamiento MISAKROOS</strong>
+      <p>Usá el código <strong>MISAKROOS10</strong> y obtené <strong>10% OFF</strong> contratando <strong>2 servicios o más</strong>. Este código <strong>reemplaza</strong> el descuento por combo y no se acumula.</p>
+    </section>
+
+    <section class="block name-box">
+      <h3>👤 ¿Cómo te llamás?</h3>
+      <p class="name-help">Tu nombre se va a usar en el mensaje automático de WhatsApp para que el pedido llegue más claro y ordenado.</p>
+      <div class="coupon-row" style="grid-template-columns:1fr;">
+        <input type="text" id="customerName" placeholder="Escribí tu nombre" />
+      </div>
+      <p id="nameStatus" class="name-status"></p>
+    </section>
+
+    <section class="block coupon-box">
+      <h3>🎁 ¿Tenés código de descuento?</h3>
+      <p class="coupon-help">Código lanzamiento: <strong>MISAKROOS10</strong>. Se aplica únicamente al contratar <strong>2 servicios o más</strong> y no se acumula con descuentos por combo.</p>
+      <div class="coupon-row">
+        <input type="text" id="couponInput" placeholder="Ingresar código" />
+        <button type="button" id="applyCouponButton" class="coupon-button">Aplicar</button>
+      </div>
+      <p id="couponStatus" class="coupon-status"></p>
+    </section>
+
+    <div class="category-strip-wrap">
+      <nav class="category-strip" aria-label="Categorías">
+        <a class="category-link" href="#streaming">Streaming</a>
+        <a class="category-link" href="#musica">Música</a>
+        <a class="category-link" href="#gaming">Gaming</a>
+        <a class="category-link" href="#software">Software</a>
+      </nav>
+    </div>
+
+    <h2 class="section-title" id="streaming">🎬 Streaming</h2>
+    <section class="catalog-grid">
+      <article class="card">
+        <div class="card-top"><div class="logo netflix"><span>N</span></div><div class="card-title"><h3>Netflix</h3><p>Perfiles disponibles</p></div></div>
+        <div class="field">
+          <label for="netflixPlan">Plan</label>
+          <select id="netflixPlan" class="plan-select" data-service="Netflix">
+            <option value="none">No seleccionar</option>
+            <option value="1 Perfil" data-ars="7500" data-uyu="250">1 Perfil</option>
+            <option value="2 Perfiles" data-ars="12900" data-uyu="450">2 Perfiles</option>
+            <option value="Más perfiles: Consultar" data-ars="0" data-uyu="0">Más perfiles: Consultar</option>
+          </select>
+        </div>
+        <p class="note">Catálogo con películas, series y producciones originales. Incluye títulos populares como Stranger Things, Bridgerton y más.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><div class="logo disney"><span>D+</span></div><div class="card-title"><h3>Disney+</h3><p>Perfiles disponibles</p></div></div>
+        <div class="field">
+          <label for="disneyPlan">Plan</label>
+          <select id="disneyPlan" class="plan-select" data-service="Disney+">
+            <option value="none">No seleccionar</option>
+            <option value="1 Perfil" data-ars="6000" data-uyu="280">1 Perfil</option>
+            <option value="2 Perfiles" data-ars="12900" data-uyu="500">2 Perfiles</option>
+            <option value="Más perfiles: Consultar" data-ars="0" data-uyu="0">Más perfiles: Consultar</option>
+          </select>
+        </div>
+        <p class="note">Incluye Disney, Pixar, Marvel, Star Wars, National Geographic y contenido deportivo con ESPN según disponibilidad.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><div class="logo prime"><span>PRIME</span></div><div class="card-title"><h3>Prime Video</h3><p>Perfiles disponibles</p></div></div>
+        <div class="field">
+          <label for="primePlan">Plan</label>
+          <select id="primePlan" class="plan-select" data-service="Prime Video">
+            <option value="none">No seleccionar</option>
+            <option value="1 Perfil" data-ars="4500" data-uyu="130">1 Perfil</option>
+            <option value="2 Perfiles" data-ars="7990" data-uyu="250">2 Perfiles</option>
+            <option value="Más perfiles: Consultar" data-ars="0" data-uyu="0">Más perfiles: Consultar</option>
+          </select>
+        </div>
+        <p class="note">Series, películas y contenido original de Amazon. Incluye títulos como The Boys, Fallout, Reacher y más.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><div class="logo max"><span>MAX</span></div><div class="card-title"><h3>Max</h3><p>Perfiles disponibles</p></div></div>
+        <div class="field">
+          <label for="maxPlan">Plan</label>
+          <select id="maxPlan" class="plan-select" data-service="Max">
+            <option value="none">No seleccionar</option>
+            <option value="1 Perfil" data-ars="4500" data-uyu="130">1 Perfil</option>
+            <option value="2 Perfiles" data-ars="7990" data-uyu="250">2 Perfiles</option>
+            <option value="Más perfiles: Consultar" data-ars="0" data-uyu="0">Más perfiles: Consultar</option>
+          </select>
+        </div>
+        <p class="note">Contenido premium de HBO, Warner, DC, Cartoon Network y Discovery. Ideal para series, películas y documentales.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><div class="logo paramount"><span>P+</span></div><div class="card-title"><h3>Paramount+</h3><p>Perfiles disponibles</p></div></div>
+        <div class="field">
+          <label for="paramountPlan">Plan</label>
+          <select id="paramountPlan" class="plan-select" data-service="Paramount+">
+            <option value="none">No seleccionar</option>
+            <option value="1 Perfil" data-ars="4500" data-uyu="130">1 Perfil</option>
+            <option value="2 Perfiles" data-ars="7990" data-uyu="250">2 Perfiles</option>
+            <option value="Más perfiles: Consultar" data-ars="0" data-uyu="0">Más perfiles: Consultar</option>
+          </select>
+        </div>
+        <p class="note">Películas, series y producciones de Paramount, Nickelodeon, Showtime y más. Buen catálogo de entretenimiento general.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><div class="logo vix"><span>VIX</span></div><div class="card-title"><h3>Vix Premium</h3><p>Perfiles disponibles</p></div></div>
+        <div class="field">
+          <label for="vixPlan">Plan</label>
+          <select id="vixPlan" class="plan-select" data-service="Vix Premium">
+            <option value="none">No seleccionar</option>
+            <option value="1 Perfil" data-ars="4500" data-uyu="130">1 Perfil</option>
+            <option value="2 Perfiles" data-ars="4500" data-uyu="250">2 Perfiles</option>
+            <option value="Más perfiles: Consultar" data-ars="0" data-uyu="0">Más perfiles: Consultar</option>
+          </select>
+        </div>
+        <p class="note">Contenido latino, novelas, series, películas y deportes seleccionados. Muy buscado para entretenimiento en español.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><div class="logo apple"><span>TV+</span></div><div class="card-title"><h3>Apple TV+</h3><p>Perfiles disponibles</p></div></div>
+        <div class="field">
+          <label for="applePlan">Plan</label>
+          <select id="applePlan" class="plan-select" data-service="Apple TV+">
+            <option value="none">No seleccionar</option>
+            <option value="1 Perfil" data-ars="4500" data-uyu="130">1 Perfil</option>
+            <option value="2 Perfiles" data-ars="7990" data-uyu="250">2 Perfiles</option>
+            <option value="Más perfiles: Consultar" data-ars="0" data-uyu="0">Más perfiles: Consultar</option>
+          </select>
+        </div>
+        <p class="note">Producciones originales de alta calidad, series exclusivas y cine premium. Incluye títulos como Severance, Ted Lasso y más.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><div class="logo universal"><span>U+</span></div><div class="card-title"><h3>Universal+</h3><p>Perfiles disponibles</p></div></div>
+        <div class="field">
+          <label for="universalPlan">Plan</label>
+          <select id="universalPlan" class="plan-select" data-service="Universal+">
+            <option value="none">No seleccionar</option>
+            <option value="1 Perfil" data-ars="4500" data-uyu="130">1 Perfil</option>
+            <option value="2 Perfiles" data-ars="7990" data-uyu="250">2 Perfiles</option>
+            <option value="Más perfiles: Consultar" data-ars="0" data-uyu="0">Más perfiles: Consultar</option>
+          </select>
+        </div>
+        <p class="note">Acceso a series, películas y canales premium del ecosistema Universal. Ideal para complementar otros servicios.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><div class="logo mubi"><span>MUBI</span></div><div class="card-title"><h3>MUBI Premium</h3><p>Perfiles disponibles</p></div></div>
+        <div class="field">
+          <label for="mubiPlan">Plan</label>
+          <select id="mubiPlan" class="plan-select" data-service="MUBI Premium">
+            <option value="none">No seleccionar</option>
+            <option value="1 Perfil" data-ars="4500" data-uyu="130">1 Perfil</option>
+            <option value="2 Perfiles" data-ars="7990" data-uyu="130">2 Perfiles</option>
+            <option value="Más perfiles: Consultar" data-ars="0" data-uyu="0">Más perfiles: Consultar</option>
+          </select>
+        </div>
+        <p class="note">Selección curada de cine internacional, películas premiadas, clásicos y estrenos para amantes del cine.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><div class="logo crunchy"><span>CR</span></div><div class="card-title"><h3>Crunchyroll</h3><p>Perfiles disponibles</p></div></div>
+        <div class="field">
+          <label for="crunchyPlan">Plan</label>
+          <select id="crunchyPlan" class="plan-select" data-service="Crunchyroll">
+            <option value="none">No seleccionar</option>
+            <option value="1 Perfil" data-ars="4500" data-uyu="130">1 Perfil</option>
+            <option value="2 Perfiles" data-ars="7990" data-uyu="250">2 Perfiles</option>
+            <option value="Más perfiles: Consultar" data-ars="0" data-uyu="0">Más perfiles: Consultar</option>
+          </select>
+        </div>
+        <p class="note">Anime en streaming, estrenos de temporada, clásicos y simulcast para fans del contenido japonés.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><div class="logo flujo"><span>TV</span></div><div class="card-title"><h3>Flujo TV</h3><p>Dispositivos disponibles</p></div></div>
+        <div class="field">
+          <label for="flujoPlan">Plan</label>
+          <select id="flujoPlan" class="plan-select" data-service="Flujo TV">
+            <option value="none">No seleccionar</option>
+            <option value="3 dispositivos" data-ars="7000" data-uyu="300">3 dispositivos</option>
+            <option value="Más perfiles: Consultar" data-ars="0" data-uyu="0">Más perfiles: Consultar</option>
+          </select>
+        </div>
+        <p class="note">Televisión online por dispositivos, canales en vivo y contenido variado para usar en varios equipos.</p>
+      </article>
+    </section>
+
+    <h2 class="section-title" id="musica">🎵 Música</h2>
+    <section class="catalog-grid">
+      <article class="card">
+        <div class="card-top"><div class="logo spotify"><span>SP</span></div><div class="card-title"><h3>Spotify Premium</h3><p>Planes disponibles</p></div></div>
+        <div class="field">
+          <label for="spotifyPlan">Plan</label>
+          <select id="spotifyPlan" class="plan-select" data-service="Spotify Premium">
+            <option value="none">No seleccionar</option>
+            <option value="1 mes" data-ars="4500" data-uyu="190">1 mes</option>
+            <option value="Más cuentas: Consultar" data-ars="0" data-uyu="0">Más cuentas: Consultar</option>
+          </select>
+        </div>
+        <p class="note">Música sin anuncios, reproducción offline, listas personalizadas y acceso premium completo.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><div class="logo deezer"><span>DZ</span></div><div class="card-title"><h3>Deezer Premium</h3><p>Planes disponibles</p></div></div>
+        <div class="field">
+          <label for="deezerPlan">Plan</label>
+          <select id="deezerPlan" class="plan-select" data-service="Deezer Premium">
+            <option value="none">No seleccionar</option>
+            <option value="1 cuenta" data-ars="4500" data-uyu="190">1 cuenta</option>
+            <option value="Más cuentas: Consultar" data-ars="0" data-uyu="0">Más cuentas: Consultar</option>
+          </select>
+        </div>
+        <p class="note">Streaming de música premium, sin publicidad y con opción de descarga para escuchar offline.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><div class="logo youtube"><span>YT</span></div><div class="card-title"><h3>YouTube Premium</h3><p>Planes disponibles</p></div></div>
+        <div class="field">
+          <label for="youtubePlan">Plan</label>
+          <select id="youtubePlan" class="plan-select" data-service="YouTube Premium">
+            <option value="none">No seleccionar</option>
+            <option value="1 individual" data-ars="4500" data-uyu="150">1 individual</option>
+            <option value="1 familiar" data-ars="6500" data-uyu="250">1 familiar</option>
+            <option value="Más cuentas: Consultar" data-ars="0" data-uyu="0">Más cuentas: Consultar</option>
+          </select>
+        </div>
+        <p class="note">YouTube sin anuncios, reproducción en segundo plano y acceso a YouTube Music Premium.</p>
+      </article>
+    </section>
+
+    <h2 class="section-title" id="gaming">🎮 Gaming</h2>
+    <section class="catalog-grid">
+      <article class="card">
+        <div class="card-top"><div class="logo xbox"><span>XBOX</span></div><div class="card-title"><h3>Xbox Game Pass Ultimate</h3><p>Planes disponibles</p></div></div>
+        <div class="field">
+          <label for="xboxPlan">Plan</label>
+          <select id="xboxPlan" class="plan-select" data-service="Xbox Game Pass Ultimate">
+            <option value="none">No seleccionar</option>
+            <option value="1 mes" data-ars="25000" data-uyu="700">1 mes</option>
+            <option value="2 cuentas" data-ars="30000" data-uyu="1000">2 cuentas</option>
+            <option value="Más cuentas: Consultar" data-ars="0" data-uyu="0">Más cuentas: Consultar</option>
+          </select>
+        </div>
+        <p class="note">Biblioteca de juegos para Xbox y PC, lanzamientos, online y beneficios premium en un solo plan.</p>
+      </article>
+    </section>
+
+    <h2 class="section-title">🌐 Internet</h2>
+    <section class="catalog-grid">
+      <article class="card">
+        <div class="card-top"><div class="logo internet"><span>NET</span></div><div class="card-title"><h3>Internet Ilimitado Argentina (Personal)</h3><p>Planes disponibles</p></div></div>
+        <div class="field">
+          <label for="internetPlan">Plan</label>
+          <select id="internetPlan" class="plan-select" data-service="Internet Ilimitado Argentina (Personal)">
+            <option value="none">No seleccionar</option>
+            <option value="1 mes" data-ars="5500" data-uyu="0">1 mes</option>
+            <option value="3 meses" data-ars="10000" data-uyu="0">3 meses</option>
+            <option value="Más líneas: Consultar" data-ars="0" data-uyu="0">Más líneas: Consultar</option>
+          </select>
+        </div>
+        <p class="note">Servicio pensado para líneas en Argentina. En Uruguay no hay precio cargado para este producto.</p>
+      </article>
+    </section>
+
+    <h2 class="section-title" id="software">🧰 Software / Apps</h2>
+    <section class="catalog-grid">
+      <article class="card">
+        <div class="card-top"><div class="logo capcut"><span>CC</span></div><div class="card-title"><h3>CapCut Pro</h3><p>Planes disponibles</p></div></div>
+        <div class="field">
+          <label for="capcutPlan">Plan</label>
+          <select id="capcutPlan" class="plan-select" data-service="CapCut Pro">
+            <option value="none">No seleccionar</option>
+            <option value="1 para PC" data-ars="4500" data-uyu="200">1 para PC</option>
+            <option value="1 completa" data-ars="7009" data-uyu="300">1 completa</option>
+            <option value="Más cuentas: Consultar" data-ars="0" data-uyu="0">Más cuentas: Consultar</option>
+          </select>
+        </div>
+        <p class="note">Edición premium para video, plantillas, efectos, herramientas pro y funciones avanzadas de exportación.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><div class="logo canva"><span>CV</span></div><div class="card-title"><h3>Canva Pro</h3><p>Planes disponibles</p></div></div>
+        <div class="field">
+          <label for="canvaPlan">Plan</label>
+          <select id="canvaPlan" class="plan-select" data-service="Canva Pro">
+            <option value="none">No seleccionar</option>
+            <option value="1 mes" data-ars="4500" data-uyu="200">1 mes</option>
+            <option value="3 meses" data-ars="7000" data-uyu="300">3 meses</option>
+            <option value="Más cuentas: Consultar" data-ars="0" data-uyu="0">Más cuentas: Consultar</option>
+          </select>
+        </div>
+        <p class="note">Diseño gráfico premium con plantillas, kit de marca, fondos, recursos pro y herramientas para contenido.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><div class="logo adobe"><span>ADB</span></div><div class="card-title"><h3>Adobe Creative Cloud</h3><p>Planes disponibles</p></div></div>
+        <div class="field">
+          <label for="adobePlan">Plan</label>
+          <select id="adobePlan" class="plan-select" data-service="Adobe Creative Cloud">
+            <option value="none">No seleccionar</option>
+            <option value="1 cuenta" data-ars="12000" data-uyu="400">1 cuenta</option>
+            <option value="Más cuentas: Consultar" data-ars="0" data-uyu="0">Más cuentas: Consultar</option>
+          </select>
+        </div>
+        <p class="note">Acceso a apps creativas como Photoshop, Illustrator, Premiere Pro y más herramientas profesionales.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><div class="logo microsoft"><span>M365</span></div><div class="card-title"><h3>Microsoft 365 Personal</h3><p>Planes disponibles</p></div></div>
+        <div class="field">
+          <label for="microsoftPlan">Plan</label>
+          <select id="microsoftPlan" class="plan-select" data-service="Microsoft 365 Personal">
+            <option value="none">No seleccionar</option>
+            <option value="Anual (garantía 30 días)" data-ars="10000" data-uyu="300">Anual (garantía 30 días)</option>
+            <option value="Más cuentas: Consultar" data-ars="0" data-uyu="0">Más cuentas: Consultar</option>
+          </select>
+        </div>
+        <p class="note">Incluye Word, Excel, PowerPoint, Outlook y almacenamiento en la nube para uso personal.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><div class="logo picsart"><span>PA</span></div><div class="card-title"><h3>PicsArt Premium</h3><p>Planes disponibles</p></div></div>
+        <div class="field">
+          <label for="picsartPlan">Plan</label>
+          <select id="picsartPlan" class="plan-select" data-service="PicsArt Premium">
+            <option value="none">No seleccionar</option>
+            <option value="1 cuenta" data-ars="4500" data-uyu="200">1 cuenta</option>
+            <option value="Más cuentas: Consultar" data-ars="0" data-uyu="0">Más cuentas: Consultar</option>
+          </select>
+        </div>
+        <p class="note">Edición premium de fotos y diseños con herramientas avanzadas, recursos y plantillas exclusivas.</p>
+      </article>
+    </section>
+
+    <section class="summary" id="resumen">
+      <h2>Resumen de selección</h2>
+      <p class="summary-empty" id="summaryEmpty">Todavía no seleccionaste ningún servicio.</p>
+      <ul id="summaryList"></ul>
+
+      <div class="totals">
+        <div class="total-row">
+          <span>Subtotal</span>
+          <strong id="subtotalValue">ARS 0</strong>
+        </div>
+        <div class="total-row discount-row">
+          <span>Descuento combo</span>
+          <strong id="discountValue">0% - ARS 0</strong>
+        </div>
+        <div class="total-row coupon-row-summary">
+          <span>Código promocional</span>
+          <strong id="couponDiscountValue">0% - ARS 0</strong>
+        </div>
+        <div class="total-row final-row">
+          <span>Total final</span>
+          <strong id="finalTotalValue">ARS 0</strong>
+        </div>
+      </div>
+
+      <p class="discount-info">Descuento por servicios distintos: 2 servicios = 2%, 3 servicios = 4%, 4 o más servicios = 6%. Código lanzamiento: MISAKROOS10 = 10% OFF válido solo con 2 servicios o más. No se acumula con descuentos por combo.</p>
+    </section>
+  </main>
+
+  <a id="whatsappButton" class="floating-wa" href="https://wa.me/5492645182955" target="_blank" rel="noopener noreferrer" aria-label="Continuar en WhatsApp para contratar">
+    <div class="floating-wa-inner">
+      <div class="wa-text">
+        <strong>Continuar en WhatsApp</strong>
+        <span id="waMainTotal">Total: ARS 0</span>
+        <span id="waSubtitle">Subtotal: ARS 0</span>
+      </div>
+      <div class="wa-total" id="waDiscountBadge">0%</div>
+    </div>
+  </a>
+
+  <script>
+    const countrySelect = document.getElementById('countrySelect');
+    const planSelects = document.querySelectorAll('.plan-select');
+    const summaryList = document.getElementById('summaryList');
+    const summaryEmpty = document.getElementById('summaryEmpty');
+
+    const couponInput = document.getElementById('couponInput');
+    const applyCouponButton = document.getElementById('applyCouponButton');
+    const couponStatus = document.getElementById('couponStatus');
+
+    const customerName = document.getElementById('customerName');
+    const nameStatus = document.getElementById('nameStatus');
+
+    const waButton = document.getElementById('whatsappButton');
+    const waMainTotal = document.getElementById('waMainTotal');
+    const waSubtitle = document.getElementById('waSubtitle');
+    const waDiscountBadge = document.getElementById('waDiscountBadge');
+
+    const subtotalValue = document.getElementById('subtotalValue');
+    const discountValue = document.getElementById('discountValue');
+    const couponDiscountValue = document.getElementById('couponDiscountValue');
+    const finalTotalValue = document.getElementById('finalTotalValue');
+
+    const optionTemplates = new Map();
+
+    const promoCode = {
+      code: 'MISAKROOS10',
+      percent: 10
+    };
+
+    let appliedCoupon = '';
+
+    planSelects.forEach((select) => {
+      const templates = [];
+      Array.from(select.options).forEach((option) => {
+        templates.push({
+          value: option.value,
+          label: option.textContent,
+          ars: option.dataset.ars || '0',
+          uyu: option.dataset.uyu || '0'
+        });
+      });
+      optionTemplates.set(select, templates);
+    });
+
+    function formatMoney(currency, value) {
+      const locale = currency === 'UYU' ? 'es-UY' : 'es-AR';
+      return currency + ' ' + Number(value).toLocaleString(locale);
+    }
+
+    function formatOptionLabel(template, currency) {
+      if (template.value === 'none') return template.label;
+      if (/consultar/i.test(template.value)) return template.label;
+
+      const amount = Number(template[currency.toLowerCase()] || 0);
+      return template.label + ' - ' + formatMoney(currency, amount);
+    }
+
+    function updateOptionLabels() {
+      const currency = countrySelect.value;
+
+      planSelects.forEach((select) => {
+        const selectedValue = select.value;
+        const templates = optionTemplates.get(select);
+        select.innerHTML = '';
+
+        templates.forEach((template) => {
+          const option = document.createElement('option');
+          option.value = template.value;
+          option.dataset.ars = template.ars;
+          option.dataset.uyu = template.uyu;
+          option.textContent = formatOptionLabel(template, currency);
+
+          if (template.value === selectedValue) {
+            option.selected = true;
+          }
+
+          select.appendChild(option);
+        });
+      });
+    }
+
+    function getComboDiscountPercent(serviceCount) {
+      if (serviceCount >= 4) return 6;
+      if (serviceCount === 3) return 4;
+      if (serviceCount === 2) return 2;
+      return 0;
+    }
+
+    function isCouponValid(code) {
+      return code.trim().toUpperCase() === promoCode.code;
+    }
+
+    function buildSelections() {
+      const currency = countrySelect.value;
+      const selections = [];
+      let subtotal = 0;
+
+      planSelects.forEach((select) => {
+        const option = select.options[select.selectedIndex];
+        const plan = option.value;
+
+        if (plan !== 'none') {
+          const amount = Number(option.dataset[currency.toLowerCase()] || 0);
+          subtotal += amount;
+
+          selections.push({
+            service: select.dataset.service,
+            plan: plan,
+            amount: amount
+          });
+        }
+      });
+
+      const serviceCount = selections.length;
+      const comboDiscountPercent = getComboDiscountPercent(serviceCount);
+      const couponIsActive = serviceCount >= 2 && isCouponValid(appliedCoupon);
+
+      let appliedDiscountType = 'none';
+      let comboDiscountAmount = 0;
+      let couponDiscountAmount = 0;
+      let couponPercent = 0;
+      let finalTotal = subtotal;
+
+      if (couponIsActive) {
+        appliedDiscountType = 'coupon';
+        couponPercent = promoCode.percent;
+        couponDiscountAmount = Math.round(subtotal * (couponPercent / 100));
+        finalTotal = subtotal - couponDiscountAmount;
+      } else {
+        appliedDiscountType = 'combo';
+        comboDiscountAmount = Math.round(subtotal * (comboDiscountPercent / 100));
+        finalTotal = subtotal - comboDiscountAmount;
+      }
+
+      return {
+        selections,
+        subtotal,
+        serviceCount,
+        appliedDiscountType,
+        comboDiscountPercent,
+        comboDiscountAmount,
+        couponPercent,
+        couponDiscountAmount,
+        finalTotal,
+        currency
+      };
+    }
+
+    function renderCouponStatus(type, text) {
+      couponStatus.className = 'coupon-status';
+      if (type) couponStatus.classList.add(type);
+      couponStatus.textContent = text;
+    }
+
+    function renderNameStatus(type, text) {
+      nameStatus.className = 'name-status';
+      if (type) nameStatus.classList.add(type);
+      nameStatus.textContent = text;
+    }
+
+    function updateSummary() {
+      const data = buildSelections();
+      summaryList.innerHTML = '';
+
+      if (data.selections.length === 0) {
+        summaryEmpty.style.display = 'block';
+      } else {
+        summaryEmpty.style.display = 'none';
+        data.selections.forEach((item) => {
+          const li = document.createElement('li');
+          li.textContent = item.service + ' - ' + item.plan + ' - ' + formatMoney(data.currency, item.amount);
+          summaryList.appendChild(li);
+        });
+      }
+
+      subtotalValue.textContent = formatMoney(data.currency, data.subtotal);
+
+      discountValue.textContent = data.appliedDiscountType === 'combo'
+        ? data.comboDiscountPercent + '% - ' + formatMoney(data.currency, data.comboDiscountAmount)
+        : '0% - ' + formatMoney(data.currency, 0);
+
+      couponDiscountValue.textContent = data.appliedDiscountType === 'coupon'
+        ? data.couponPercent + '% - ' + formatMoney(data.currency, data.couponDiscountAmount)
+        : '0% - ' + formatMoney(data.currency, 0);
+
+      finalTotalValue.textContent = formatMoney(data.currency, data.finalTotal);
+
+      waMainTotal.textContent = 'Total: ' + formatMoney(data.currency, data.finalTotal);
+      waSubtitle.textContent = 'Subtotal: ' + formatMoney(data.currency, data.subtotal);
+
+      if (data.appliedDiscountType === 'coupon' && data.couponPercent > 0) {
+        waDiscountBadge.textContent = '-' + data.couponPercent + '%';
+      } else if (data.appliedDiscountType === 'combo' && data.comboDiscountPercent > 0) {
+        waDiscountBadge.textContent = '-' + data.comboDiscountPercent + '%';
+      } else {
+        waDiscountBadge.textContent = '0%';
+      }
+
+      const name = customerName.value.trim();
+
+      const messageLines = [];
+      if (name) {
+        messageLines.push('Hola, soy ' + name + '.');
+      } else {
+        messageLines.push('Hola.');
+      }
+      messageLines.push('Quiero contratar:');
+
+      if (data.selections.length === 0) {
+        messageLines.push('- Aún no seleccioné servicios, pero quiero información para contratar.');
+      } else {
+        data.selections.forEach((item) => {
+          messageLines.push('- ' + item.service + ' ' + item.plan);
+        });
+      }
+
+      messageLines.push('');
+      messageLines.push('Subtotal: ' + formatMoney(data.currency, data.subtotal));
+      messageLines.push('Descuento combo: ' + (
+        data.appliedDiscountType === 'combo'
+          ? data.comboDiscountPercent + '% (' + formatMoney(data.currency, data.comboDiscountAmount) + ')'
+          : '0% (' + formatMoney(data.currency, 0) + ')'
+      ));
+      messageLines.push('Código promocional: ' + (
+        data.appliedDiscountType === 'coupon'
+          ? data.couponPercent + '% (' + formatMoney(data.currency, data.couponDiscountAmount) + ')'
+          : '0% (' + formatMoney(data.currency, 0) + ')'
+      ));
+      messageLines.push('Total final: ' + formatMoney(data.currency, data.finalTotal));
+      messageLines.push('');
+      messageLines.push('Brindame los datos para poder realizar el pago o contactarte.');
+
+      waButton.href = 'https://wa.me/5492645182955?text=' + encodeURIComponent(messageLines.join('\n'));
+    }
+
+    function applyCoupon() {
+      const typedCode = couponInput.value.trim().toUpperCase();
+      const currentSelections = buildSelections();
+
+      if (!typedCode) {
+        appliedCoupon = '';
+        renderCouponStatus('warn', 'Ingresá un código para aplicarlo.');
+        updateSummary();
+        return;
+      }
+
+      if (typedCode !== promoCode.code) {
+        appliedCoupon = '';
+        renderCouponStatus('error', 'Código no válido.');
+        updateSummary();
+        return;
+      }
+
+      if (currentSelections.serviceCount < 2) {
+        appliedCoupon = typedCode;
+        renderCouponStatus('warn', 'El código es válido, pero se aplica recién al seleccionar 2 servicios o más.');
+        updateSummary();
+        return;
+      }
+
+      appliedCoupon = typedCode;
+      renderCouponStatus('ok', 'Código aplicado: ' + promoCode.code + ' - ' + promoCode.percent + '% OFF. Este descuento reemplaza al combo.');
+      updateSummary();
+    }
+
+    waButton.addEventListener('click', function(event) {
+      const name = customerName.value.trim();
+
+      if (!name) {
+        event.preventDefault();
+        renderNameStatus('error', 'Por favor, escribí tu nombre antes de continuar a WhatsApp.');
+        customerName.focus();
+        return;
+      }
+
+      renderNameStatus('ok', 'Perfecto, tu nombre se va a enviar junto al pedido.');
+    });
+
+    customerName.addEventListener('input', function() {
+      if (customerName.value.trim()) {
+        renderNameStatus('ok', 'Nombre cargado correctamente.');
+      } else {
+        renderNameStatus('', '');
+      }
+      updateSummary();
+    });
+
+    function syncUI() {
+      updateOptionLabels();
+      updateSummary();
+    }
+
+    countrySelect.addEventListener('change', syncUI);
+
+    planSelects.forEach((select) => {
+      select.addEventListener('change', updateSummary);
+    });
+
+    applyCouponButton.addEventListener('click', applyCoupon);
+
+    couponInput.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        applyCoupon();
+      }
+    });
+
+    syncUI();
+  </script>
+</body>
+</html>
