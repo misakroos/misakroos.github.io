@@ -1,68 +1,244 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Website</title>
-    <style>
-        body {
-            margin: 0;
-        }
-        .marquee {
-            background-color: #e50914;
-            color: white;
-            white-space: nowrap;
-            overflow: hidden;
-            box-sizing: border-box;
-            animation: marquee 10s linear infinite;
-            text-align: center;
-            padding: 10px;
-        }
-        @keyframes marquee {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-        .hero {
-            position: relative;
-            background-image: url('https://files.fm/u/xfhb682jzs');
-            background-size: cover;
-            height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .hero::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-        .hero-content {
-            position: relative;
-            color: white;
-            z-index: 1;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MISAKROOS - Suscripciones Premium</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    
+    .glass {
+      background: rgba(20, 20, 20, 0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .service-card {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .service-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
-<body>
-    <!-- Marquee Section -->
-    <div class="marquee">Todos los domingos nuevos episodios de Euphoria por HBO MAX</div>
-    
-    <!-- Hero Section -->
-    <div class="hero">
-        <div class="hero-content">
-            <h1>Welcome to My Website</h1>
-            <p>Enjoy the latest updates here!</p>
-        </div>
+<body class="bg-[#141414] text-white min-h-screen pb-20">
+
+  <!-- Header simple -->
+  <header class="fixed top-0 w-full glass z-50 border-b border-white/10">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 bg-[#E50914] rounded flex items-center justify-center text-2xl font-black tracking-tighter">M</div>
+        <h1 class="text-2xl font-bold tracking-tighter">MISAKROOS</h1>
+      </div>
     </div>
-    
-    <!-- Existing Content -->
-    <div class="content">
-        <h2>About</h2>
-        <p>This is where your existing content would be.</p>
+  </header>
+
+  <!-- Country Selector (aparece primero) -->
+  <div id="countrySelector" class="fixed inset-0 bg-black/90 flex items-center justify-center z-[100]">
+    <div class="text-center px-6">
+      <h2 class="text-4xl font-bold mb-8">¿De dónde eres?</h2>
+      <div class="flex flex-col sm:flex-row gap-4 max-w-xs mx-auto">
+        <button onclick="selectCountry('AR')" 
+                class="px-10 py-5 rounded-2xl glass text-xl font-medium hover:bg-[#E50914] hover:text-white transition-all">
+          🇦🇷 Argentina
+        </button>
+        <button onclick="selectCountry('UY')" 
+                class="px-10 py-5 rounded-2xl glass text-xl font-medium hover:bg-[#E50914] hover:text-white transition-all">
+          🇺🇾 Uruguay
+        </button>
+      </div>
     </div>
+  </div>
+
+  <main class="max-w-6xl mx-auto px-6 pt-24 hidden" id="mainContent">
+    <!-- Hero -->
+    <section class="text-center py-12">
+      <h2 class="text-4xl md:text-5xl font-bold mb-3 tracking-tight">
+        Suscripciones Premium<br>al mejor precio
+      </h2>
+      <p class="text-lg text-gray-400 max-w-xl mx-auto">
+        Ahorra compartiendo cuentas de máxima calidad
+      </p>
+      
+      <div class="mt-8 max-w-sm mx-auto">
+        <label class="block text-sm mb-2 text-gray-400">Tu nombre (opcional)</label>
+        <input id="nombre" type="text" placeholder="Ingresa tu nombre" 
+               class="w-full bg-black/60 border border-white/20 rounded-xl px-6 py-3.5 text-base focus:outline-none focus:border-[#E50914]">
+      </div>
+    </section>
+
+    <!-- Servicios -->
+    <section id="servicios" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- JS -->
+    </section>
+
+    <!-- FAQ -->
+    <section class="mt-20 glass rounded-3xl p-10 border border-white/10">
+      <h3 class="text-3xl font-bold mb-8 text-center">Preguntas Frecuentes</h3>
+      <div class="space-y-6 text-gray-300">
+        <details class="group">
+          <summary class="cursor-pointer text-lg font-medium">¿Qué significa 1 perfil?</summary>
+          <p class="mt-3 pl-4">Un perfil corresponde a un dispositivo. No se puede usar en más dispositivos simultáneamente.</p>
+        </details>
+        <details class="group">
+          <summary class="cursor-pointer text-lg font-medium">¿Cuál es la garantía?</summary>
+          <p class="mt-3 pl-4">Garantía total durante todo el tiempo contratado + 30 días de soporte.</p>
+        </details>
+        <details class="group">
+          <summary class="cursor-pointer text-lg font-medium">¿Puedo elegir más de un plan por servicio?</summary>
+          <p class="mt-3 pl-4">No. Solo puedes elegir una opción por servicio (1 o 2 perfiles).</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <!-- Botón WhatsApp -->
+  <button onclick="enviarWhatsApp()" 
+          class="fixed bottom-8 right-8 bg-[#25D366] hover:bg-[#20C15E] text-white px-8 py-5 rounded-3xl flex items-center gap-3 shadow-2xl cursor-pointer transition-all active:scale-95 shadow-green-500/50 z-50">
+    <i class="fab fa-whatsapp text-3xl"></i>
+    <div class="text-left">
+      <div class="font-bold text-lg">Continuar en WhatsApp</div>
+      <div id="totalSeleccion" class="text-sm opacity-90">Selecciona servicios • $0</div>
+    </div>
+  </button>
+
+  <script>
+    let country = 'AR';
+    let selected = {};
+
+    const services = [
+      { name: "Netflix", desc: "Series y películas ilimitadas en 4K", ar: {1: 7500, 2: 12900}, uy: {1: 250, 2: 450}, icon: "🎬" },
+      { name: "Disney Plus", desc: "Disney, Marvel, Star Wars, Pixar y más", ar: {1: 6500, 2: 12000}, uy: {1: 300, 2: 250}, icon: "🐭" },
+      { name: "FLUJO TV", desc: "Canales en vivo y contenido premium", ar: {3: 7000}, uy: {3: 300}, icon: "📺", fixed: "3 dispositivos" },
+      { name: "Prime Video", desc: "Películas, series y contenido Amazon", ar: {1: 4500, 2: 8000}, uy: {1: 150, 2: 280}, icon: "📦" },
+      { name: "Paramount", desc: "Cine de Paramount, Showtime y más", ar: {1: 4500, 2: 8000}, uy: {1: 150, 2: 280}, icon: "🌟" },
+      { name: "HBO Max", desc: "Series HBO, DC, Warner y estrenos", ar: {1: 4500, 2: 8000}, uy: {1: 150, 2: 280}, icon: "🔵" },
+      { name: "Vix Premium", desc: "TelevisaUnivision, deportes y novelas", ar: {1: 4500, 2: 8000}, uy: {1: 150, 2: 280}, icon: "📺" },
+      { name: "Apple TV", desc: "Contenido original Apple y estrenos", ar: {1: 4500, 2: 8000}, uy: {1: 150, 2: 280}, icon: "🍎" },
+      { name: "YouTube Premium", desc: "Sin anuncios + YouTube Music", ar: {1: 4500}, uy: {1: 190}, icon: "▶️", fixed: "1 mes" },
+      { name: "Spotify Premium", desc: "Música ilimitada sin anuncios", ar: {1: 4500}, uy: {1: 190}, icon: "🎵", fixed: "1 mes" },
+      { name: "ChatGPT", desc: "Acceso a ChatGPT Plus (GPT-4o)", ar: {1: 8000}, uy: {1: 8000}, icon: "🤖", fixed: "1 mes" },
+      { name: "Gemini Pro", desc: "Inteligencia artificial de Google", ar: {1: 7000}, uy: {1: 7000}, icon: "🌌", fixed: "1 mes" }
+    ];
+
+    function selectCountry(c) {
+      country = c;
+      document.getElementById('countrySelector').style.display = 'none';
+      document.getElementById('mainContent').classList.remove('hidden');
+      renderServices();
+    }
+
+    function renderServices() {
+      const container = document.getElementById('servicios');
+      container.innerHTML = '';
+
+      services.forEach((svc, index) => {
+        const html = `
+          <div class="service-card glass rounded-3xl p-6 hover:scale-[1.03] transition-all border border-white/10" style="transition-delay: ${index * 80}ms">
+            <div class="text-5xl mb-3">${svc.icon}</div>
+            <h3 class="text-2xl font-bold tracking-tight">${svc.name}</h3>
+            <p class="text-gray-400 text-sm mt-1 mb-6">${svc.desc}</p>
+            
+            <div class="space-y-3">
+              ${svc.fixed ? `
+                <button onclick="toggleService('${svc.name}', 1)" 
+                        class="w-full py-4 px-6 rounded-2xl glass flex justify-between items-center hover:bg-white/10 transition ${selected[svc.name] ? 'ring-2 ring-[#E50914]' : ''}">
+                  <span>${svc.fixed}</span>
+                  <span class="font-bold">$${country === 'AR' ? (svc.ar[3]||svc.ar[1]) : (svc.uy[3]||svc.uy[1])}</span>
+                </button>
+              ` : `
+                <button onclick="toggleService('${svc.name}', 1)" 
+                        class="w-full py-4 px-6 rounded-2xl glass flex justify-between items-center hover:bg-white/10 transition ${selected[svc.name] === 1 ? 'ring-2 ring-[#E50914]' : ''}">
+                  <span>1 Perfil</span>
+                  <span class="font-bold">$${country === 'AR' ? svc.ar[1] : svc.uy[1]}</span>
+                </button>
+                ${svc.ar[2] || svc.uy[2] ? `
+                <button onclick="toggleService('${svc.name}', 2)" 
+                        class="w-full py-4 px-6 rounded-2xl glass flex justify-between items-center hover:bg-white/10 transition ${selected[svc.name] === 2 ? 'ring-2 ring-[#E50914]' : ''}">
+                  <span>2 Perfiles</span>
+                  <span class="font-bold">$${country === 'AR' ? svc.ar[2] : svc.uy[2]}</span>
+                </button>` : ''}
+              `}
+            </div>
+          </div>
+        `;
+        container.innerHTML += html;
+      });
+
+      setTimeout(observeCards, 100);
+    }
+
+    function observeCards() {
+      const cards = document.querySelectorAll('.service-card');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+      }, { threshold: 0.1 });
+      cards.forEach(card => observer.observe(card));
+    }
+
+    function toggleService(service, option) {
+      if (selected[service] === option) delete selected[service];
+      else selected[service] = option;
+      renderServices();
+      updateWhatsAppButton();
+    }
+
+    function updateWhatsAppButton() {
+      let total = 0;
+      let count = Object.keys(selected).length;
+      Object.keys(selected).forEach(svc => {
+        const service = services.find(s => s.name === svc);
+        const price = country === 'AR' ? 
+          (service.ar[selected[svc]] || service.ar[1] || service.ar[3]) : 
+          (service.uy[selected[svc]] || service.uy[1] || service.uy[3]);
+        total += price || 0;
+      });
+      document.getElementById('totalSeleccion').textContent = 
+        count ? `${count} servicios • $${total}` : 'Selecciona servicios';
+    }
+
+    function enviarWhatsApp() {
+      const nombre = document.getElementById('nombre').value.trim();
+      let mensaje = `Hola MISAKROOS 👋%0A%0A`;
+
+      if (nombre) mensaje += `Soy *${nombre}*%0A`;
+
+      mensaje += `País: ${country === 'AR' ? '🇦🇷 Argentina' : '🇺🇾 Uruguay'}%0A%0A`;
+      mensaje += `🛒 *Mi pedido:*%0A`;
+
+      let total = 0;
+      Object.keys(selected).forEach(svc => {
+        const service = services.find(s => s.name === svc);
+        const option = selected[svc];
+        const price = country === 'AR' ? 
+          (service.ar[option] || service.ar[1] || service.ar[3]) : 
+          (service.uy[option] || service.uy[1] || service.uy[3]);
+        total += price || 0;
+        mensaje += `• ${svc} (${option === 3 ? '3 dispositivos' : option + ' perfiles'}) → $${price}%0A`;
+      });
+
+      mensaje += `%0A*Total: $${total}*%0A%0A¿Podemos confirmar el pedido?`;
+
+      const phone = "5492645182955";
+      window.open(`https://wa.me/${phone}?text=${mensaje}`, '_blank');
+    }
+
+    // Inicializar
+    window.onload = () => {
+      // El selector de país ya está visible por defecto
+    };
+  </script>
 </body>
 </html>
