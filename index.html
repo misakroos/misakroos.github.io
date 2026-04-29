@@ -1,29 +1,12 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Misakroos - Euphoria</title>
+    <title>Your Website</title>
     <style>
         body {
             margin: 0;
-            background-color: #141414;
-            color: white;
-            font-family: Arial, sans-serif;
-        }
-        .hero {
-            background-image: url('https://files.fm/u/xfhb682jzs');
-            height: 100vh;
-            background-size: cover;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-        .banner {
-            background-color: rgba(0, 0, 0, 0.6);
-            padding: 20px;
-            border-radius: 10px;
         }
         .marquee {
             background-color: #e50914;
@@ -31,27 +14,55 @@
             white-space: nowrap;
             overflow: hidden;
             box-sizing: border-box;
-        }
-        .marquee-text {
-            display: inline-block;
-            padding-left: 100%;
-            animation: marquee 15s linear infinite;
+            animation: marquee 10s linear infinite;
+            text-align: center;
+            padding: 10px;
         }
         @keyframes marquee {
-            0% { transform: translate(0); }
-            100% { transform: translate(-100%); }
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .hero {
+            position: relative;
+            background-image: url('https://files.fm/u/xfhb682jzs');
+            background-size: cover;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .hero-content {
+            position: relative;
+            color: white;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
+    <!-- Marquee Section -->
+    <div class="marquee">Todos los domingos nuevos episodios de Euphoria por HBO MAX</div>
+    
+    <!-- Hero Section -->
     <div class="hero">
-        <div class="banner">
-            <h1>Bienvenidos a Euphoria</h1>
-            <p>La serie más emocionante de todos los tiempos</p>
+        <div class="hero-content">
+            <h1>Welcome to My Website</h1>
+            <p>Enjoy the latest updates here!</p>
         </div>
     </div>
-    <div class="marquee">
-        <div class="marquee-text">🎬 Todos los domingos nuevos episodios de Euphoria por HBO MAX</div>
+    
+    <!-- Existing Content -->
+    <div class="content">
+        <h2>About</h2>
+        <p>This is where your existing content would be.</p>
     </div>
 </body>
 </html>
