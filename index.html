@@ -4,42 +4,40 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MISAKROOS • Suscripciones Premium</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <style>
-    body { font-family: 'Inter', system-ui, sans-serif; background: #0a0a0a; color: #f1f1f1; }
-    .display-font { font-family: 'Bebas Neue', sans-serif; }
-    .glass { background: rgba(255,255,255,0.07); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.12); }
 
-    /* SLIDER */
-    .slider-container { position: relative; max-width: 1280px; margin: 0 auto; overflow: hidden; border-radius: 20px; box-shadow: 0 40px 80px rgba(0,0,0,0.85); }
-    .slides { display: flex; transition: transform 0.8s cubic-bezier(0.32, 0.72, 0, 1); }
-    .slide { min-width: 100%; position: relative; height: 460px; background-size: cover; background-position: center; }
-    .slide-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 60px 40px; background: linear-gradient(transparent, rgba(0,0,0,0.95)); }
-    .platform-logo { height: 68px; margin-bottom: 12px; }
-    @media (max-width: 768px) {
-      .slide { height: 380px; }
-      .slide-content { padding: 40px 20px; }
-      .platform-logo { height: 52px; }
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #000;
+      color: #fff;
+    }
+
+    .display-font { font-family: 'Bebas Neue', sans-serif; }
+
+    .glass {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(25px);
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
     }
   </style>
 </head>
+
 <body class="min-h-screen pb-32">
 
-  <!-- Header -->
-  <header class="fixed top-0 w-full glass z-50">
-    <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-      <div class="flex items-center gap-4">
-        <div class="w-10 h-10 bg-red-600 rounded-2xl flex items-center justify-center text-3xl font-bold">M</div>
-        <h1 class="text-3xl font-bold tracking-tighter display-font">MISAKROOS</h1>
-      </div>
-    </div>
-  </header>
+<!-- HEADER -->
+<header class="fixed top-0 w-full glass z-50">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center gap-4">
+    <div class="w-10 h-10 bg-red-600 rounded-2xl flex items-center justify-center text-2xl font-bold">M</div>
+    <h1 class="text-2xl font-bold tracking-tight display-font">MISAKROOS</h1>
+  </div>
+</header>
 
-  <!-- ==================== SLIDER BANNER ==================== -->
- <div class="pt-20 pb-8 px-4">
+<!-- BANNER EXTERNO -->
+<div class="pt-20 pb-8 px-4">
   <div id="banner-container"></div>
 </div>
 
@@ -50,186 +48,84 @@ fetch("banner.html")
     document.getElementById("banner-container").innerHTML = data;
   });
 </script>
-  <!-- REFERENCIAS (justo debajo del slider) -->
-  <section class="max-w-2xl mx-auto px-6 mb-16">
-    <h2 class="text-3xl font-semibold text-center mb-8">Lo que opinan nuestros clientes</h2>
-    <div id="testimonials" class="min-h-[260px]"></div>
-  </section>
 
-  <!-- BIOGRAFÍA -->
-  <section class="max-w-3xl mx-auto px-6 mb-16">
-    <div class="glass rounded-3xl p-10 text-center">
-      <div class="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-5xl">👋</div>
-      <h2 class="text-3xl font-bold mb-4">Hola, soy Rodrigo Rivero</h2>
-      <p class="text-lg leading-relaxed text-gray-300">
-        MISAKROOS existe desde 2023 ofreciéndote <strong>servicios premium a precios económicos y accesibles</strong>.<br><br>
-        Me encargo personalmente de activar y mantener tus cuentas. Siempre disponible para ayudarte.
-      </p>
-    </div>
-  </section>
-
-  <!-- Country Selector -->
-  <div class="flex justify-center mb-10">
-    <div class="glass rounded-3xl p-1.5 flex">
-      <button onclick="setCountry('AR')" id="btnAR" class="px-8 py-3 rounded-3xl font-medium transition-all">🇦🇷 Argentina</button>
-      <button onclick="setCountry('UY')" id="btnUY" class="px-8 py-3 rounded-3xl font-medium transition-all">🇺🇾 Uruguay</button>
-    </div>
+<!-- BIO -->
+<section class="max-w-2xl mx-auto px-6 mb-14">
+  <div class="glass rounded-3xl p-8 text-center">
+    <div class="text-5xl mb-4">👋</div>
+    <h2 class="text-2xl font-semibold mb-3">Hola, soy Rodrigo Rivero</h2>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      Servicios premium accesibles desde 2023.  
+      Activación inmediata y soporte constante.
+    </p>
   </div>
+</section>
 
-  <!-- Nombre opcional -->
-  <div class="max-w-md mx-auto px-6 mb-10">
-    <input id="nombre" type="text" placeholder="Tu nombre (opcional)" class="w-full glass rounded-2xl px-6 py-4 text-white placeholder-gray-400 focus:outline-none">
+<!-- SELECTOR -->
+<div class="flex justify-center mb-8">
+  <div class="glass rounded-3xl p-1 flex">
+    <button onclick="setCountry('AR')" id="btnAR" class="px-6 py-2 rounded-3xl">🇦🇷</button>
+    <button onclick="setCountry('UY')" id="btnUY" class="px-6 py-2 rounded-3xl">🇺🇾</button>
   </div>
+</div>
 
-  <!-- SERVICIOS -->
-  <section id="servicios" class="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-7xl mx-auto px-6"></section>
+<!-- SERVICIOS -->
+<section id="servicios" class="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto px-6"></section>
 
-  <!-- FAQ -->
-  <section class="mt-20 max-w-3xl mx-auto px-6">
-    <h3 class="text-3xl font-semibold text-center mb-10">Preguntas Frecuentes</h3>
-    <div class="space-y-6">
-      <details class="glass rounded-3xl p-8">
-        <summary class="cursor-pointer text-lg font-medium">¿Qué significa 1 perfil?</summary>
-        <p class="mt-6 text-gray-400">Un perfil corresponde a un dispositivo.</p>
-      </details>
-      <details class="glass rounded-3xl p-8">
-        <summary class="cursor-pointer text-lg font-medium">¿Cuál es la garantía?</summary>
-        <p class="mt-6 text-gray-400">Garantía total durante todo el tiempo contratado + 30 días de soporte.</p>
-      </details>
-    </div>
-  </section>
+<!-- BOTÓN WHATSAPP -->
+<button onclick="enviarWhatsApp()" class="fixed bottom-6 right-6 bg-[#25D366] hover:bg-[#22c55e] text-white px-6 py-4 rounded-2xl flex items-center gap-3 shadow-xl">
+  WhatsApp
+</button>
 
-  <!-- Botón WhatsApp -->
-  <button onclick="enviarWhatsApp()" class="fixed bottom-8 right-8 bg-[#25D366] hover:bg-[#22c55e] text-white px-8 py-5 rounded-3xl flex items-center gap-4 shadow-2xl transition-all active:scale-95 z-50">
-    <i class="fab fa-whatsapp text-4xl"></i>
-    <div>
-      <div class="font-bold">Continuar en WhatsApp</div>
-      <div id="totalSeleccion" class="text-sm">Selecciona servicios</div>
-    </div>
-  </button>
+<script>
+let country = 'AR';
+let selected = {};
 
-  <script>
-    // Slider
-    let currentSlide = 0;
-    const slidesContainer = document.getElementById('slides');
-    function updateSlider() { slidesContainer.style.transform = `translateX(-${currentSlide * 100}%)`; }
-    function nextSlide() { currentSlide = (currentSlide + 1) % 5; updateSlider(); }
-    function prevSlide() { currentSlide = (currentSlide - 1 + 5) % 5; updateSlider(); }
-    setInterval(nextSlide, 5000);
+const services = [
+  { name: "Netflix", ar: {1: 7500, 2: 12900}, uy: {1: 250, 2: 450} },
+  { name: "Disney+", ar: {1: 6500, 2: 12000}, uy: {1: 300, 2: 250} },
+  { name: "Prime Video", ar: {1: 4500, 2: 8000}, uy: {1: 150, 2: 280} },
+  { name: "Paramount+", ar: {1: 4500, 2: 8000}, uy: {1: 150, 2: 280} }
+];
 
-    let country = 'AR';
-    let selected = {};
+function setCountry(c) {
+  country = c;
+  localStorage.setItem("country", c);
+  render();
+}
 
-    const services = [
-      { name: "Netflix", color: "bg-red-600", logo: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg", desc: "Series y películas en 4K", ar: {1: 7500, 2: 12900}, uy: {1: 250, 2: 450} },
-      { name: "Disney Plus", color: "bg-blue-700", logo: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_logo.svg", desc: "Disney, Marvel, Star Wars", ar: {1: 6500, 2: 12000}, uy: {1: 300, 2: 250} },
-      { name: "Prime Video", color: "bg-blue-600", logo: "https://upload.wikimedia.org/wikipedia/commons/8/8c/Prime_Video_logo_%282024%29.svg", desc: "The Boys, Fallout y más", ar: {1: 4500, 2: 8000}, uy: {1: 150, 2: 280} },
-      { name: "Paramount+", color: "bg-blue-500", logo: "https://upload.wikimedia.org/wikipedia/commons/4/4f/Paramount%2B_Logo.svg", desc: "Yellowstone y estrenos", ar: {1: 4500, 2: 8000}, uy: {1: 150, 2: 280} },
-      { name: "HBO Max", color: "bg-purple-600", logo: "https://upload.wikimedia.org/wikipedia/commons/5/53/HBO_Max_logo_%28May_2025%29.png", desc: "House of the Dragon y más", ar: {1: 4500, 2: 8000}, uy: {1: 150, 2: 280} },
-      { name: "Spotify Premium", color: "bg-green-600", logo: "https://upload.wikimedia.org/wikipedia/commons/8/84/Spotify_icon.svg", desc: "Música sin anuncios", ar: {1: 4500}, uy: {1: 190} },
-      { name: "YouTube Premium", color: "bg-red-600", logo: "https://upload.wikimedia.org/wikipedia/commons/7/72/YouTube_logo_%282017%29.svg", desc: "Sin anuncios + Music", ar: {1: 4500}, uy: {1: 190} },
-      { name: "ChatGPT Plus", color: "bg-emerald-600", logo: "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg", desc: "GPT-4o ilimitado", ar: {1: 8000}, uy: {1: 400} },
-      { name: "Grok Premium", color: "bg-zinc-800", logo: null, desc: "Acceso completo a Grok", ar: {1: 8000}, uy: {1: 400} },
-      { name: "FLUJO TV", color: "bg-emerald-600", logo: null, desc: "Canales en vivo premium", ar: {3: 7000}, uy: {3: 300}, fixed: true }
-    ];
+function render() {
+  const container = document.getElementById('servicios');
+  container.innerHTML = '';
 
-    function setCountry(c) {
-      country = c;
-      document.getElementById('btnAR').classList.toggle('bg-blue-600', c === 'AR');
-      document.getElementById('btnAR').classList.toggle('text-white', c === 'AR');
-      document.getElementById('btnUY').classList.toggle('bg-blue-600', c === 'UY');
-      document.getElementById('btnUY').classList.toggle('text-white', c === 'UY');
-      renderServices();
-    }
+  services.forEach(s => {
+    container.innerHTML += `
+      <div class="glass rounded-2xl p-5 text-center hover:scale-105 transition">
+        <h3 class="text-lg font-semibold mb-2">${s.name}</h3>
 
-    function renderServices() {
-      const container = document.getElementById('servicios');
-      container.innerHTML = '';
-      services.forEach(svc => {
-        const html = `
-          <div class="${svc.color} rounded-3xl p-6 text-white hover:scale-105 transition-all shadow-xl">
-            <div class="h-12 mb-4">
-              ${svc.logo ? `<img src="${svc.logo}" alt="${svc.name}" class="h-full">` : `<span class="text-5xl">🚀</span>`}
-            </div>
-            <h3 class="text-2xl font-bold">${svc.name}</h3>
-            <p class="text-sm mt-1 mb-6 opacity-90">${svc.desc}</p>
-            <div class="space-y-3">
-              ${svc.fixed ? `
-                <button onclick="toggleService('${svc.name}', 1)" class="w-full py-4 px-6 rounded-2xl bg-white/20 flex justify-between ${selected[svc.name] ? 'ring-2 ring-white' : ''}">
-                  <span>3 dispositivos</span><span class="font-bold">$${country === 'AR' ? svc.ar[3] : svc.uy[3]}</span>
-                </button>` : `
-                <button onclick="toggleService('${svc.name}', 1)" class="w-full py-4 px-6 rounded-2xl bg-white/20 flex justify-between ${selected[svc.name] === 1 ? 'ring-2 ring-white' : ''}">
-                  <span>1 Mes</span><span class="font-bold">$${country === 'AR' ? svc.ar[1] : svc.uy[1]}</span>
-                </button>`}
-            </div>
-          </div>`;
-        container.innerHTML += html;
-      });
-    }
+        <div class="space-y-2">
+          <div class="bg-white/10 rounded-xl py-2">
+            1 pantalla $${country === 'AR' ? s.ar[1] : s.uy[1]}
+          </div>
+          <div class="bg-white/10 rounded-xl py-2">
+            2 pantallas $${country === 'AR' ? s.ar[2] : s.uy[2]}
+          </div>
+        </div>
+      </div>
+    `;
+  });
+}
 
-    function toggleService(service, option) {
-      if (selected[service] === option) delete selected[service];
-      else selected[service] = option;
-      renderServices();
-      updateWhatsAppButton();
-    }
+function enviarWhatsApp() {
+  window.open("https://wa.me/5492645182955", "_blank");
+}
 
-    function updateWhatsAppButton() {
-      let total = 0, count = Object.keys(selected).length;
-      Object.keys(selected).forEach(svc => {
-        const service = services.find(s => s.name === svc);
-        const price = country === 'AR' ? (service.ar[selected[svc]] || service.ar[1] || service.ar[3]) : (service.uy[selected[svc]] || service.uy[1] || service.uy[3]);
-        total += price || 0;
-      });
-      document.getElementById('totalSeleccion').textContent = count ? `${count} servicios • $${total}` : 'Selecciona servicios';
-    }
+window.onload = () => {
+  const saved = localStorage.getItem("country");
+  if(saved) country = saved;
+  render();
+};
+</script>
 
-    function startTestimonials() {
-      const container = document.getElementById('testimonials');
-      const testimonials = [
-        {name: "Lucas Martínez", text: "Hola! Todo perfecto con Netflix y Disney 💪🏻", location: "Buenos Aires, Argentina"},
-        {name: "Carla Rodríguez", text: "Spotify y YouTube Premium impecables ❤️", location: "Montevideo, Uruguay"},
-        {name: "Diego Silva", text: "ChatGPT y Grok Premium son una locura.", location: "Córdoba, Argentina"}
-      ];
-      let i = 0;
-      setInterval(() => {
-        const t = testimonials[i];
-        container.innerHTML = `
-          <div class="glass rounded-3xl p-8">
-            <div class="flex items-center gap-4 mb-5">
-              <div class="w-12 h-12 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center text-3xl">👤</div>
-              <div>
-                <p class="font-medium">${t.name}</p>
-                <p class="text-xs text-gray-400">${t.location}</p>
-              </div>
-            </div>
-            <p class="text-lg italic">"${t.text}"</p>
-            <p class="text-xs text-green-400 mt-4">vía WhatsApp</p>
-          </div>`;
-        i = (i + 1) % testimonials.length;
-      }, 6000);
-    }
-
-    function enviarWhatsApp() {
-      const nombre = document.getElementById('nombre').value.trim();
-      let mensaje = `Hola MISAKROOS 👋%0A%0A`;
-      if (nombre) mensaje += `Soy *${nombre}*%0A`;
-      mensaje += `País: ${country === 'AR' ? '🇦🇷 Argentina' : '🇺🇾 Uruguay'}%0A%0A🛒 *Mi pedido:*%0A`;
-      let total = 0;
-      Object.keys(selected).forEach(svc => {
-        const service = services.find(s => s.name === svc);
-        const price = country === 'AR' ? (service.ar[selected[svc]] || service.ar[1] || service.ar[3]) : (service.uy[selected[svc]] || service.uy[1] || service.uy[3]);
-        total += price || 0;
-        mensaje += `• ${svc} → $${price}%0A`;
-      });
-      mensaje += `%0A*Total: $${total}*%0A%0A¿Podemos confirmar?`;
-      window.open(`https://wa.me/5492645182955?text=${mensaje}`, '_blank');
-    }
-
-    window.onload = () => {
-      setCountry('AR');
-      startTestimonials();
-    };
-  </script>
 </body>
 </html>
