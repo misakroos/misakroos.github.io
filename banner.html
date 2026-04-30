@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body { margin:0; font-family: 'Inter', sans-serif; }
+
+.slider {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.slides {
+  display: flex;
+  transition: transform 0.9s cubic-bezier(.77,0,.18,1);
+}
+
+.slide {
+  min-width: 100%;
+  height: 460px;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.2));
+}
+
+.content {
+  position: absolute;
+  bottom: 0;
+  padding: 60px 40px;
+  color: white;
+  max-width: 700px;
+}
+
+.logo {
+  height: 60px;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+}
+
+.title {
+  font-size: 42px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.desc {
+  font-size: 18px;
+  opacity: 0.85;
+  margin-bottom: 25px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 26px;
+  border-radius: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.3s;
+  backdrop-filter: blur(10px);
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2);
+}
+
+.btn-red { background: rgba(229,9,20,0.9); }
+.btn-blue { background: rgba(0,120,255,0.9); }
+.btn-purple { background: rgba(120,0,255,0.9); }
+
+.nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(10px);
+  color: white;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.nav:hover {
+  background: rgba(0,0,0,0.8);
+}
+
+.prev { left: 15px; }
+.next { right: 15px; }
+
+.dots {
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+  transition: 0.3s;
+}
+
+.dot.active {
+  background: white;
+  transform: scale(1.3);
+}
+
+@media (max-width: 768px){
+  .slide { height: 360px; }
+  .title { font-size: 28px; }
+  .content { padding: 30px 20px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="slider">
+  <div class="slides" id="slides">
+
+    <!-- Netflix -->
+    <div class="slide" style="background-image:url('https://image.tmdb.org/t/p/original/5hNcsnMkwU2LknLoru73c76el3z.jpg')">
+      <div class="overlay"></div>
+      <div class="content">
+        <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg">
+        <div class="title">Series y películas en 4K</div>
+        <div class="desc">Stranger Things, Élite y más</div>
+        <a class="btn btn-red" href="https://wa.me/5492645182955">Contratar</a>
+      </div>
+    </div>
+
+    <!-- Disney -->
+    <div class="slide" style="background-image:url('https://image.tmdb.org/t/p/original/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg')">
+      <div class="overlay"></div>
+      <div class="content">
+        <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_logo.svg">
+        <div class="title">Disney, Marvel y Star Wars</div>
+        <div class="desc">Todo en un solo lugar</div>
+        <a class="btn btn-blue" href="https://wa.me/5492645182955">Contratar</a>
+      </div>
+    </div>
+
+    <!-- HBO -->
+    <div class="slide" style="background-image:url('https://image.tmdb.org/t/p/original/z2yahl2uefxDCl0nogcRBstwruJ.jpg')">
+      <div class="overlay"></div>
+      <div class="content">
+        <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/5/53/HBO_Max_logo_%28May_2025%29.png">
+        <div class="title">Series de alto nivel</div>
+        <div class="desc">House of the Dragon y más</div>
+        <a class="btn btn-purple" href="https://wa.me/5492645182955">Contratar</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav prev" onclick="move(-1)">‹</div>
+  <div class="nav next" onclick="move(1)">›</div>
+
+  <div class="dots" id="dots"></div>
+</div>
+
+<script>
+let index = 0;
+const slides = document.getElementById("slides");
+const total = slides.children.length;
+const dotsContainer = document.getElementById("dots");
+
+for(let i=0;i<total;i++){
+  const d = document.createElement("div");
+  d.classList.add("dot");
+  if(i===0) d.classList.add("active");
+  dotsContainer.appendChild(d);
+}
+
+function update(){
+  slides.style.transform = `translateX(-${index*100}%)`;
+  document.querySelectorAll(".dot").forEach((d,i)=>{
+    d.classList.toggle("active", i===index);
+  });
+}
+
+function move(dir){
+  index = (index + dir + total) % total;
+  update();
+}
+
+setInterval(()=>move(1), 5000);
+</script>
+
+</body>
+</html>
