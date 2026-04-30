@@ -39,77 +39,17 @@
   </header>
 
   <!-- ==================== SLIDER BANNER ==================== -->
-  <div class="pt-20 pb-8 px-4">
-    <div class="slider-container">
-      <div class="slides" id="slides">
+ <div class="pt-20 pb-8 px-4">
+  <div id="banner-container"></div>
+</div>
 
-        <!-- 1. Netflix -->
-        <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.9)), url('https://image.tmdb.org/t/p/original/9fO4y0v2z8zqZ7zqZ7zqZ7zqZ7.jpg');">
-          <div class="slide-content">
-            <div class="platform-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix"></div>
-            <h2 class="text-4xl md:text-5xl font-bold leading-none mb-3">Series y películas en 4K</h2>
-            <p class="text-lg mb-6">El Juego del Calamar, Stranger Things y más</p>
-            <a href="https://wa.me/5492645182955?text=Hola%20MISAKROOS%20quiero%20Netflix" target="_blank" class="inline-flex items-center gap-3 bg-red-600 hover:bg-red-700 px-8 py-4 rounded-2xl font-bold text-lg transition">
-              <i class="fab fa-whatsapp"></i> Contratar Netflix
-            </a>
-          </div>
-        </div>
-
-        <!-- 2. Disney+ -->
-        <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.9)), url('https://image.tmdb.org/t/p/original/7zqZ7zqZ7zqZ7zqZ7zqZ7zqZ7zqZ7.jpg');">
-          <div class="slide-content">
-            <div class="platform-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_logo.svg" alt="Disney+"></div>
-            <h2 class="text-4xl md:text-5xl font-bold leading-none mb-3">Disney, Marvel, Star Wars</h2>
-            <p class="text-lg mb-6">Entretenimiento para toda la familia</p>
-            <a href="https://wa.me/5492645182955?text=Hola%20MISAKROOS%20quiero%20Disney+" target="_blank" class="inline-flex items-center gap-3 bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-2xl font-bold text-lg transition">
-              <i class="fab fa-whatsapp"></i> Contratar Disney+
-            </a>
-          </div>
-        </div>
-
-        <!-- 3. Prime Video -->
-        <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.9)), url('https://image.tmdb.org/t/p/original/8zqZ7zqZ7zqZ7zqZ7zqZ7zqZ7zqZ7zqZ7.jpg');">
-          <div class="slide-content">
-            <div class="platform-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Prime_Video_logo_%282024%29.svg" alt="Prime Video"></div>
-            <h2 class="text-4xl md:text-5xl font-bold leading-none mb-3">The Boys, Fallout y más</h2>
-            <p class="text-lg mb-6">Estrenos y Originals Amazon</p>
-            <a href="https://wa.me/5492645182955?text=Hola%20MISAKROOS%20quiero%20Prime%20Video" target="_blank" class="inline-flex items-center gap-3 bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-2xl font-bold text-lg transition">
-              <i class="fab fa-whatsapp"></i> Contratar Prime Video
-            </a>
-          </div>
-        </div>
-
-        <!-- 4. Paramount+ -->
-        <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.9)), url('https://image.tmdb.org/t/p/original/6zqZ7zqZ7zqZ7zqZ7zqZ7zqZ7zqZ7zqZ7zqZ7.jpg');">
-          <div class="slide-content">
-            <div class="platform-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Paramount%2B_Logo.svg" alt="Paramount+"></div>
-            <h2 class="text-4xl md:text-5xl font-bold leading-none mb-3">Yellowstone y estrenos</h2>
-            <p class="text-lg mb-6">Cine, series y deportes</p>
-            <a href="https://wa.me/5492645182955?text=Hola%20MISAKROOS%20quiero%20Paramount+" target="_blank" class="inline-flex items-center gap-3 bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-2xl font-bold text-lg transition">
-              <i class="fab fa-whatsapp"></i> Contratar Paramount+
-            </a>
-          </div>
-        </div>
-
-        <!-- 5. HBO Max -->
-        <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.9)), url('https://image.tmdb.org/t/p/original/5zqZ7zqZ7zqZ7zqZ7zqZ7zqZ7zqZ7zqZ7zqZ7zqZ7zqZ7zqZ7.jpg');">
-          <div class="slide-content">
-            <div class="platform-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/5/53/HBO_Max_logo_%28May_2025%29.png" alt="HBO Max"></div>
-            <h2 class="text-4xl md:text-5xl font-bold leading-none mb-3">House of the Dragon y más</h2>
-            <p class="text-lg mb-6">La mejor televisión del mundo</p>
-            <a href="https://wa.me/5492645182955?text=Hola%20MISAKROOS%20quiero%20HBO%20Max" target="_blank" class="inline-flex items-center gap-3 bg-purple-600 hover:bg-purple-700 px-8 py-4 rounded-2xl font-bold text-lg transition">
-              <i class="fab fa-whatsapp"></i> Contratar HBO Max
-            </a>
-          </div>
-        </div>
-
-      </div>
-
-      <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white w-12 h-12 rounded-full flex items-center justify-center text-3xl transition">‹</button>
-      <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white w-12 h-12 rounded-full flex items-center justify-center text-3xl transition">›</button>
-    </div>
-  </div>
-
+<script>
+fetch("banner.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("banner-container").innerHTML = data;
+  });
+</script>
   <!-- REFERENCIAS (justo debajo del slider) -->
   <section class="max-w-2xl mx-auto px-6 mb-16">
     <h2 class="text-3xl font-semibold text-center mb-8">Lo que opinan nuestros clientes</h2>
