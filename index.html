@@ -1,60 +1,58 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MISAKROOS • Suscripciones Premium</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MISAKROOS • Suscripciones Premium</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #000;
-      color: #fff;
-    }
+<style>
+body {
+  font-family: 'Inter', sans-serif;
+  background: #050505;
+  color: #fff;
+}
 
-    .display-font { font-family: 'Bebas Neue', sans-serif; }
+.display-font { font-family: 'Bebas Neue', sans-serif; }
 
-    .glass {
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(25px);
-      border: 1px solid rgba(255,255,255,0.15);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-    }
-  </style>
+.glass {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 10px 60px rgba(0,0,0,0.7);
+}
+</style>
 </head>
 
-<body class="min-h-screen pb-32">
+<body class="pb-32">
 
 <!-- HEADER -->
 <header class="fixed top-0 w-full glass z-50">
   <div class="max-w-6xl mx-auto px-6 py-4 flex items-center gap-4">
-    <div class="w-10 h-10 bg-red-600 rounded-2xl flex items-center justify-center text-2xl font-bold">M</div>
-    <h1 class="text-2xl font-bold tracking-tight display-font">MISAKROOS</h1>
+    <div class="w-10 h-10 bg-red-600 rounded-2xl flex items-center justify-center font-bold">M</div>
+    <h1 class="text-2xl display-font">MISAKROOS</h1>
   </div>
 </header>
 
-<!-- BANNER EXTERNO -->
-<div class="pt-20 pb-8 px-4">
-  <div id="banner-container"></div>
+<!-- BANNER -->
+<div class="pt-20 pb-10 px-4">
+  <iframe src="banner.html" class="w-full h-[420px] rounded-3xl border-0"></iframe>
 </div>
 
-<script>
-fetch("banner.html")
-  .then(res => res.text())
-  .then(data => {
-    document.getElementById("banner-container").innerHTML = data;
-  });
-</script>
+<!-- REFERENCIAS -->
+<section class="max-w-2xl mx-auto px-6 mb-16">
+  <h2 class="text-2xl text-center mb-6">Clientes</h2>
+  <div id="testimonials"></div>
+</section>
 
 <!-- BIO -->
-<section class="max-w-2xl mx-auto px-6 mb-14">
+<section class="max-w-3xl mx-auto px-6 mb-16">
   <div class="glass rounded-3xl p-8 text-center">
     <div class="text-5xl mb-4">👋</div>
-    <h2 class="text-2xl font-semibold mb-3">Hola, soy Rodrigo Rivero</h2>
-    <p class="text-sm text-gray-300 leading-relaxed">
+    <h2 class="text-2xl font-semibold mb-4">Hola, soy Rodrigo Rivero</h2>
+    <p class="text-gray-300">
       Servicios premium accesibles desde 2023.  
       Activación inmediata y soporte constante.
     </p>
@@ -62,7 +60,7 @@ fetch("banner.html")
 </section>
 
 <!-- SELECTOR -->
-<div class="flex justify-center mb-8">
+<div class="flex justify-center mb-10">
   <div class="glass rounded-3xl p-1 flex">
     <button onclick="setCountry('AR')" id="btnAR" class="px-6 py-2 rounded-3xl">🇦🇷</button>
     <button onclick="setCountry('UY')" id="btnUY" class="px-6 py-2 rounded-3xl">🇺🇾</button>
@@ -72,8 +70,23 @@ fetch("banner.html")
 <!-- SERVICIOS -->
 <section id="servicios" class="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto px-6"></section>
 
-<!-- BOTÓN WHATSAPP -->
-<button onclick="enviarWhatsApp()" class="fixed bottom-6 right-6 bg-[#25D366] hover:bg-[#22c55e] text-white px-6 py-4 rounded-2xl flex items-center gap-3 shadow-xl">
+<!-- FAQ -->
+<section class="mt-20 max-w-3xl mx-auto px-6">
+  <h3 class="text-2xl text-center mb-6">Preguntas Frecuentes</h3>
+  <div class="space-y-4">
+    <details class="glass p-6 rounded-2xl">
+      <summary>¿Qué significa 1 pantalla?</summary>
+      <p class="mt-3 text-gray-400">Un dispositivo activo.</p>
+    </details>
+    <details class="glass p-6 rounded-2xl">
+      <summary>¿Hay garantía?</summary>
+      <p class="mt-3 text-gray-400">Sí, durante todo el servicio.</p>
+    </details>
+  </div>
+</section>
+
+<!-- BOTÓN -->
+<button onclick="enviarWhatsApp()" class="fixed bottom-6 right-6 bg-[#25D366] px-6 py-4 rounded-2xl shadow-xl">
   WhatsApp
 </button>
 
@@ -82,48 +95,75 @@ let country = 'AR';
 let selected = {};
 
 const services = [
-  { name: "Netflix", ar: {1: 7500, 2: 12900}, uy: {1: 250, 2: 450} },
-  { name: "Disney+", ar: {1: 6500, 2: 12000}, uy: {1: 300, 2: 250} },
-  { name: "Prime Video", ar: {1: 4500, 2: 8000}, uy: {1: 150, 2: 280} },
-  { name: "Paramount+", ar: {1: 4500, 2: 8000}, uy: {1: 150, 2: 280} }
+  { name: "Netflix", ar:{1:7500,2:12900}, uy:{1:250,2:450} },
+  { name: "Disney+", ar:{1:6500,2:12000}, uy:{1:300,2:250} },
+  { name: "Prime Video", ar:{1:4500,2:8000}, uy:{1:150,2:280} },
+  { name: "Paramount+", ar:{1:4500,2:8000}, uy:{1:150,2:280} },
+  { name: "HBO Max", ar:{1:4500,2:8000}, uy:{1:150,2:280} },
+  { name: "Spotify", ar:{1:4500}, uy:{1:190} },
+  { name: "YouTube Premium", ar:{1:4500}, uy:{1:190} },
+  { name: "ChatGPT Plus", ar:{1:8000}, uy:{1:400} }
 ];
 
-function setCountry(c) {
+function setCountry(c){
   country = c;
   localStorage.setItem("country", c);
   render();
 }
 
-function render() {
-  const container = document.getElementById('servicios');
-  container.innerHTML = '';
+function render(){
+  const container = document.getElementById("servicios");
+  container.innerHTML = "";
 
   services.forEach(s => {
+    const prices = country === "AR" ? s.ar : s.uy;
+
     container.innerHTML += `
-      <div class="glass rounded-2xl p-5 text-center hover:scale-105 transition">
-        <h3 class="text-lg font-semibold mb-2">${s.name}</h3>
+      <div class="glass p-5 rounded-2xl hover:scale-105 transition">
+        <h3 class="font-semibold mb-3">${s.name}</h3>
 
         <div class="space-y-2">
-          <div class="bg-white/10 rounded-xl py-2">
-            1 pantalla $${country === 'AR' ? s.ar[1] : s.uy[1]}
-          </div>
-          <div class="bg-white/10 rounded-xl py-2">
-            2 pantallas $${country === 'AR' ? s.ar[2] : s.uy[2]}
-          </div>
+          ${Object.keys(prices).map(p => `
+            <button onclick="toggleService('${s.name}', ${p})"
+              class="w-full py-2 rounded-xl bg-white/10 flex justify-between
+              ${selected[s.name]==p ? 'ring-2 ring-white' : ''}">
+              <span>${p==1?'1 pantalla':'2 pantallas'}</span>
+              <span>$${prices[p]}</span>
+            </button>
+          `).join("")}
         </div>
       </div>
     `;
   });
 }
 
-function enviarWhatsApp() {
-  window.open("https://wa.me/5492645182955", "_blank");
+function toggleService(name,opt){
+  selected[name] = selected[name]==opt ? null : opt;
+  render();
 }
 
-window.onload = () => {
-  const saved = localStorage.getItem("country");
-  if(saved) country = saved;
+function enviarWhatsApp(){
+  window.open("https://wa.me/5492645182955","_blank");
+}
+
+function startTestimonials(){
+  const t = [
+    "Todo perfecto 💪",
+    "Funciona impecable 🔥",
+    "Recomendado 100%"
+  ];
+  let i=0;
+  setInterval(()=>{
+    document.getElementById("testimonials").innerHTML =
+      `<div class="glass p-6 rounded-2xl text-center">${t[i]}</div>`;
+    i=(i+1)%t.length;
+  },4000);
+}
+
+window.onload=()=>{
+  country = localStorage.getItem("country") || "AR";
   render();
+  startTestimonials();
 };
 </script>
 
