@@ -1,170 +1,430 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MISAKROOS • Suscripciones Premium</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Suscripciones Premium: Netflix, Disney+, Max, Spotify, ChatGPT y más. Precios accesibles en Argentina y Uruguay.">
+    <title>MISAKROOS • Suscripciones Premium</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 
-<style>
-body {
-  font-family: 'Inter', sans-serif;
-  background: #050505;
-  color: #fff;
-}
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;display=swap');
 
-.display-font { font-family: 'Bebas Neue', sans-serif; }
+        :root {
+            --accent: #ff6200;
+        }
 
-.glass {
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(25px);
-  border: 1px solid rgba(255,255,255,0.18);
-  box-shadow: 0 10px 60px rgba(0,0,0,0.7);
-}
-</style>
+        * {
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 180ms;
+        }
+
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+            background: linear-gradient(135deg, #fffaf0 0%, #fef3e8 100%);
+            color: #2c1f14;
+        }
+
+        .display-font {
+            font-family: 'Bebas Neue', sans-serif;
+        }
+
+        .glass {
+            background: rgba(255, 248, 240, 0.95);
+            backdrop-filter: blur(28px);
+            border: 1px solid rgba(255, 98, 0, 0.25);
+            box-shadow: 0 20px 50px -15px rgb(255 98 0 / 0.15);
+        }
+
+        .hero-bg {
+            background: linear-gradient(92deg, #ff6200 0%, #ff8a00 100%);
+        }
+
+        .service-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 50px -12px rgb(255 98 0 / 0.25);
+        }
+
+        .selected-btn {
+            background: linear-gradient(90deg, #ff6200, #ff8a00) !important;
+            color: white !important;
+            box-shadow: 0 0 0 4px rgba(255, 98, 0, 0.3);
+        }
+
+        .whatsapp-chat {
+            background: #e5ddd5;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .message-bubble {
+            max-width: 80%;
+            padding: 14px 18px;
+            border-radius: 18px 18px 18px 4px;
+            font-size: 15.5px;
+            line-height: 1.45;
+            background: #dcf8c6;
+            color: #1c2a1f;
+        }
+    </style>
 </head>
 
-<body class="pb-32">
+<body class="pb-32 min-h-screen">
 
 <!-- HEADER -->
-<header class="fixed top-0 w-full glass z-50">
-  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center gap-4">
-    <div class="w-10 h-10 bg-red-600 rounded-2xl flex items-center justify-center font-bold">M</div>
-    <h1 class="text-2xl display-font">MISAKROOS</h1>
-  </div>
+<header class="fixed top-0 w-full glass z-50 border-b border-white/60">
+    <div class="max-w-6xl mx-auto px-5 py-5 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 bg-gradient-to-br from-[#ff6200] to-[#ff8a00] text-white rounded-3xl flex items-center justify-center text-3xl font-black shadow-inner">M</div>
+            <h1 class="text-3xl tracking-[-2px] display-font text-[#2c1f14]">MISAKROOS</h1>
+        </div>
+        
+        <div class="flex items-center gap-2 md:hidden">
+            <button onclick="setCountry('AR')" id="btnARmobile" class="flex items-center gap-1.5 px-4 py-2 rounded-3xl text-sm font-medium glass">🇦🇷 AR</button>
+            <button onclick="setCountry('UY')" id="btnUYmobile" class="flex items-center gap-1.5 px-4 py-2 rounded-3xl text-sm font-medium glass">🇺🇾 UY</button>
+        </div>
+    </div>
 </header>
 
-<!-- BANNER -->
-<div class="pt-20 pb-10 px-4">
-  <iframe src="banner.html" class="w-full h-[420px] rounded-3xl border-0"></iframe>
+<!-- HERO BANNER -->
+<div class="pt-20">
+    <div class="max-w-6xl mx-auto px-5">
+        <div class="hero-bg rounded-3xl overflow-hidden relative shadow-2xl">
+            <div class="absolute inset-0 bg-[radial-gradient(at_center,#ffffff22_0%,transparent_70%)]"></div>
+            
+            <div class="relative px-6 md:px-12 py-14 md:py-20 flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                <div class="flex-1 text-center md:text-left">
+                    <div class="inline-flex items-center gap-2 bg-white/30 text-white text-sm font-semibold px-5 py-2 rounded-3xl mb-6 backdrop-blur-md">
+                        <span class="relative flex h-3 w-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+                        </span>
+                        ACTIVACIÓN INMEDIATA
+                    </div>
+                    
+                    <h1 class="text-5xl md:text-7xl leading-none display-font text-white tracking-[-3px] mb-3">
+                        SUSCRIPCIONES<br>PREMIUM AL MEJOR PRECIO
+                    </h1>
+                    <p class="text-xl md:text-2xl text-white/95">Elige • Suma • Paga por WhatsApp</p>
+                    
+                    <div class="flex flex-wrap justify-center md:justify-start gap-x-8 gap-y-3 mt-10 text-white/90 text-sm">
+                        <div class="flex items-center gap-2"><span class="text-2xl">⚡</span><div><div class="font-semibold">Instantáneo</div><div class="text-xs">Cuenta en minutos</div></div></div>
+                        <div class="flex items-center gap-2"><span class="text-2xl">🔒</span><div><div class="font-semibold">Garantía total</div><div class="text-xs">Todo el mes</div></div></div>
+                        <div class="flex items-center gap-2"><span class="text-2xl">🌍</span><div><div class="font-semibold">AR + UY</div><div class="text-xs">Pagos locales</div></div></div>
+                    </div>
+                </div>
+                
+                <div class="flex-1 flex justify-center items-center relative">
+                    <div class="relative w-64 h-64 md:w-72 md:h-72">
+                        <div class="absolute top-6 left-6 w-20 h-20 bg-white rounded-2xl shadow-xl flex items-center justify-center text-4xl rotate-[-8deg]">📺</div>
+                        <div class="absolute top-10 right-4 w-20 h-20 bg-white rounded-2xl shadow-xl flex items-center justify-center text-4xl rotate-[12deg]">🎬</div>
+                        <div class="absolute bottom-8 left-12 w-20 h-20 bg-white rounded-2xl shadow-xl flex items-center justify-center text-4xl rotate-[-12deg]">🎵</div>
+                        <div class="absolute bottom-6 right-12 w-20 h-20 bg-white rounded-2xl shadow-xl flex items-center justify-center text-4xl rotate-[8deg]">🤖</div>
+                        
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-36 h-36 md:w-40 md:h-40 bg-white/95 rounded-3xl flex items-center justify-center text-center shadow-2xl">
+                                <div>
+                                    <div class="text-6xl">🚀</div>
+                                    <div class="text-[#2c1f14] font-semibold text-xl leading-none mt-1">PREMIUM</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- REFERENCIAS -->
-<section class="max-w-2xl mx-auto px-6 mb-16">
-  <h2 class="text-2xl text-center mb-6">Clientes</h2>
-  <div id="testimonials"></div>
+<!-- TESTIMONIALS - Solo burbujas de WhatsApp -->
+<section class="max-w-md mx-auto px-5 mt-12 mb-16">
+    <h2 class="text-3xl display-font text-center mb-8 text-[#2c1f14]">Clientes satisfechos</h2>
+    
+    <div class="whatsapp-chat mx-auto p-5">
+        <div id="whatsapp-testimonials" class="space-y-5"></div>
+    </div>
 </section>
 
 <!-- BIO -->
-<section class="max-w-3xl mx-auto px-6 mb-16">
-  <div class="glass rounded-3xl p-8 text-center">
-    <div class="text-5xl mb-4">👋</div>
-    <h2 class="text-2xl font-semibold mb-4">Hola, soy Rodrigo Rivero</h2>
-    <p class="text-gray-300">
-      Servicios premium accesibles desde 2023.  
-      Activación inmediata y soporte constante.
-    </p>
-  </div>
+<section class="max-w-3xl mx-auto px-5 mb-16">
+    <div class="glass rounded-3xl p-8 md:p-10 text-center">
+        <div class="text-6xl mb-6">👋</div>
+        <h2 class="text-3xl font-semibold mb-3">Hola, soy Rodrigo Rivero</h2>
+        <p class="text-[#3f2a1f] max-w-md mx-auto">
+            Servicios premium accesibles desde 2023.<br>
+            <span class="font-medium text-[#ff6200]">Activación inmediata • Soporte constante</span>
+        </p>
+    </div>
 </section>
 
-<!-- SELECTOR -->
-<div class="flex justify-center mb-10">
-  <div class="glass rounded-3xl p-1 flex">
-    <button onclick="setCountry('AR')" id="btnAR" class="px-6 py-2 rounded-3xl">🇦🇷</button>
-    <button onclick="setCountry('UY')" id="btnUY" class="px-6 py-2 rounded-3xl">🇺🇾</button>
-  </div>
+<!-- SELECTOR DE PAÍS -->
+<div class="flex justify-center mb-10 px-5">
+    <div class="glass rounded-3xl p-1 flex shadow-inner">
+        <button onclick="setCountry('AR')" id="btnAR" class="px-8 py-3 rounded-3xl text-lg font-medium flex items-center gap-2">🇦🇷 Argentina</button>
+        <button onclick="setCountry('UY')" id="btnUY" class="px-8 py-3 rounded-3xl text-lg font-medium flex items-center gap-2">🇺🇾 Uruguay</button>
+    </div>
 </div>
 
-<!-- SERVICIOS -->
-<section id="servicios" class="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto px-6"></section>
+<!-- CATÁLOGO -->
+<section id="servicios" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto px-5"></section>
 
 <!-- FAQ -->
-<section class="mt-20 max-w-3xl mx-auto px-6">
-  <h3 class="text-2xl text-center mb-6">Preguntas Frecuentes</h3>
-  <div class="space-y-4">
-    <details class="glass p-6 rounded-2xl">
-      <summary>¿Qué significa 1 pantalla?</summary>
-      <p class="mt-3 text-gray-400">Un dispositivo activo.</p>
-    </details>
-    <details class="glass p-6 rounded-2xl">
-      <summary>¿Hay garantía?</summary>
-      <p class="mt-3 text-gray-400">Sí, durante todo el servicio.</p>
-    </details>
-  </div>
+<section class="mt-20 max-w-3xl mx-auto px-5">
+    <h3 class="text-3xl display-font text-center mb-8 text-[#2c1f14]">Preguntas Frecuentes</h3>
+    <div class="space-y-4">
+        <details class="glass p-7 rounded-3xl">
+            <summary class="font-medium text-lg cursor-pointer">¿Qué significa 1 pantalla?</summary>
+            <p class="mt-5 text-[#3f2a1f]">Un dispositivo a la vez. Podés cambiar entre celular, TV, tablet, etc.</p>
+        </details>
+        <details class="glass p-7 rounded-3xl">
+            <summary class="font-medium text-lg cursor-pointer">¿Hay garantía?</summary>
+            <p class="mt-5 text-[#3f2a1f]">Sí, garantía completa durante todo el período. Soporte inmediato.</p>
+        </details>
+        <details class="glass p-7 rounded-3xl">
+            <summary class="font-medium text-lg cursor-pointer">¿Cómo se activa?</summary>
+            <p class="mt-5 text-[#3f2a1f]">Te enviamos las credenciales por WhatsApp en menos de 5 minutos.</p>
+        </details>
+        <details class="glass p-7 rounded-3xl">
+            <summary class="font-medium text-lg cursor-pointer">¿Medios de pago?</summary>
+            <p class="mt-5 text-[#3f2a1f]">Transferencia, Mercado Pago, Ualá, Brubank y más.</p>
+        </details>
+        <details class="glass p-7 rounded-3xl">
+            <summary class="font-medium text-lg cursor-pointer">¿Puedo cancelar?</summary>
+            <p class="mt-5 text-[#3f2a1f]">Sí, sin contratos. Pagás mes a mes.</p>
+        </details>
+    </div>
 </section>
 
-<!-- BOTÓN -->
-<button onclick="enviarWhatsApp()" class="fixed bottom-6 right-6 bg-[#25D366] px-6 py-4 rounded-2xl shadow-xl">
-  WhatsApp
+<!-- RESUMEN FLOTANTE -->
+<div id="summary-bar" class="hidden fixed bottom-28 left-1/2 -translate-x-1/2 max-w-md w-full px-5 z-[9998]">
+    <div class="glass rounded-3xl p-5 shadow-2xl border border-[#ff6200]/30">
+        <div class="flex justify-between items-center text-sm mb-3">
+            <span class="font-semibold text-[#2c1f14]">Tu selección</span>
+            <span id="items-count" class="font-medium text-[#ff6200]"></span>
+        </div>
+        <div id="selected-list" class="max-h-52 overflow-y-auto text-sm space-y-2 mb-4"></div>
+        
+        <div class="flex justify-between items-end border-t pt-4">
+            <div>
+                <span class="text-[#3f2a1f] text-sm">Total</span>
+                <div id="total-amount" class="text-3xl font-semibold text-[#ff6200]"></div>
+            </div>
+            <button onclick="enviarWhatsApp()" class="bg-[#25D366] hover:bg-[#20c65c] text-white px-8 py-3 rounded-2xl flex items-center gap-2 font-semibold text-lg shadow-xl">
+                Continuar en WhatsApp <span class="text-2xl">→</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- BOTÓN WHATSAPP -->
+<button onclick="enviarWhatsApp()" id="whatsapp-btn" class="fixed bottom-6 right-6 bg-[#25D366] hover:bg-[#20c65c] text-white px-7 py-4 rounded-3xl shadow-2xl flex items-center gap-3 text-lg font-semibold z-[9999]">
+    <span class="text-3xl">💬</span>
+    <div id="whatsapp-text">Pedir por WhatsApp</div>
 </button>
 
 <script>
-let country = 'AR';
-let selected = {};
+    let country = 'AR';
+    let selected = {};
 
-const services = [
-  { name: "Netflix", ar:{1:7500,2:12900}, uy:{1:250,2:450} },
-  { name: "Disney+", ar:{1:6500,2:12000}, uy:{1:300,2:250} },
-  { name: "Prime Video", ar:{1:4500,2:8000}, uy:{1:150,2:280} },
-  { name: "Paramount+", ar:{1:4500,2:8000}, uy:{1:150,2:280} },
-  { name: "HBO Max", ar:{1:4500,2:8000}, uy:{1:150,2:280} },
-  { name: "Spotify", ar:{1:4500}, uy:{1:190} },
-  { name: "YouTube Premium", ar:{1:4500}, uy:{1:190} },
-  { name: "ChatGPT Plus", ar:{1:8000}, uy:{1:400} }
-];
+    const services = [
+        { name: "Netflix",         ar: {1: 7500, 2: 12900}, uy: {1: 250, 2: 450} },
+        { name: "Disney+",         ar: {1: 6500, 2: 12000}, uy: {1: 300, 2: 550} },
+        { name: "Max",             ar: {1: 4500, 2: 8000},  uy: {1: 150, 2: 280} },
+        { name: "Prime Video",     ar: {1: 4500, 2: 8000},  uy: {1: 150, 2: 280} },
+        { name: "Paramount+",      ar: {1: 4500, 2: 8000},  uy: {1: 150, 2: 280} },
+        { name: "Spotify",         ar: {1: 4500},           uy: {1: 190} },
+        { name: "YouTube Premium", ar: {1: 4500},           uy: {1: 190} },
+        { name: "ChatGPT Plus",    ar: {1: 8000},           uy: {1: 400} },
+        { name: "Apple TV+",       ar: {1: 4500, 2: 8000},  uy: {1: 180, 2: 320} },
+        { name: "Crunchyroll",     ar: {1: 4500},           uy: {1: 170} },
+        { name: "Canva Pro",       ar: {1: 5500},           uy: {1: 220} }
+    ];
 
-function setCountry(c){
-  country = c;
-  localStorage.setItem("country", c);
-  render();
-}
+    function getServiceEmoji(name) {
+        const emojis = {
+            "Netflix": "🎥", "Disney+": "🏰", "Max": "🌀", "Prime Video": "📦",
+            "Paramount+": "🌟", "Spotify": "🎵", "YouTube Premium": "📺",
+            "ChatGPT Plus": "🤖", "Apple TV+": "🍎", "Crunchyroll": "🍥", "Canva Pro": "🎨"
+        };
+        return emojis[name] || "⭐";
+    }
 
-function render(){
-  const container = document.getElementById("servicios");
-  container.innerHTML = "";
+    function calculateTotal() {
+        let total = 0;
+        Object.keys(selected).forEach(name => {
+            const service = services.find(s => s.name === name);
+            if (service) {
+                const prices = country === "AR" ? service.ar : service.uy;
+                const qty = selected[name];
+                if (prices[qty]) total += prices[qty];
+            }
+        });
+        return total;
+    }
 
-  services.forEach(s => {
-    const prices = country === "AR" ? s.ar : s.uy;
+    function updateSummary() {
+        const total = calculateTotal();
+        const count = Object.keys(selected).length;
+        
+        const whatsappText = document.getElementById('whatsapp-text');
+        if (total > 0) {
+            whatsappText.innerHTML = `Pedir por WhatsApp<br><span class="text-xl font-bold">$${total.toLocaleString('es-AR')}</span>`;
+        } else {
+            whatsappText.textContent = 'Pedir por WhatsApp';
+        }
 
-    container.innerHTML += `
-      <div class="glass p-5 rounded-2xl hover:scale-105 transition">
-        <h3 class="font-semibold mb-3">${s.name}</h3>
+        const summaryBar = document.getElementById('summary-bar');
+        if (count > 0) {
+            summaryBar.classList.remove('hidden');
+            let listHTML = '';
+            Object.keys(selected).forEach(name => {
+                const service = services.find(s => s.name === name);
+                const prices = country === "AR" ? service.ar : service.uy;
+                const qty = selected[name];
+                const price = prices[qty];
+                listHTML += `
+                    <div class="flex justify-between items-center bg-white/80 rounded-2xl px-4 py-2.5 text-sm">
+                        <div class="flex items-center gap-2">
+                            <span>${getServiceEmoji(name)}</span>
+                            <span>${name} • ${qty === 1 ? '1 pantalla' : '2 pantallas'}</span>
+                        </div>
+                        <span class="font-semibold">$${price}</span>
+                    </div>`;
+            });
+            document.getElementById('selected-list').innerHTML = listHTML;
+            document.getElementById('items-count').textContent = `${count} servicio${count > 1 ? 's' : ''}`;
+            document.getElementById('total-amount').innerHTML = `$${total.toLocaleString('es-AR')}`;
+        } else {
+            summaryBar.classList.add('hidden');
+        }
+    }
 
-        <div class="space-y-2">
-          ${Object.keys(prices).map(p => `
-            <button onclick="toggleService('${s.name}', ${p})"
-              class="w-full py-2 rounded-xl bg-white/10 flex justify-between
-              ${selected[s.name]==p ? 'ring-2 ring-white' : ''}">
-              <span>${p==1?'1 pantalla':'2 pantallas'}</span>
-              <span>$${prices[p]}</span>
-            </button>
-          `).join("")}
-        </div>
-      </div>
-    `;
-  });
-}
+    function setCountry(c) {
+        country = c;
+        localStorage.setItem("country", c);
+        
+        document.querySelectorAll('button[id^="btnAR"]').forEach(b => {
+            b.classList.toggle('!bg-[#ff6200]', c === 'AR');
+            b.classList.toggle('text-white', c === 'AR');
+        });
+        document.querySelectorAll('button[id^="btnUY"]').forEach(b => {
+            b.classList.toggle('!bg-[#ff6200]', c === 'UY');
+            b.classList.toggle('text-white', c === 'UY');
+        });
+        
+        render();
+        updateSummary();
+    }
 
-function toggleService(name,opt){
-  selected[name] = selected[name]==opt ? null : opt;
-  render();
-}
+    function render() {
+        const container = document.getElementById("servicios");
+        container.innerHTML = "";
 
-function enviarWhatsApp(){
-  window.open("https://wa.me/5492645182955","_blank");
-}
+        services.forEach(s => {
+            const prices = country === "AR" ? s.ar : s.uy;
+            const keys = Object.keys(prices);
 
-function startTestimonials(){
-  const t = [
-    "Todo perfecto 💪",
-    "Funciona impecable 🔥",
-    "Recomendado 100%"
-  ];
-  let i=0;
-  setInterval(()=>{
-    document.getElementById("testimonials").innerHTML =
-      `<div class="glass p-6 rounded-2xl text-center">${t[i]}</div>`;
-    i=(i+1)%t.length;
-  },4000);
-}
+            let buttonsHTML = keys.map(p => {
+                const isSelected = selected[s.name] == p;
+                return `
+                    <button onclick="toggleService('${s.name}', ${p})"
+                            class="w-full py-4 px-5 rounded-2xl flex justify-between items-center font-medium text-base
+                                   ${isSelected ? 'selected-btn' : 'bg-white/80 hover:bg-white border border-[#f5d9c0] text-[#2c1f14]'}">
+                        <span class="flex items-center gap-2">
+                            ${p == 1 ? '📱 1 pantalla' : '📺 2 pantallas'}
+                        </span>
+                        <span class="text-xl font-semibold">$${prices[p]}</span>
+                    </button>
+                `;
+            }).join("");
 
-window.onload=()=>{
-  country = localStorage.getItem("country") || "AR";
-  render();
-  startTestimonials();
-};
+            container.innerHTML += `
+                <div class="service-card glass p-6 rounded-3xl">
+                    <div class="flex items-center gap-3 mb-5">
+                        <span class="text-3xl">${getServiceEmoji(s.name)}</span>
+                        <h3 class="font-semibold text-2xl">${s.name}</h3>
+                    </div>
+                    <div class="space-y-3">${buttonsHTML}</div>
+                </div>
+            `;
+        });
+    }
+
+    function toggleService(name, opt) {
+        if (selected[name] === opt) {
+            delete selected[name];
+        } else {
+            selected[name] = opt;
+        }
+        render();
+        updateSummary();
+    }
+
+    function enviarWhatsApp() {
+        const total = calculateTotal();
+        let message = `Hola Rodrigo! Quiero contratar:\n\n`;
+        
+        Object.keys(selected).forEach(key => {
+            const service = services.find(s => s.name === key);
+            const prices = country === "AR" ? service.ar : service.uy;
+            const qty = selected[key];
+            message += `• ${key} (${qty} pantalla${qty > 1 ? 's' : ''}) → $${prices[qty]}\n`;
+        });
+        
+        message += `\n✅ TOTAL: $${total}\nPaís: ${country === 'AR' ? 'Argentina' : 'Uruguay'}\n¡Gracias!`;
+
+        const encoded = encodeURIComponent(message);
+        window.open(`https://wa.me/5492645182955?text=${encoded}`, "_blank");
+    }
+
+    // Solo burbujas de chat recibidas
+    function startWhatsAppTestimonials() {
+        const testimonials = [
+            { text: "Todo perfecto, activación en 3 minutos 💪 Me llegó todo en orden", author: "Lucas M." },
+            { text: "Funciona impecable 🔥 Ya tengo Netflix y Disney+ con ellos", author: "Martina R." },
+            { text: "Recomendado 100%, el soporte es excelente y los precios imbatibles", author: "Diego P." },
+            { text: "Llevo 5 meses renovando y nunca tuve ningún problema. Gracias!", author: "Sofía López" },
+            { text: "ChatGPT Plus y Spotify al toque. Súper rápido todo 👌", author: "Javier Gómez" }
+        ];
+        
+        let i = 0;
+        const container = document.getElementById("whatsapp-testimonials");
+        
+        const update = () => {
+            container.innerHTML = `
+                <div class="message-bubble">${testimonials[i].text}<br><span class="text-xs opacity-70 block mt-1.5">${testimonials[i].author}</span></div>
+            `;
+            i = (i + 1) % testimonials.length;
+        };
+        
+        update();
+        setInterval(update, 3700);
+    }
+
+    window.onload = () => {
+        const savedCountry = localStorage.getItem("country");
+        if (savedCountry) country = savedCountry;
+        
+        render();
+        updateSummary();
+        startWhatsAppTestimonials();
+        
+        setTimeout(() => {
+            document.querySelectorAll('button[id^="btnAR"]').forEach(b => {
+                if (country === 'AR') b.classList.add('!bg-[#ff6200]', 'text-white');
+            });
+            document.querySelectorAll('button[id^="btnUY"]').forEach(b => {
+                if (country === 'UY') b.classList.add('!bg-[#ff6200]', 'text-white');
+            });
+        }, 100);
+    };
 </script>
 
 </body>
