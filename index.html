@@ -2,90 +2,77 @@
 <html lang="es" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MISAKROOS • Suscripciones Premium</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MISAKROOS • Premium</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root {
   --orange: #FF5C00; --yellow: #FFD200; --pink: #FF3CAC;
-  --cyan: #00CFFF;   --green: #00D97E;  --purple: #7C3AED;
-}
-[data-theme="dark"] {
-  --bg: #0B0B11; --bg2: #13131C; --card: #18181F; --card2: #1E1E28;
+  --bg: #0B0B11; --bg2: #13131C; --card: #18181F;
   --border: rgba(255,255,255,0.08); --text: #F2F2F7; --text2: #A0A0B0;
-  --ticker-bg: #100F17; --header-bg: rgba(11,11,17,0.95);
-  --wa-bg: #0E1511; --wa-bubble: #1B2E1E; --wa-txt: #C8F0C8;
+  --ticker-bg: #000; --header-bg: rgba(11,11,17,0.85);
 }
 [data-theme="light"] {
-  --bg: #F4F6FF; --bg2: #EAEDF9; --card: #FFFFFF; --card2: #EFF1FA;
-  --border: rgba(0,0,0,0.09); --text: #14142A; --text2: #50507A;
-  --ticker-bg: #14142A; --header-bg: rgba(244,246,255,0.95);
-  --wa-bg: #E8F5E9; --wa-bubble: #FFFFFF; --wa-txt: #1C2A1F;
+  --bg: #F4F6FF; --bg2: #FFFFFF; --card: #FFFFFF;
+  --border: rgba(0,0,0,0.06); --text: #14142A; --text2: #50507A;
+  --ticker-bg: #14142A; --header-bg: rgba(244,246,255,0.85);
 }
 
-*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; transition: background .4s; line-height: 1.5; }
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.4; overflow-x: hidden; }
+
+/* ══ MOBILE OPTIMIZED LAYOUT ══ */
+.container { width: 100%; max-width: 500px; margin: 0 auto; padding: 0 16px; }
 
 /* ══ TICKER ══ */
-.ticker-wrap { position: fixed; top: 0; width: 100%; height: 30px; background: var(--ticker-bg); z-index: 9000; overflow: hidden; display: flex; align-items: center; border-bottom: 1px solid rgba(255,92,0,0.2); }
-.ticker-track { display: flex; animation: tick 40s linear infinite; white-space: nowrap; }
-.ticker-track span { font-size: 11px; font-weight: 600; color: #fff; padding: 0 30px; }
+.ticker-wrap { position: fixed; top: 0; width: 100%; height: 28px; background: var(--ticker-bg); z-index: 1001; display: flex; align-items: center; border-bottom: 1px solid rgba(255,92,0,0.2); }
+.ticker-track { display: flex; animation: tick 30s linear infinite; white-space: nowrap; }
+.ticker-track span { font-size: 10px; font-weight: 700; color: #fff; padding-right: 50px; text-transform: uppercase; letter-spacing: 1px; }
 @keyframes tick { from { transform: translateX(0) } to { transform: translateX(-50%) } }
 
 /* ══ HEADER ══ */
-header { position: fixed; top: 30px; left: 0; right: 0; z-index: 800; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; background: var(--header-bg); backdrop-filter: blur(15px); border-bottom: 1px solid var(--border); }
-.logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; display: flex; align-items: center; gap: 8px; }
-.logo-mark { width: 32px; height: 32px; background: linear-gradient(135deg, var(--orange), var(--pink)); border-radius: 8px; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-.social-links { display: flex; gap: 12px; align-items: center; }
-.social-links a { text-decoration: none; font-size: 20px; transition: 0.3s; }
-.social-links a:hover { transform: scale(1.1); }
+header { position: fixed; top: 28px; left: 0; right: 0; z-index: 1000; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; background: var(--header-bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+.logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 16px; display: flex; align-items: center; gap: 6px; }
+.logo-mark { width: 28px; height: 28px; background: linear-gradient(135deg, var(--orange), var(--pink)); border-radius: 6px; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; }
 
-/* ══ HERO & RATING ══ */
-.hero { padding: 140px 24px 30px; max-width: 1100px; margin: 0 auto; text-align: center; }
-.hero-title { font-family: 'Syne', sans-serif; font-size: clamp(35px, 8vw, 60px); line-height: 0.95; font-weight: 800; margin-bottom: 10px; }
+/* ══ HERO ══ */
+.hero { padding: 110px 0 20px; text-align: center; }
+.hero-title { font-family: 'Syne', sans-serif; font-size: 42px; line-height: 0.9; margin-bottom: 15px; }
 .go { background: linear-gradient(90deg, var(--orange), var(--yellow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-.rating-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--card); padding: 8px 16px; border-radius: 30px; border: 1px solid var(--border); margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-.stars-static { color: var(--yellow); letter-spacing: 2px; font-size: 14px; }
+/* ══ COUNTRY TOGGLE (Pill style) ══ */
+.ctry-grp { display: grid; grid-template-columns: 1fr 1fr; background: var(--bg2); padding: 4px; border-radius: 12px; margin: 20px 0; border: 1px solid var(--border); }
+.ctry-btn { border: none; padding: 10px; border-radius: 9px; background: transparent; color: var(--text2); font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+.ctry-btn.active { background: var(--card); color: var(--orange); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 
-/* ══ WHATSAPP TESTIMONIALS ══ */
-.testi-section { max-width: 450px; margin: 0 auto 50px; padding: 0 20px; }
-.wa-phone { background: var(--wa-bg); border-radius: 25px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
-.wa-top { background: #075E54; padding: 10px 15px; color: #fff; display: flex; align-items: center; gap: 12px; }
-.wa-av { width: 35px; height: 35px; border-radius: 50%; background: #128C7E; display: flex; align-items: center; justify-content: center; font-weight: 700; border: 1px solid rgba(255,255,255,0.2); }
-.wa-body { padding: 20px; height: 150px; position: relative; }
-.wa-bwrap { width: 100%; opacity: 0; transform: translateY(10px); transition: 0.4s; position: absolute; bottom: 20px; left: 0; padding: 0 20px; }
-.wa-bwrap.active { opacity: 1; transform: translateY(0); }
-.bubble { background: var(--wa-bubble); color: var(--wa-txt); padding: 12px 15px; border-radius: 18px 18px 18px 0; font-size: 13px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+/* ══ WHATSAPP TESTIMONIALS (Compact) ══ */
+.wa-phone { background: var(--bg2); border-radius: 18px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 30px; }
+.wa-top { background: #075E54; padding: 8px 12px; color: #fff; display: flex; align-items: center; gap: 10px; font-size: 13px; }
+.wa-av { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 1px solid rgba(255,255,255,0.2); }
+.wa-body { padding: 15px; height: 100px; position: relative; }
+.bubble { background: var(--card); border: 1px solid var(--border); padding: 10px 12px; border-radius: 0 15px 15px 15px; font-size: 13px; max-width: 90%; }
 
-/* ══ CATALOG & PAIS ══ */
-.ctry-grp { display: flex; gap: 8px; justify-content: center; margin-bottom: 30px; }
-.ctry-btn { padding: 10px 20px; border-radius: 25px; border: 1px solid var(--border); background: var(--card); color: var(--text2); font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; }
-.ctry-btn.active { background: var(--orange); color: #fff; border-color: var(--orange); box-shadow: 0 5px 15px rgba(255,92,0,0.3); }
+/* ══ GRID & CARDS ══ */
+.cat-grid { display: grid; grid-template-columns: 1fr; gap: 12px; padding-bottom: 160px; }
+.service-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; }
+.service-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-weight: 700; }
+.opt-btn { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 14px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg2); color: var(--text); cursor: pointer; margin-top: 6px; font-size: 14px; transition: 0.2s; }
+.opt-btn.sel { border-color: var(--orange); background: rgba(255,92,0,0.05); border-width: 2px; }
 
-.cat-sec { max-width: 1100px; margin: 0 auto 60px; padding: 0 24px; }
-.cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
-.service-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; transition: 0.3s; }
-.opt-btn { width: 100%; display: flex; justify-content: space-between; padding: 12px; border-radius: 12px; border: 1px solid var(--border); background: var(--card2); color: var(--text); cursor: pointer; margin-top: 8px; font-family: inherit; }
-.opt-btn.sel { border-color: var(--orange); background: rgba(255,92,0,0.08); }
+/* ══ FLOATING SUMMARY ══ */
+#summary-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 2000; padding: 16px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+#summary-bar.visible { transform: translateY(0); }
+.sum-inner { background: var(--card); border: 1px solid var(--orange); border-radius: 20px; padding: 16px; box-shadow: 0 -10px 30px rgba(0,0,0,0.3); border-bottom: 4px solid var(--orange); }
+.wa-btn { background: #25D366; color: #fff; border: none; padding: 16px; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 16px; }
 
-/* ══ FAQ ══ */
-.faq-sec { max-width: 800px; margin: 0 auto 120px; padding: 0 24px; }
-.faq-title { text-align: center; font-family: 'Syne', sans-serif; margin-bottom: 25px; font-size: 28px; }
-details { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; padding: 15px; cursor: pointer; }
-summary { font-weight: 700; font-size: 14px; list-style: none; display: flex; justify-content: space-between; }
-summary::after { content: '+'; color: var(--orange); }
-details[open] summary::after { content: '-'; }
-details p { font-size: 13px; color: var(--text2); margin-top: 10px; }
-
-/* ══ SUMMARY ══ */
-#summary-bar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 500px; z-index: 1000; display: none; }
-#summary-bar.visible { display: block; animation: fadeInUp 0.4s ease; }
-.sum-inner { background: var(--card); border: 2px solid var(--orange); border-radius: 22px; padding: 18px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); backdrop-filter: blur(10px); }
-.wa-btn { background: #25D366; color: #fff; border: none; padding: 14px; border-radius: 14px; font-weight: 800; cursor: pointer; width: 100%; margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-
-@keyframes fadeInUp { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
+/* ══ PC ADAPTATION ══ */
+@media (min-width: 768px) {
+  .container { max-width: 1000px; }
+  .cat-grid { grid-template-columns: repeat(3, 1fr); }
+  .hero-title { font-size: 64px; }
+  #summary-bar { left: auto; right: 20px; width: 350px; bottom: 20px; }
+}
 </style>
 </head>
 <body>
@@ -94,86 +81,63 @@ details p { font-size: 13px; color: var(--text2); margin-top: 10px; }
 
 <header>
   <div class="logo"><div class="logo-mark">M</div> MISAKROOS</div>
-  <div class="social-links">
-    <a href="https://instagram.com/misakroos" target="_blank">📸</a>
-    <a href="https://wa.me/5492645182955" target="_blank">💬</a>
-    <button style="background:none; border:none; font-size:18px; cursor:pointer;" onclick="toggleTheme()">🌓</button>
+  <div style="display:flex; gap:12px;">
+    <button style="background:none; border:none; font-size:20px;" onclick="toggleTheme()">🌓</button>
+    <a href="https://wa.me/5492645182955" style="text-decoration:none; font-size:20px;">💬</a>
   </div>
 </header>
 
-<section class="hero">
-  <div class="rating-badge">
-    <span class="stars-static">★★★★★</span>
-    <span style="font-size:12px; font-weight:700;">4.9/5 <span style="opacity:0.6; font-weight:400;">(+150 reseñas)</span></span>
-  </div>
-  <h1 class="hero-title">SUSCRIPCIONES<br><span class="go">PREMIUM</span></h1>
-  <div class="ctry-grp">
-    <button class="ctry-btn active" id="btn-AR" onclick="setCountry('AR')">🇦🇷 ARGENTINA</button>
-    <button class="ctry-btn" id="btn-UY" onclick="setCountry('UY')">🇺🇾 URUGUAY</button>
-  </div>
-</section>
+<div class="container">
+  <section class="hero">
+    <div style="font-size:11px; font-weight:700; opacity:0.6; margin-bottom:8px; letter-spacing:1px;">★ ★ ★ ★ ★ +150 CLIENTES</div>
+    <h1 class="hero-title">PREMIUM<br><span class="go">SUBS</span></h1>
+    
+    <div class="ctry-grp">
+      <button class="ctry-btn active" id="btn-AR" onclick="setCountry('AR')">🇦🇷 ARGENTINA</button>
+      <button class="ctry-btn" id="btn-UY" onclick="setCountry('UY')">🇺🇾 URUGUAY</button>
+    </div>
+  </section>
 
-<section class="testi-section">
-  <div class="wa-phone">
+  <section class="wa-phone">
     <div class="wa-top" id="wa-header"></div>
     <div class="wa-body" id="wa-body"></div>
-  </div>
-</section>
+  </section>
 
-<section class="cat-sec">
   <div class="cat-grid" id="servicios"></div>
-</section>
-
-<section class="faq-sec">
-  <h2 class="faq-title">Preguntas Frecuentes</h2>
-  <details><summary>¿Cuánto tardan en entregar?</summary><p>La activación suele ser inmediata, con un máximo de 5 a 15 minutos tras confirmar el pago.</p></details>
-  <details><summary>¿Qué medios de pago aceptan?</summary><p>Argentina: Mercado Pago, Transferencia, Lemon. Uruguay: Prex, MiDinero, Transferencia ITAÚ/BROU.</p></details>
-  <details><summary>¿Tengo garantía?</summary><p>Sí, cubrimos el 100% del tiempo contratado. Si hay algún problema, lo resolvemos o cambiamos la cuenta.</p></details>
-  <details><summary>¿Puedo renovar mi propia cuenta?</summary><p>En servicios como Spotify y YouTube sí. En otros como Netflix, entregamos perfiles en cuentas ya configuradas.</p></details>
-</section>
+</div>
 
 <div id="summary-bar">
   <div class="sum-inner">
-    <div id="selected-list"></div>
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; border-top:1px solid var(--border); padding-top:12px;">
-      <span style="font-weight:800; font-size:24px;" id="total-amount" class="go">$0</span>
-      <button class="wa-btn" onclick="enviarWhatsApp()">Pedir por WhatsApp</button>
+    <div id="selected-list" style="max-height: 80px; overflow-y: auto;"></div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+      <span style="font-weight:800; font-size:22px;" id="total-amount" class="go">$0</span>
+      <button class="wa-btn" onclick="enviarWhatsApp()">Pedir ahora</button>
     </div>
   </div>
 </div>
 
 <script>
-const references = [
-  {name: "Marcos G.", loc: "Rosario, AR", text: "Impecable la atención. Me activaron Disney en un toque. 🔥"},
-  {name: "Sofía R.", loc: "Montevideo, UY", text: "Segunda vez que renuevo Spotify y cero problemas. Confiables!"},
-  {name: "Juan Ignacio", loc: "Córdoba, AR", text: "El mejor precio de Netflix que encontré. Recomendado."},
-  {name: "Valentina L.", loc: "Punta del Este, UY", text: "Excelente soporte, me ayudaron con la tele rápido."},
-  {name: "Cristian", loc: "Buenos Aires, AR", text: "ChatGPT Plus activado en minutos. Ideal para laburar."},
-  {name: "Lucía M.", loc: "Salto, UY", text: "Muy amables. Pagué y me pasaron los datos al toque."},
-  {name: "Hernán", loc: "Mendoza, AR", text: "Todo perfecto con el combo de Max. Calidad 4K real."},
-  {name: "Belén", loc: "Canelones, UY", text: "Increíble la rapidez. En 2 minutos ya estaba mirando."},
-  {name: "Roberto F.", loc: "La Plata, AR", text: "Llevo 4 meses y nunca se cayó la cuenta. Muy serios."},
-  {name: "Micaela", loc: "Paysandú, UY", text: "Genial el servicio de YouTube. Chau anuncios!"}
-];
-
 const services = [
   {name:'Netflix', emoji:'🎥', ar:{1:7500,2:12900}, uy:{1:250,2:450}},
   {name:'Disney+', emoji:'🏰', ar:{1:6500,2:12000}, uy:{1:300,2:550}},
   {name:'Max', emoji:'🌀', ar:{1:4500,2:8000}, uy:{1:150,2:280}},
-  {name:'Prime Video', emoji:'📦', ar:{1:4500}, uy:{1:150}},
-  {name:'Paramount+', emoji:'🌟', ar:{1:4000}, uy:{1:140}},
-  {name:'Spotify', emoji:'🎵', ar:{1:4500}, uy:{1:190}},
   {name:'YouTube', emoji:'📺', ar:{1:4500}, uy:{1:190}},
+  {name:'Spotify', emoji:'🎵', ar:{1:4500}, uy:{1:190}},
   {name:'ChatGPT+', emoji:'🤖', ar:{1:8000}, uy:{1:400}},
-  {name:'Apple TV+', emoji:'🍎', ar:{1:4500}, uy:{1:180}},
-  {name:'Crunchyroll', emoji:'🍥', ar:{1:4500}, uy:{1:170}},
   {name:'Canva Pro', emoji:'🎨', ar:{1:5500}, uy:{1:220}}
 ];
 
-let country = 'AR', selected = {}, refIndex = 0;
+const refs = [
+  {n: "Marcos G.", l: "Rosario", t: "Atención impecable. Disney activado en un toque! 🔥"},
+  {n: "Sofía R.", l: "Montevideo", t: "Segunda vez que renuevo. Súper confiables."},
+  {n: "Juan I.", l: "Córdoba", t: "El mejor precio de Netflix. Muy recomendado."},
+  {n: "Vale L.", l: "Punta del Este", t: "Soporte excelente, me ayudaron con la TV rápido."}
+];
+
+let country = 'AR', selected = {}, refIdx = 0;
 
 function setCountry(c) {
-  country = c;
+  country = c; selected = {};
   document.querySelectorAll('.ctry-btn').forEach(b => b.classList.toggle('active', b.id === `btn-${c}`));
   render(); updateSummary();
 }
@@ -193,7 +157,7 @@ function render() {
         <span>${qty} Pantalla${qty>1?'s':''}</span>
         <strong>$${prices[qty].toLocaleString()}</strong>
       </button>`).join('');
-    return `<div class="service-card"><div style="font-size:18px; margin-bottom:12px;">${s.emoji} <strong>${s.name}</strong></div>${btns}</div>`;
+    return `<div class="service-card"><div class="service-header">${s.emoji} ${s.name}</div>${btns}</div>`;
   }).join('');
 }
 
@@ -206,24 +170,22 @@ function updateSummary() {
     const s = services.find(x=>x.name===k);
     const p = (country === 'AR' ? s.ar : s.uy)[selected[k]];
     total += p;
-    return `<div style="font-size:13px; display:flex; justify-content:space-between; margin-bottom:4px;"><span>${k} (${selected[k]}P)</span><b>$${p.toLocaleString()}</b></div>`;
+    return `<div style="font-size:12px; display:flex; justify-content:space-between;"><span>${k}</span><b>$${p.toLocaleString()}</b></div>`;
   }).join('');
   document.getElementById('total-amount').textContent = `$${total.toLocaleString()}`;
   bar.classList.add('visible');
 }
 
-function cycleReferences() {
-  const header = document.getElementById('wa-header');
-  const body = document.getElementById('wa-body');
-  const ref = references[refIndex];
-  header.innerHTML = `<div class="wa-av" style="background:hsl(${refIndex * 40}, 60%, 40%)">${ref.name[0]}</div><div><strong>${ref.name}</strong><br><span style="font-size:10px; opacity:0.8;">${ref.loc}</span></div>`;
-  body.innerHTML = `<div class="wa-bwrap active"><div class="bubble">${ref.text}</div></div>`;
-  refIndex = (refIndex + 1) % references.length;
+function cycleRefs() {
+  const h = document.getElementById('wa-header'), b = document.getElementById('wa-body'), r = refs[refIdx];
+  h.innerHTML = `<div class="wa-av" style="background:hsl(${refIdx*60},70%,45%)">${r.n[0]}</div><div><strong>${r.n}</strong> • <span style="opacity:0.7">${r.l}</span></div>`;
+  b.innerHTML = `<div class="bubble">${r.t}</div>`;
+  refIdx = (refIdx + 1) % refs.length;
 }
 
 function toggleTheme() {
-  const html = document.documentElement;
-  html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  const h = document.documentElement;
+  h.setAttribute('data-theme', h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
 }
 
 function enviarWhatsApp() {
@@ -234,12 +196,11 @@ function enviarWhatsApp() {
 }
 
 const ticker = document.getElementById('ticker');
-const msgText = " ⚡ ACTIVACIÓN INMEDIATA • GARANTÍA TOTAL • SOPORTE 24/7 • ";
-ticker.innerHTML = `<span>${msgText.repeat(15)}</span><span>${msgText.repeat(15)}</span>`;
+const txt = " ⚡ ACTIVACIÓN INMEDIATA • GARANTÍA TOTAL • SOPORTE 24/7 • ";
+ticker.innerHTML = `<span>${txt.repeat(10)}</span><span>${txt.repeat(10)}</span>`;
 
-setInterval(cycleReferences, 4000);
-cycleReferences();
-render();
+setInterval(cycleRefs, 4000);
+cycleRefs(); render();
 </script>
 </body>
 </html>
