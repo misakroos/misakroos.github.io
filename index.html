@@ -3,204 +3,598 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MISAKROOS • Premium</title>
+<title>MISAKROOS • Premium Subscriptions</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --orange: #FF5C00; --yellow: #FFD200; --pink: #FF3CAC;
-  --bg: #0B0B11; --bg2: #13131C; --card: #18181F;
-  --border: rgba(255,255,255,0.08); --text: #F2F2F7; --text2: #A0A0B0;
-  --ticker-bg: #000; --header-bg: rgba(11,11,17,0.85);
+  --orange:#FF4500;--orange2:#FF6B00;--yellow:#FFD000;
+  --pink:#FF2D78;--cyan:#00D4FF;--green:#22C55E;--green2:#16A34A;
+  --bg:#06060F;--bg2:#0C0C1A;--card:#111120;--card2:#171728;
+  --border:rgba(255,255,255,0.07);--border-hot:rgba(255,69,0,0.45);
+  --text:#F0F0FA;--text2:#8080A8;--text3:#3A3A5A;
+  --header:rgba(6,6,15,0.92);
+  --r:18px;--r2:13px;--t:.22s cubic-bezier(.4,0,.2,1);
 }
-[data-theme="light"] {
-  --bg: #F4F6FF; --bg2: #FFFFFF; --card: #FFFFFF;
-  --border: rgba(0,0,0,0.06); --text: #14142A; --text2: #50507A;
-  --ticker-bg: #14142A; --header-bg: rgba(244,246,255,0.85);
+[data-theme="light"]{
+  --bg:#EEEEFF;--bg2:#F8F8FF;--card:#FFFFFF;--card2:#F0F0FF;
+  --border:rgba(0,0,0,0.07);--border-hot:rgba(255,69,0,0.4);
+  --text:#0A0A1E;--text2:#5050A0;--text3:#B0B0D0;
+  --header:rgba(238,238,255,0.93);
 }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);
+line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
-*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.4; overflow-x: hidden; }
+/* CANVAS */
+#cv{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5}
 
-/* ══ MOBILE OPTIMIZED LAYOUT ══ */
-.container { width: 100%; max-width: 500px; margin: 0 auto; padding: 0 16px; }
+/* GRAIN */
+body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:.022;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")}
 
-/* ══ TICKER ══ */
-.ticker-wrap { position: fixed; top: 0; width: 100%; height: 28px; background: var(--ticker-bg); z-index: 1001; display: flex; align-items: center; border-bottom: 1px solid rgba(255,92,0,0.2); }
-.ticker-track { display: flex; animation: tick 30s linear infinite; white-space: nowrap; }
-.ticker-track span { font-size: 10px; font-weight: 700; color: #fff; padding-right: 50px; text-transform: uppercase; letter-spacing: 1px; }
-@keyframes tick { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+/* GLOW CURSOR */
+#gc{position:fixed;width:320px;height:320px;border-radius:50%;pointer-events:none;z-index:1;
+background:radial-gradient(circle,rgba(255,69,0,.08) 0%,transparent 70%);
+transform:translate(-50%,-50%);transition:left .1s,top .1s;filter:blur(24px)}
 
-/* ══ HEADER ══ */
-header { position: fixed; top: 28px; left: 0; right: 0; z-index: 1000; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; background: var(--header-bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
-.logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 16px; display: flex; align-items: center; gap: 6px; }
-.logo-mark { width: 28px; height: 28px; background: linear-gradient(135deg, var(--orange), var(--pink)); border-radius: 6px; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+/* TICKER */
+.ticker-wrap{position:fixed;top:0;width:100%;height:26px;background:var(--orange);
+z-index:1001;display:flex;align-items:center;overflow:hidden}
+.ticker-track{display:flex;animation:tick 22s linear infinite;white-space:nowrap}
+.ticker-track span{font-size:9px;font-weight:800;color:#000;padding-right:44px;
+text-transform:uppercase;letter-spacing:1.5px}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* ══ HERO ══ */
-.hero { padding: 110px 0 20px; text-align: center; }
-.hero-title { font-family: 'Syne', sans-serif; font-size: 42px; line-height: 0.9; margin-bottom: 15px; }
-.go { background: linear-gradient(90deg, var(--orange), var(--yellow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+/* HEADER */
+header{position:fixed;top:26px;left:0;right:0;z-index:1000;padding:0 16px;height:52px;
+display:flex;align-items:center;justify-content:space-between;
+background:var(--header);backdrop-filter:blur(24px) saturate(180%);
+-webkit-backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid var(--border)}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;
+display:flex;align-items:center;gap:8px;color:var(--text)}
+.logo-mark{width:32px;height:32px;background:linear-gradient(145deg,var(--orange),var(--pink));
+border-radius:8px;display:flex;align-items:center;justify-content:center;
+font-size:15px;font-weight:900;color:#fff;box-shadow:0 0 18px rgba(255,69,0,.4)}
+.icon-btn{width:36px;height:36px;border-radius:10px;background:var(--card2);
+border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+font-size:16px;cursor:pointer;transition:var(--t);color:var(--text);text-decoration:none}
+.icon-btn:active{transform:scale(.92)}
+.hdr-r{display:flex;gap:6px;align-items:center}
 
-/* ══ COUNTRY TOGGLE (Pill style) ══ */
-.ctry-grp { display: grid; grid-template-columns: 1fr 1fr; background: var(--bg2); padding: 4px; border-radius: 12px; margin: 20px 0; border: 1px solid var(--border); }
-.ctry-btn { border: none; padding: 10px; border-radius: 9px; background: transparent; color: var(--text2); font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; }
-.ctry-btn.active { background: var(--card); color: var(--orange); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+/* CONTAINER */
+.wrap{width:100%;max-width:480px;margin:0 auto;padding:0 14px;position:relative;z-index:2}
 
-/* ══ WHATSAPP TESTIMONIALS (Compact) ══ */
-.wa-phone { background: var(--bg2); border-radius: 18px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 30px; }
-.wa-top { background: #075E54; padding: 8px 12px; color: #fff; display: flex; align-items: center; gap: 10px; font-size: 13px; }
-.wa-av { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 1px solid rgba(255,255,255,0.2); }
-.wa-body { padding: 15px; height: 100px; position: relative; }
-.bubble { background: var(--card); border: 1px solid var(--border); padding: 10px 12px; border-radius: 0 15px 15px 15px; font-size: 13px; max-width: 90%; }
+/* HERO */
+.hero{padding:96px 0 0;text-align:center;position:relative}
+.hero-blob{position:absolute;top:40px;left:50%;transform:translateX(-50%);
+width:380px;height:280px;pointer-events:none;
+background:radial-gradient(ellipse,rgba(255,69,0,.2) 0%,transparent 70%);
+filter:blur(55px);border-radius:50%;animation:blobPulse 4s ease-in-out infinite}
+@keyframes blobPulse{0%,100%{opacity:.7;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.08)}}
 
-/* ══ GRID & CARDS ══ */
-.cat-grid { display: grid; grid-template-columns: 1fr; gap: 12px; padding-bottom: 160px; }
-.service-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; }
-.service-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-weight: 700; }
-.opt-btn { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 14px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg2); color: var(--text); cursor: pointer; margin-top: 6px; font-size: 14px; transition: 0.2s; }
-.opt-btn.sel { border-color: var(--orange); background: rgba(255,92,0,0.05); border-width: 2px; }
+.badge{display:inline-flex;align-items:center;gap:5px;
+background:rgba(255,208,0,.1);border:1px solid rgba(255,208,0,.3);color:var(--yellow);
+padding:4px 13px;border-radius:100px;font-size:10px;font-weight:700;
+letter-spacing:1.2px;text-transform:uppercase;margin-bottom:12px;animation:fadeUp .7s .1s both}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:82px;line-height:.88;
+letter-spacing:2px;margin-bottom:8px;animation:fadeUp .7s .15s both}
+.grad{background:linear-gradient(90deg,var(--orange) 0%,var(--yellow) 55%,var(--pink) 100%);
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:14px;color:var(--text2);margin-bottom:18px;line-height:1.7;animation:fadeUp .7s .25s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
 
-/* ══ FLOATING SUMMARY ══ */
-#summary-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 2000; padding: 16px; transform: translateY(100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-#summary-bar.visible { transform: translateY(0); }
-.sum-inner { background: var(--card); border: 1px solid var(--orange); border-radius: 20px; padding: 16px; box-shadow: 0 -10px 30px rgba(0,0,0,0.3); border-bottom: 4px solid var(--orange); }
-.wa-btn { background: #25D366; color: #fff; border: none; padding: 16px; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 16px; }
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px;animation:fadeUp .7s .35s both}
+.stat-box{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);
+padding:12px 6px;text-align:center;transition:border-color var(--t)}
+.stat-box:hover{border-color:var(--border-hot)}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:1px;
+background:linear-gradient(135deg,var(--orange),var(--yellow));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-lbl{font-size:9px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.8px}
 
-/* ══ PC ADAPTATION ══ */
-@media (min-width: 768px) {
-  .container { max-width: 1000px; }
-  .cat-grid { grid-template-columns: repeat(3, 1fr); }
-  .hero-title { font-size: 64px; }
-  #summary-bar { left: auto; right: 20px; width: 350px; bottom: 20px; }
+/* TRUST PILLS */
+.trust-strip{display:flex;gap:6px;overflow-x:auto;padding:0 0 14px;
+scrollbar-width:none;-webkit-overflow-scrolling:touch;animation:fadeUp .7s .4s both}
+.trust-strip::-webkit-scrollbar{display:none}
+.trust-pill{flex:0 0 auto;background:var(--card2);border:1px solid var(--border);
+border-radius:100px;padding:6px 12px;font-size:11px;font-weight:600;
+color:var(--text2);white-space:nowrap;display:flex;align-items:center;gap:5px}
+.ldot{width:6px;height:6px;border-radius:50%;background:var(--green);
+animation:lpulse 1.5s ease-in-out infinite;flex-shrink:0}
+@keyframes lpulse{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}50%{box-shadow:0 0 0 6px rgba(34,197,94,0)}}
+
+/* COUNTRY */
+.ctry-grp{display:grid;grid-template-columns:1fr 1fr;background:var(--card2);
+padding:4px;border-radius:14px;margin:0 0 22px;border:1px solid var(--border);
+animation:fadeUp .7s .5s both}
+.ctry-btn{border:none;padding:13px 8px;border-radius:11px;background:transparent;
+color:var(--text2);font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;
+cursor:pointer;transition:var(--t)}
+.ctry-btn.active{background:var(--card);color:var(--orange);box-shadow:0 2px 14px rgba(0,0,0,.3)}
+.ctry-btn:active{transform:scale(.96)}
+
+/* SECTION LABEL */
+.sec-lbl{font-size:10px;font-weight:800;color:var(--text3);
+letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;padding:0 2px}
+
+/* SOCIAL PROOF */
+.sp-wrap{margin-bottom:24px}
+.sp-head{font-size:11px;font-weight:800;color:var(--text3);
+letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
+.sp-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;
+scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.sp-scroll::-webkit-scrollbar{display:none}
+.sp-card{flex:0 0 230px;background:var(--card);border:1px solid var(--border);
+border-radius:var(--r);padding:15px;position:relative;overflow:hidden;
+transition:transform var(--t),border-color var(--t)}
+.sp-card:hover{transform:translateY(-2px);border-color:var(--border-hot)}
+.sp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+background:linear-gradient(90deg,var(--orange),var(--pink))}
+.sp-av-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.sp-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;
+justify-content:center;font-weight:800;font-size:13px;color:#fff;flex-shrink:0}
+.sp-name{font-size:13px;font-weight:700}
+.sp-loc{font-size:10px;color:var(--text3)}
+.sp-stars{color:var(--yellow);font-size:12px;margin-bottom:7px;letter-spacing:1px}
+.sp-txt{font-size:12px;color:var(--text2);line-height:1.6}
+.sp-time{font-size:10px;color:var(--text3);margin-top:6px;font-style:italic}
+.verified{display:inline-flex;align-items:center;gap:3px;background:rgba(34,197,94,.1);
+border:1px solid rgba(34,197,94,.2);color:var(--green);
+padding:2px 7px;border-radius:100px;font-size:9px;font-weight:700;margin-top:5px}
+
+/* METRICS */
+.metrics-bar{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:26px}
+.m-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);
+padding:14px;display:flex;align-items:center;gap:10px;
+transition:border-color var(--t)}
+.m-card:hover{border-color:var(--border-hot)}
+.m-icon{font-size:26px;flex-shrink:0}
+.m-val{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.5px;
+background:linear-gradient(135deg,var(--orange),var(--yellow));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.m-lbl{font-size:9px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+
+/* SERVICE CARDS */
+.cat-grid{display:grid;grid-template-columns:1fr;gap:10px}
+.svc-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);
+overflow:hidden;transition:border-color var(--t),box-shadow var(--t)}
+.svc-card.on{border-color:var(--border-hot);box-shadow:0 0 26px rgba(255,69,0,.13)}
+.svc-hdr{display:flex;align-items:center;gap:12px;padding:14px 16px 0}
+.svc-logo-box{width:46px;height:46px;border-radius:12px;
+display:flex;align-items:center;justify-content:center;
+flex-shrink:0;overflow:hidden;padding:4px}
+.svc-nm{font-size:15px;font-weight:800}
+.svc-tg{font-size:10px;color:var(--text3);font-weight:500;margin-top:1px}
+.hot-tag{display:inline-block;background:rgba(255,69,0,.15);
+border:1px solid rgba(255,69,0,.3);color:var(--orange);
+padding:1px 7px;border-radius:100px;font-size:9px;font-weight:800;letter-spacing:.5px;vertical-align:middle;margin-left:5px}
+.opts-wrap{padding:10px 12px 13px;display:flex;flex-direction:column;gap:7px}
+.opt-btn{width:100%;display:flex;justify-content:space-between;align-items:center;
+padding:13px 14px;border-radius:var(--r2);border:1.5px solid var(--border);
+background:var(--card2);color:var(--text);cursor:pointer;transition:var(--t);
+font-family:'Outfit',sans-serif;position:relative;overflow:hidden}
+.opt-btn::before{content:'';position:absolute;inset:0;
+background:linear-gradient(90deg,rgba(255,69,0,.12),transparent);opacity:0;transition:opacity var(--t)}
+.opt-btn.on{border-color:var(--orange)}.opt-btn.on::before{opacity:1}
+.opt-btn:active{transform:scale(.98)}
+.opt-l{display:flex;flex-direction:column;align-items:flex-start;gap:1px;z-index:1}
+.opt-lbl{font-size:13px;font-weight:700}.opt-sub{font-size:10px;color:var(--text3)}
+.opt-r{display:flex;align-items:center;gap:8px;z-index:1}
+.opt-price{font-size:19px;font-weight:800}.opt-price.h{color:var(--orange)}
+.opt-chk{width:20px;height:20px;border-radius:50%;background:var(--orange);
+display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;
+transform:scale(0);transition:transform var(--t)}
+.opt-btn.on .opt-chk{transform:scale(1)}
+
+/* FAQ */
+.faq-sec{margin:32px 0 24px}
+.faq-ttl{font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:1px;margin-bottom:4px}
+.faq-sub{font-size:13px;color:var(--text2);margin-bottom:18px}
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);
+overflow:hidden;margin-bottom:8px;transition:border-color var(--t)}
+.faq-item.open{border-color:var(--border-hot)}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;
+padding:16px;background:none;border:none;color:var(--text);
+font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;
+cursor:pointer;text-align:left;gap:12px}
+.faq-ico{width:24px;height:24px;border-radius:7px;background:var(--card2);
+border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+font-size:14px;flex-shrink:0;transition:transform var(--t),background var(--t),color var(--t)}
+.faq-item.open .faq-ico{transform:rotate(45deg);background:var(--orange);border-color:var(--orange);color:#fff}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1)}
+.faq-a-in{padding:0 16px 16px;font-size:13px;color:var(--text2);line-height:1.7}
+.faq-item.open .faq-a{max-height:220px}
+
+/* SUMMARY BAR */
+#sb{position:fixed;bottom:0;left:0;right:0;z-index:2000;padding:12px 14px 22px;
+transform:translateY(110%);transition:transform .4s cubic-bezier(.175,.885,.32,1.275)}
+#sb.vis{transform:translateY(0)}
+.sb-in{background:var(--card);border:1.5px solid var(--border-hot);border-radius:22px;
+padding:14px 16px;box-shadow:0 -20px 60px rgba(0,0,0,.6)}
+.sb-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.sb-ttl{font-size:11px;font-weight:800;color:var(--text3);
+letter-spacing:1.5px;text-transform:uppercase}
+.sb-clr{font-size:11px;color:var(--orange);cursor:pointer;font-weight:700}
+.sb-items{max-height:90px;overflow-y:auto;scrollbar-width:none;margin-bottom:12px}
+.sb-items::-webkit-scrollbar{display:none}
+.sb-row{display:flex;justify-content:space-between;align-items:center;
+padding:4px 0;border-bottom:1px solid var(--border)}
+.sb-row:last-child{border-bottom:none}
+.sb-nm{font-size:13px;font-weight:600;color:var(--text2)}
+.sb-pr{font-size:13px;font-weight:800}
+.sb-ft{display:flex;align-items:center;gap:12px}
+.tot-blk{flex:1}
+.tot-lbl{font-size:10px;color:var(--text3);font-weight:700;
+text-transform:uppercase;letter-spacing:1px}
+.tot-amt{font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:1px;
+line-height:1;color:var(--orange)}
+.wa-btn{background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;
+border:none;padding:0 20px;height:54px;border-radius:14px;
+font-family:'Outfit',sans-serif;font-weight:800;font-size:14px;cursor:pointer;
+flex-shrink:0;display:flex;align-items:center;gap:7px;
+box-shadow:0 4px 20px rgba(34,197,94,.35);transition:var(--t);white-space:nowrap}
+.wa-btn:active{transform:scale(.96)}
+
+/* FLOAT */
+#waf{position:fixed;right:16px;bottom:22px;z-index:1999;width:54px;height:54px;
+border-radius:16px;background:linear-gradient(135deg,var(--green),var(--green2));
+display:flex;align-items:center;justify-content:center;font-size:26px;
+text-decoration:none;box-shadow:0 4px 24px rgba(34,197,94,.45);
+transition:opacity var(--t);animation:fb 2.8s ease-in-out infinite}
+#waf.hid{opacity:0;pointer-events:none}
+@keyframes fb{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-7px) rotate(-4deg)}}
+
+/* FOOTER */
+.footer{padding:30px 0 200px;text-align:center;color:var(--text3);font-size:11px;line-height:2.2}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .6s,transform .6s}
+.rv.in{opacity:1;transform:none}
+
+/* PC */
+@media(min-width:640px){
+  .wrap{max-width:960px}
+  .hero{padding-top:108px}
+  .hero-title{font-size:120px}
+  .hero-blob{width:700px;height:360px}
+  .cat-grid{grid-template-columns:repeat(2,1fr);gap:14px}
+  .metrics-bar{grid-template-columns:repeat(4,1fr)}
+  #sb{left:auto;right:20px;width:390px;bottom:20px;padding:0}
+  #waf{display:none}
+}
+@media(min-width:1024px){
+  .cat-grid{grid-template-columns:repeat(3,1fr)}
+  .hero-title{font-size:140px}
 }
 </style>
 </head>
 <body>
 
+<canvas id="cv"></canvas>
+<div id="gc"></div>
+
 <div class="ticker-wrap"><div class="ticker-track" id="ticker"></div></div>
 
 <header>
-  <div class="logo"><div class="logo-mark">M</div> MISAKROOS</div>
-  <div style="display:flex; gap:12px;">
-    <button style="background:none; border:none; font-size:20px;" onclick="toggleTheme()">🌓</button>
-    <a href="https://wa.me/5492645182955" style="text-decoration:none; font-size:20px;">💬</a>
+  <div class="logo"><div class="logo-mark">M</div>MISAKROOS</div>
+  <div class="hdr-r">
+    <button class="icon-btn" onclick="toggleTheme()">🌓</button>
+    <a href="https://wa.me/5492645182955" class="icon-btn">💬</a>
   </div>
 </header>
 
-<div class="container">
+<a href="https://wa.me/5492645182955" id="waf">💬</a>
+
+<div class="wrap">
+
+  <!-- HERO -->
   <section class="hero">
-    <div style="font-size:11px; font-weight:700; opacity:0.6; margin-bottom:8px; letter-spacing:1px;">★ ★ ★ ★ ★ +150 CLIENTES</div>
-    <h1 class="hero-title">PREMIUM<br><span class="go">SUBS</span></h1>
-    
+    <div class="hero-blob"></div>
+    <div class="badge">⚡ +150 clientes activos en AR y UY</div>
+    <h1 class="hero-title">PREMI<span class="grad">UM</span><br>SUBS</h1>
+    <p class="hero-sub">Streaming, música, IA y diseño.<br>Activación inmediata · Precio fijo · Garantía real.</p>
+
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-num" id="c1">0+</div><div class="stat-lbl">Clientes</div></div>
+      <div class="stat-box"><div class="stat-num" id="c2">0</div><div class="stat-lbl">Servicios</div></div>
+      <div class="stat-box"><div class="stat-num" id="c3">0%</div><div class="stat-lbl">Garantía</div></div>
+    </div>
+
+    <div class="trust-strip">
+      <div class="trust-pill"><span class="ldot"></span>En línea ahora</div>
+      <div class="trust-pill">⚡ Activación en minutos</div>
+      <div class="trust-pill">🔐 Pago 100% seguro</div>
+      <div class="trust-pill">🕐 Soporte 24/7</div>
+      <div class="trust-pill">🔁 Renovación garantizada</div>
+      <div class="trust-pill">💳 Sin tarjeta propia</div>
+    </div>
+
     <div class="ctry-grp">
-      <button class="ctry-btn active" id="btn-AR" onclick="setCountry('AR')">🇦🇷 ARGENTINA</button>
-      <button class="ctry-btn" id="btn-UY" onclick="setCountry('UY')">🇺🇾 URUGUAY</button>
+      <button class="ctry-btn active" id="btn-AR" onclick="setCountry('AR')">🇦🇷 Argentina</button>
+      <button class="ctry-btn" id="btn-UY" onclick="setCountry('UY')">🇺🇾 Uruguay</button>
     </div>
   </section>
 
-  <section class="wa-phone">
-    <div class="wa-top" id="wa-header"></div>
-    <div class="wa-body" id="wa-body"></div>
-  </section>
+  <!-- SOCIAL PROOF -->
+  <div class="sp-wrap rv">
+    <div class="sp-head">Lo que dicen nuestros clientes</div>
+    <div class="sp-scroll" id="sp-scroll"></div>
+  </div>
 
-  <div class="cat-grid" id="servicios"></div>
+  <!-- METRICS -->
+  <div class="metrics-bar rv">
+    <div class="m-card"><span class="m-icon">🚀</span><div><div class="m-val">5min</div><div class="m-lbl">Activación promedio</div></div></div>
+    <div class="m-card"><span class="m-icon">⭐</span><div><div class="m-val">4.9</div><div class="m-lbl">Rating clientes</div></div></div>
+    <div class="m-card"><span class="m-icon">🔄</span><div><div class="m-val">98%</div><div class="m-lbl">Tasa renovación</div></div></div>
+    <div class="m-card"><span class="m-icon">💬</span><div><div class="m-val">24/7</div><div class="m-lbl">Soporte activo</div></div></div>
+  </div>
+
+  <!-- SERVICES -->
+  <div class="sec-lbl">Elegí tus servicios</div>
+  <div class="cat-grid rv" id="servicios"></div>
+
+  <!-- FAQ -->
+  <div class="faq-sec rv">
+    <div class="faq-ttl">PREGUNTAS<br><span class="grad">FRECUENTES</span></div>
+    <div class="faq-sub">Todo lo que necesitás saber antes de comprar.</div>
+    <div id="faq-list"></div>
+  </div>
+
+  <div class="footer rv">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:2px;color:var(--text)">MISAKROOS</div>
+    <div>Argentina 🇦🇷 · Uruguay 🇺🇾</div>
+    <a href="https://wa.me/5492645182955" style="color:var(--orange);text-decoration:none;font-weight:700">+54 9 264 518-2955</a>
+    <div style="opacity:.4;margin-top:4px">© 2025 MISAKROOS · Todos los derechos reservados</div>
+  </div>
+
 </div>
 
-<div id="summary-bar">
-  <div class="sum-inner">
-    <div id="selected-list" style="max-height: 80px; overflow-y: auto;"></div>
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
-      <span style="font-weight:800; font-size:22px;" id="total-amount" class="go">$0</span>
-      <button class="wa-btn" onclick="enviarWhatsApp()">Pedir ahora</button>
+<!-- SUMMARY BAR -->
+<div id="sb">
+  <div class="sb-in">
+    <div class="sb-hdr">
+      <span class="sb-ttl">Tu pedido</span>
+      <span class="sb-clr" onclick="clearAll()">Borrar todo ×</span>
+    </div>
+    <div class="sb-items" id="sel-list"></div>
+    <div class="sb-ft">
+      <div class="tot-blk">
+        <div class="tot-lbl">Total</div>
+        <div class="tot-amt" id="tot">$0</div>
+      </div>
+      <button class="wa-btn" onclick="sendWA()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M5.077 19.928A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10a9.96 9.96 0 0 1-5.593-1.705L2 22l3.077-2.072z"/></svg>
+        Pedir ahora
+      </button>
     </div>
   </div>
 </div>
 
 <script>
-const services = [
-  {name:'Netflix', emoji:'🎥', ar:{1:7500,2:12900}, uy:{1:250,2:450}},
-  {name:'Disney+', emoji:'🏰', ar:{1:6500,2:12000}, uy:{1:300,2:550}},
-  {name:'Max', emoji:'🌀', ar:{1:4500,2:8000}, uy:{1:150,2:280}},
-  {name:'YouTube', emoji:'📺', ar:{1:4500}, uy:{1:190}},
-  {name:'Spotify', emoji:'🎵', ar:{1:4500}, uy:{1:190}},
-  {name:'ChatGPT+', emoji:'🤖', ar:{1:8000}, uy:{1:400}},
-  {name:'Canva Pro', emoji:'🎨', ar:{1:5500}, uy:{1:220}}
+/* ═══ PARTICLES ═══ */
+(function(){
+  const c=document.getElementById('cv'),ctx=c.getContext('2d');
+  let W,H,pts=[];
+  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight}
+  resize();window.addEventListener('resize',resize);
+  function rnd(a,b){return Math.random()*(b-a)+a}
+  for(let i=0;i<60;i++) pts.push({x:rnd(0,1),y:rnd(0,1),vx:rnd(-.0004,.0004),vy:rnd(-.0003,.0003),r:rnd(.8,2.4),o:rnd(.15,.5),c:Math.random()>.6?'#FF4500':Math.random()>.5?'#FFD000':'#FF2D78'});
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<pts.length;i++){
+      const p=pts[i];
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=1;if(p.x>1)p.x=0;if(p.y<0)p.y=1;if(p.y>1)p.y=0;
+      ctx.beginPath();ctx.arc(p.x*W,p.y*H,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.c;ctx.globalAlpha=p.o;ctx.fill();
+      for(let j=i+1;j<pts.length;j++){
+        const q=pts[j],dx=(p.x-q.x)*W,dy=(p.y-q.y)*H,d=Math.sqrt(dx*dx+dy*dy);
+        if(d<130){ctx.beginPath();ctx.moveTo(p.x*W,p.y*H);ctx.lineTo(q.x*W,q.y*H);
+          ctx.strokeStyle=`rgba(255,69,0,${.1*(1-d/130)})`;ctx.lineWidth=.5;
+          ctx.globalAlpha=1;ctx.stroke();}
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ═══ GLOW CURSOR ═══ */
+const gc=document.getElementById('gc');
+document.addEventListener('mousemove',e=>{gc.style.left=e.clientX+'px';gc.style.top=e.clientY+'px'});
+
+/* ═══ DATA ═══ */
+const SVCS=[
+  {name:'Netflix',tag:'Series, películas y más',hot:true,
+   bg:'#141414',
+   logo:`<svg viewBox="0 0 111 30" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:64px;height:17px"><path d="M0 0h8.1L16 21.2V0h7.9v30H16L8 8.8V30H0V0zm25 0h8l5 11.8L43 0h8L41.5 15 51 30h-8l-5.5-12.8L32 30h-8l9.5-15L25 0zm30 0h8v23.5h11V30H55V0zm22 0h20v6.5H85v5.5h10V18H85v5.5h12V30H77V0zm24 0h8l7.5 19.5V0h8v30h-8l-7.5-20V30h-8V0z" fill="#E50914"/></svg>`,
+   ar:{1:7500,2:12900},uy:{1:250,2:450}},
+  {name:'Disney+',tag:'Marvel, Star Wars, Pixar, Disney',
+   bg:'#0B3D8C',
+   logo:`<svg viewBox="0 0 80 30" xmlns="http://www.w3.org/2000/svg" style="width:70px;height:26px"><text y="24" font-family="Arial Black,sans-serif" font-size="22" font-weight="900" fill="#1B6EBE">Disney</text><text x="63" y="18" font-family="Arial Black,sans-serif" font-size="14" font-weight="900" fill="#1B6EBE">+</text></svg>`,
+   ar:{1:6500,2:12000},uy:{1:300,2:550}},
+  {name:'Max',tag:'HBO Originals y series exclusivas',
+   bg:'#00005B',
+   logo:`<svg viewBox="0 0 60 28" xmlns="http://www.w3.org/2000/svg" style="width:52px;height:24px"><text y="24" font-family="Arial Black,sans-serif" font-size="26" font-weight="900" fill="#0029FF">max</text></svg>`,
+   ar:{1:4500,2:8000},uy:{1:150,2:280}},
+  {name:'YouTube',tag:'Sin publicidad + YouTube Music',
+   bg:'#282828',
+   logo:`<svg viewBox="0 0 90 28" xmlns="http://www.w3.org/2000/svg" style="width:80px;height:24px"><rect x="0" y="2" width="34" height="22" rx="5" fill="#FF0000"/><polygon points="13,7 27,13 13,19" fill="white"/><text x="38" y="18" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#FF0000">Premium</text></svg>`,
+   ar:{1:4500},uy:{1:190}},
+  {name:'Spotify',tag:'Música sin límites, sin anuncios',
+   bg:'#121212',
+   logo:`<svg viewBox="0 0 80 28" xmlns="http://www.w3.org/2000/svg" style="width:70px;height:24px"><circle cx="13" cy="14" r="12" fill="#1DB954"/><path d="M7 10.5c3.5-1 7.5-.8 11 .8M7 14c3.5-.8 7-.7 10 .6M7 17.5c2.5-.6 5.5-.5 8 .4" stroke="white" stroke-width="1.8" stroke-linecap="round" fill="none"/><text x="28" y="19" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#1DB954">Spotify</text></svg>`,
+   ar:{1:4500},uy:{1:190}},
+  {name:'ChatGPT+',tag:'GPT-4o · DALL·E · análisis avanzado',hot:true,
+   bg:'#0D0D0D',
+   logo:`<svg viewBox="0 0 90 28" xmlns="http://www.w3.org/2000/svg" style="width:80px;height:24px"><rect x="0" y="2" width="24" height="24" rx="6" fill="#10A37F"/><text x="4" y="19" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="white">AI</text><text x="28" y="18" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#10A37F">ChatGPT+</text></svg>`,
+   ar:{1:8000},uy:{1:400}},
+  {name:'Canva Pro',tag:'Diseño profesional ilimitado',
+   bg:'#1A0038',
+   logo:`<svg viewBox="0 0 90 28" xmlns="http://www.w3.org/2000/svg" style="width:80px;height:24px"><circle cx="13" cy="14" r="12" fill="#7D2AE8"/><text x="5" y="19" font-family="Arial,sans-serif" font-size="14" font-weight="900" fill="white">Ca</text><text x="28" y="18" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#7D2AE8">Canva Pro</text></svg>`,
+   ar:{1:5500},uy:{1:220}},
 ];
 
-const refs = [
-  {n: "Marcos G.", l: "Rosario", t: "Atención impecable. Disney activado en un toque! 🔥"},
-  {n: "Sofía R.", l: "Montevideo", t: "Segunda vez que renuevo. Súper confiables."},
-  {n: "Juan I.", l: "Córdoba", t: "El mejor precio de Netflix. Muy recomendado."},
-  {n: "Vale L.", l: "Punta del Este", t: "Soporte excelente, me ayudaron con la TV rápido."}
+const TESTI=[
+  {n:"Marcos G.",  loc:"Rosario, AR",       c:"#E74C3C",stars:5,t:"Atención impecable. Disney activado en menos de 5 minutos. Sin drama. 🔥",          ago:"hace 2 min"},
+  {n:"Sofía R.",   loc:"Montevideo, UY",    c:"#3498DB",stars:5,t:"Segunda vez que renuevo. Súper confiables y siempre disponibles. ¡Muy recomendado!", ago:"hace 8 min"},
+  {n:"Juan I.",    loc:"Córdoba, AR",       c:"#9B59B6",stars:5,t:"El mejor precio de Netflix que encontré. Nada se le compara. Calidad total.",        ago:"hace 15 min"},
+  {n:"Valentina L.",loc:"Pta. del Este, UY",c:"#27AE60",stars:5,t:"Me ayudaron a configurar la tele en minutos por WhatsApp. Soporte de otro nivel.",    ago:"hace 22 min"},
+  {n:"Diego M.",   loc:"Buenos Aires, AR",  c:"#E67E22",stars:5,t:"Tengo Netflix, Spotify y ChatGPT con ellos. Todo perfecto. Renovación automática.",   ago:"hace 31 min"},
+  {n:"Carla P.",   loc:"Rosario, AR",       c:"#1ABC9C",stars:5,t:"Al principio desconfiaba pero me convencieron. 4 meses sin un solo problema.",        ago:"hace 45 min"},
 ];
 
-let country = 'AR', selected = {}, refIdx = 0;
+const FAQS=[
+  {q:"¿Cómo funciona la activación?",
+   a:"Confirmado el pago, te enviamos las credenciales o te sumamos a la cuenta en 5-10 minutos por WhatsApp. Rápido y sin complicaciones, cualquier hora del día."},
+  {q:"¿Es seguro comprar así las suscripciones?",
+   a:"Sí. Trabajamos con cuentas familiares o compartidas totalmente legítimas. Garantía completa: si hay cualquier problema, lo resolvemos o te devolvemos el dinero."},
+  {q:"¿Por cuánto tiempo dura la suscripción?",
+   a:"Vendemos planes mensuales. Podés renovar mes a mes sin compromiso. También ofrecemos planes trimestrales con descuento especial."},
+  {q:"¿Puedo usar el servicio en varios dispositivos?",
+   a:"Depende del plan. Con 1 pantalla tenés acceso individual. Con 2 pantallas podés usar en 2 dispositivos al mismo tiempo."},
+  {q:"¿Qué pasa si el servicio falla?",
+   a:"Tenemos soporte 24/7 por WhatsApp. Si hay cualquier problema lo solucionamos en el día. Si no podemos, te reponemos los días perdidos o te devolvemos el dinero."},
+  {q:"¿Qué métodos de pago aceptan?",
+   a:"Transferencia bancaria, MercadoPago y efectivo. Para Uruguay también aceptamos otros métodos. Consultanos por WhatsApp para más detalle según tu país."},
+  {q:"¿Funciona en Smart TV, celular y PC?",
+   a:"Sí, los servicios funcionan en todos los dispositivos compatibles: Smart TV, celular, tablet, computadora y consolas de juego."},
+];
 
-function setCountry(c) {
-  country = c; selected = {};
-  document.querySelectorAll('.ctry-btn').forEach(b => b.classList.toggle('active', b.id === `btn-${c}`));
-  render(); updateSummary();
+let country='AR',selected={};
+
+/* ═══ COUNTRY ═══ */
+function setCountry(c){
+  country=c;selected={};
+  document.querySelectorAll('.ctry-btn').forEach(b=>b.classList.toggle('active',b.id==='btn-'+c));
+  render();updateSummary();
 }
 
-function toggleService(name, qty) {
-  if (selected[name] === qty) delete selected[name];
-  else selected[name] = qty;
-  render(); updateSummary();
+/* ═══ TOGGLE ═══ */
+function toggleSvc(name,qty){
+  selected[name]===qty ? delete selected[name] : selected[name]=qty;
+  render();updateSummary();
 }
+function clearAll(){selected={};render();updateSummary()}
 
-function render() {
-  const grid = document.getElementById('servicios');
-  grid.innerHTML = services.map(s => {
-    const prices = country === 'AR' ? s.ar : s.uy;
-    const btns = Object.keys(prices).map(qty => `
-      <button class="opt-btn ${selected[s.name]==qty?'sel':''}" onclick="toggleService('${s.name}',${qty})">
-        <span>${qty} Pantalla${qty>1?'s':''}</span>
-        <strong>$${prices[qty].toLocaleString()}</strong>
-      </button>`).join('');
-    return `<div class="service-card"><div class="service-header">${s.emoji} ${s.name}</div>${btns}</div>`;
+/* ═══ RENDER SERVICES ═══ */
+function render(){
+  document.getElementById('servicios').innerHTML=SVCS.map(s=>{
+    const prices=country==='AR'?s.ar:s.uy;
+    const hasSel=selected[s.name]!==undefined;
+    const btns=Object.entries(prices).map(([q,p])=>{
+      const on=selected[s.name]==q;
+      return `<button class="opt-btn${on?' on':''}" onclick="toggleSvc('${s.name}',${q})">
+        <div class="opt-l"><span class="opt-lbl">${q==1?'1 Pantalla':q+' Pantallas'}</span><span class="opt-sub">${q==1?'Acceso individual':'Acceso familiar'}</span></div>
+        <div class="opt-r"><span class="opt-price${on?' h':''}">$${p.toLocaleString('es-AR')}</span><div class="opt-chk">✓</div></div>
+      </button>`;
+    }).join('');
+    return `<div class="svc-card${hasSel?' on':''}">
+      <div class="svc-hdr">
+        <div class="svc-logo-box" style="background:${s.bg}">${s.logo}</div>
+        <div><div class="svc-nm">${s.name}${s.hot?'<span class="hot-tag">HOT</span>':''}</div><div class="svc-tg">${s.tag}</div></div>
+      </div>
+      <div class="opts-wrap">${btns}</div>
+    </div>`;
   }).join('');
 }
 
-function updateSummary() {
-  const bar = document.getElementById('summary-bar'), list = document.getElementById('selected-list');
-  const keys = Object.keys(selected);
-  if (keys.length === 0) { bar.classList.remove('visible'); return; }
-  let total = 0;
-  list.innerHTML = keys.map(k => {
-    const s = services.find(x=>x.name===k);
-    const p = (country === 'AR' ? s.ar : s.uy)[selected[k]];
-    total += p;
-    return `<div style="font-size:12px; display:flex; justify-content:space-between;"><span>${k}</span><b>$${p.toLocaleString()}</b></div>`;
+/* ═══ SUMMARY ═══ */
+function updateSummary(){
+  const bar=document.getElementById('sb'),list=document.getElementById('sel-list');
+  const waf=document.getElementById('waf'),keys=Object.keys(selected);
+  if(!keys.length){bar.classList.remove('vis');waf.classList.remove('hid');return}
+  let total=0;
+  list.innerHTML=keys.map(k=>{
+    const s=SVCS.find(x=>x.name===k),p=(country==='AR'?s.ar:s.uy)[selected[k]];
+    total+=p;
+    return `<div class="sb-row"><span class="sb-nm">${s.name} · ${selected[k]}P</span><span class="sb-pr">$${p.toLocaleString('es-AR')}</span></div>`;
   }).join('');
-  document.getElementById('total-amount').textContent = `$${total.toLocaleString()}`;
-  bar.classList.add('visible');
+  document.getElementById('tot').textContent='$'+total.toLocaleString('es-AR');
+  bar.classList.add('vis');waf.classList.add('hid');
 }
 
-function cycleRefs() {
-  const h = document.getElementById('wa-header'), b = document.getElementById('wa-body'), r = refs[refIdx];
-  h.innerHTML = `<div class="wa-av" style="background:hsl(${refIdx*60},70%,45%)">${r.n[0]}</div><div><strong>${r.n}</strong> • <span style="opacity:0.7">${r.l}</span></div>`;
-  b.innerHTML = `<div class="bubble">${r.t}</div>`;
-  refIdx = (refIdx + 1) % refs.length;
+/* ═══ SEND WA ═══ */
+function sendWA(){
+  const keys=Object.keys(selected);if(!keys.length)return;
+  let msg='¡Hola MISAKROOS! Quiero contratar:\n\n',total=0;
+  keys.forEach(k=>{
+    const s=SVCS.find(x=>x.name===k),p=(country==='AR'?s.ar:s.uy)[selected[k]];
+    total+=p;
+    msg+=`• ${s.name} — ${selected[k]} pantalla${selected[k]>1?'s':''} → $${p.toLocaleString('es-AR')}\n`;
+  });
+  msg+=`\n💰 Total: $${total.toLocaleString('es-AR')}\n🌍 País: ${country==='AR'?'Argentina 🇦🇷':'Uruguay 🇺🇾'}`;
+  window.open('https://wa.me/5492645182955?text='+encodeURIComponent(msg));
 }
 
-function toggleTheme() {
-  const h = document.documentElement;
-  h.setAttribute('data-theme', h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+/* ═══ SOCIAL PROOF ═══ */
+function renderSP(){
+  document.getElementById('sp-scroll').innerHTML=TESTI.map(t=>`
+    <div class="sp-card">
+      <div class="sp-av-row">
+        <div class="sp-av" style="background:${t.c}">${t.n[0]}</div>
+        <div><div class="sp-name">${t.n}</div><div class="sp-loc">📍 ${t.loc}</div></div>
+      </div>
+      <div class="sp-stars">${'★'.repeat(t.stars)}</div>
+      <div class="sp-txt">${t.t}</div>
+      <div class="sp-time">${t.ago}</div>
+      <div class="verified">✓ Compra verificada</div>
+    </div>`).join('');
 }
 
-function enviarWhatsApp() {
-  let msg = "¡Hola! Quiero contratar:\n";
-  Object.keys(selected).forEach(k => msg += `- ${k} (${selected[k]}P)\n`);
-  msg += `\nPaís: ${country}\nTotal: ${document.getElementById('total-amount').textContent}`;
-  window.open(`https://wa.me/5492645182955?text=${encodeURIComponent(msg)}`);
+/* ═══ FAQ ═══ */
+function renderFAQ(){
+  document.getElementById('faq-list').innerHTML=FAQS.map((f,i)=>`
+    <div class="faq-item" id="faq${i}">
+      <button class="faq-q" onclick="toggleFAQ(${i})">
+        <span>${f.q}</span><div class="faq-ico">+</div>
+      </button>
+      <div class="faq-a"><div class="faq-a-in">${f.a}</div></div>
+    </div>`).join('');
+}
+function toggleFAQ(i){
+  const el=document.getElementById('faq'+i),was=el.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(x=>x.classList.remove('open'));
+  if(!was)el.classList.add('open');
 }
 
-const ticker = document.getElementById('ticker');
-const txt = " ⚡ ACTIVACIÓN INMEDIATA • GARANTÍA TOTAL • SOPORTE 24/7 • ";
-ticker.innerHTML = `<span>${txt.repeat(10)}</span><span>${txt.repeat(10)}</span>`;
+/* ═══ COUNTERS ═══ */
+function animateCounter(el,target,suffix){
+  let v=0;const s=()=>{v+=Math.max(1,Math.ceil(target/35));if(v>=target){el.textContent=target+suffix}else{el.textContent=v+suffix;requestAnimationFrame(s)}};s();
+}
+setTimeout(()=>{
+  animateCounter(document.getElementById('c1'),150,'+');
+  animateCounter(document.getElementById('c2'),7,'');
+  animateCounter(document.getElementById('c3'),100,'%');
+},400);
 
-setInterval(cycleRefs, 4000);
-cycleRefs(); render();
+/* ═══ SCROLL REVEAL ═══ */
+new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')});
+},{threshold:.08}).observe(document.querySelectorAll('.rv')) ;
+
+document.querySelectorAll('.rv').forEach(el=>{
+  new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')});
+  },{threshold:.08}).observe(el);
+});
+
+/* ═══ THEME ═══ */
+function toggleTheme(){
+  const h=document.documentElement;
+  h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'light':'dark');
+}
+
+/* ═══ TICKER ═══ */
+const tk=document.getElementById('ticker');
+const txt=' ⚡ ACTIVACIÓN INMEDIATA  •  GARANTÍA TOTAL  •  SOPORTE 24/7  •  PRECIOS FIJOS  •  SIN TARJETA PROPIA  •  ';
+tk.innerHTML=`<span>${txt.repeat(6)}</span><span>${txt.repeat(6)}</span>`;
+
+/* ═══ INIT ═══ */
+renderSP();renderFAQ();render();
 </script>
 </body>
 </html>
