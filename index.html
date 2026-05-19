@@ -2,846 +2,1224 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>MISAKROOS — Suscripciones Premium</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Claude Fast — Tu asistente de IA con búsqueda web en tiempo real. Creá páginas web, escribí código, traducí textos y mucho más.">
+<title>Claude Fast — IA sin límites</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Righteous&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800;900&family=Instrument+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{
-  --brand:#6C35DE;--brand2:#9B5FFF;--coral:#FF5757;--sky:#00B4F0;--sun:#FFB800;--mint:#00C78C;
-  --bg:#F7F6FF;--bg2:#FFFFFF;--card:#FFFFFF;
-  --border:rgba(108,53,222,.12);--border2:rgba(108,53,222,.28);
-  --txt:#1A1035;--txt2:#6B6690;--txt3:#AAA8C4;
-  --wa:#25D366;--wa2:#128C7E;
-  --r:18px;--r2:13px;--sh:0 4px 24px rgba(108,53,222,.12);
-  --ease:cubic-bezier(.16,1,.3,1);
+:root {
+  --ink: #0c0c0e;
+  --ink2: #1a1a1f;
+  --ink3: #26262e;
+  --paper: #f5f3ee;
+  --paper2: #ede9e0;
+  --paper3: #e4dfd4;
+  --acc: #e8572a;
+  --acc2: #f07040;
+  --acc3: #c84020;
+  --gold: #c9a84c;
+  --t: #0c0c0e;
+  --t2: #3d3a35;
+  --t3: #7a7470;
+  --wa: #25d366;
 }
-[data-theme="dark"]{--bg:#0F0F18;--bg2:#1A1A28;--card:#1E1E2E;--border:rgba(155,95,255,.18);--border2:rgba(155,95,255,.4);--txt:#EEEEFF;--txt2:#9090BB;--txt3:#555588;--sh:0 4px 24px rgba(0,0,0,.4);}
-[data-theme="dark"] body{background:var(--bg)}
-[data-theme="dark"] nav{background:rgba(15,15,24,.9)}
-[data-theme="dark"] .hstat,[data-theme="dark"] .rev,[data-theme="dark"] .step,[data-theme="dark"] .why-card,[data-theme="dark"] .svc,[data-theme="dark"] .faq,[data-theme="dark"] .contact-section,[data-theme="dark"] .wa-card,[data-theme="dark"] .metric{background:var(--card);border-color:var(--border)}
-[data-theme="dark"] .country-wrap{background:var(--bg2);border-color:var(--border)}
-[data-theme="dark"] .cbtn.active{color:#fff}
-[data-theme="dark"] .opt{background:var(--bg2);border-color:var(--border);color:var(--txt)}
-[data-theme="dark"] .cat-f{background:var(--card);border-color:var(--border);color:var(--txt2)}
-[data-theme="dark"] .tpill,[data-theme="dark"] .hero-pill{background:var(--card);border-color:var(--border)}
-[data-theme="dark"] .bar-in{background:var(--card)}
-[data-theme="dark"] .contact-opt{background:var(--bg2);border-color:var(--border)}
-[data-theme="dark"] .wa-bubble{background:var(--bg2)}
-[data-theme="dark"] .faq-q{color:var(--txt)}
-[data-theme="dark"] .bg-blob{opacity:.1}
-[data-theme="dark"] .disc-modal-inner{background:var(--card);border-color:var(--border)}
-[data-theme="dark"] .disc-input{background:var(--bg2);border-color:var(--border);color:var(--txt)}
-[data-theme="dark"] .disc-close-btn{color:var(--txt2);border-color:var(--border)}
 
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth}
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--txt);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-.bg-blob{position:fixed;pointer-events:none;z-index:0;border-radius:50%;filter:blur(90px);opacity:.18;}
-.blob1{width:500px;height:500px;background:var(--brand);top:-120px;right:-180px}
-.blob2{width:400px;height:400px;background:var(--sky);bottom:-100px;left:-120px}
-.blob3{width:300px;height:300px;background:var(--sun);top:40%;right:-100px;opacity:.12}
+html { scroll-behavior: smooth; }
 
-.ticker{position:fixed;top:0;left:0;right:0;z-index:1000;height:28px;overflow:hidden;display:flex;align-items:center;background:var(--brand);}
-.ticker-track{display:flex;white-space:nowrap;animation:tickScroll 55s linear infinite;}
-.ticker-track span{font-size:9px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#fff;padding-right:56px;}
-@keyframes tickScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-nav{position:fixed;top:28px;left:0;right:0;z-index:999;height:58px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;background:rgba(247,246,255,.88);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--border);}
-.nav-brand{display:flex;align-items:center;gap:10px;font-family:'Righteous',sans-serif;font-size:22px;letter-spacing:.5px;color:var(--brand);text-decoration:none;}
-.nav-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--brand),var(--brand2));border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(108,53,222,.35);flex-shrink:0;}
-.nav-mark svg{display:block}
-.nav-wa{display:flex;align-items:center;gap:7px;padding:0 16px;height:38px;border-radius:100px;background:var(--wa);color:#fff;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;text-decoration:none;box-shadow:0 4px 14px rgba(37,211,102,.3);transition:transform .18s;white-space:nowrap;}
-.nav-wa:active{transform:scale(.95)}
-.btn-theme{width:38px;height:38px;border-radius:11px;border:1.5px solid var(--border);background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;transition:all .2s;flex-shrink:0;}
-.btn-theme:hover{border-color:var(--border2);transform:rotate(20deg)}
-
-/* ── BOTÓN % DESCUENTO ── */
-.btn-disc{width:38px;height:38px;border-radius:11px;border:1.5px solid var(--border);background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;transition:all .2s;flex-shrink:0;color:var(--txt2);position:relative;}
-.btn-disc:hover{border-color:var(--brand);color:var(--brand);transform:scale(1.07)}
-.btn-disc:active{transform:scale(.9)}
-.btn-disc.active-code{border-color:var(--mint);background:rgba(0,199,140,.1);color:var(--mint);}
-.disc-dot{position:absolute;top:-5px;right:-5px;width:12px;height:12px;border-radius:50%;background:var(--mint);border:2px solid var(--bg2);display:none;animation:dotBeat 1.6s ease-in-out infinite;}
-.btn-disc.active-code .disc-dot{display:block}
-
-/* ── MODAL DESCUENTO ── */
-.disc-overlay{position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s;}
-.disc-overlay.open{opacity:1;pointer-events:all}
-.disc-modal-inner{background:#fff;border:1.5px solid var(--border);border-radius:22px;padding:26px 22px;width:100%;max-width:340px;box-shadow:0 24px 64px rgba(108,53,222,.22);transform:translateY(22px) scale(.97);transition:transform .3s var(--ease);}
-.disc-overlay.open .disc-modal-inner{transform:none}
-.disc-title{font-family:'Righteous',sans-serif;font-size:21px;color:var(--txt);margin-bottom:6px;}
-.disc-sub{font-size:13px;color:var(--txt2);margin-bottom:18px;line-height:1.6}
-.disc-row{display:flex;gap:8px;margin-bottom:12px}
-.disc-input{flex:1;padding:12px 16px;border-radius:13px;border:1.5px solid var(--border);background:var(--bg);font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--txt);outline:none;text-transform:uppercase;letter-spacing:2px;transition:border-color .2s;}
-.disc-input:focus{border-color:var(--brand2)}
-.disc-apply{padding:0 18px;height:46px;border-radius:13px;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;white-space:nowrap;box-shadow:0 4px 14px rgba(108,53,222,.3);transition:transform .18s;}
-.disc-apply:active{transform:scale(.95)}
-.disc-msg{font-size:13px;font-weight:700;text-align:center;min-height:18px;margin-bottom:8px;transition:all .2s}
-.disc-msg.ok{color:var(--mint)}
-.disc-msg.err{color:var(--coral)}
-.disc-active-row{display:none;align-items:center;gap:10px;background:rgba(0,199,140,.1);border:1.5px solid rgba(0,199,140,.3);border-radius:12px;padding:12px 14px;margin-bottom:8px;}
-.disc-active-row.show{display:flex}
-.disc-active-lbl{font-size:13px;font-weight:800;color:var(--mint);flex:1}
-.disc-remove{font-size:12px;color:var(--coral);cursor:pointer;font-weight:800}
-.disc-close{width:100%;margin-top:10px;padding:12px;border-radius:13px;border:1.5px solid var(--border);background:transparent;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--txt2);cursor:pointer;transition:all .2s;}
-.disc-close:hover{border-color:var(--border2)}
-
-/* ── BANNER DESCUENTO EN CATÁLOGO ── */
-.disc-banner{display:none;align-items:center;gap:10px;background:linear-gradient(135deg,rgba(0,199,140,.12),rgba(0,199,140,.05));border:1.5px solid rgba(0,199,140,.35);border-radius:14px;padding:12px 16px;margin-bottom:14px;font-size:13px;font-weight:700;color:var(--mint);}
-.disc-banner.show{display:flex}
-.disc-banner-pct{font-family:'Righteous',sans-serif;font-size:18px;margin-left:auto;}
-
-.page{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:0 16px}
-
-/* HERO */
-.hero{padding:106px 0 28px;text-align:center}
-.hero-pill{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--border);border-radius:100px;padding:6px 16px;font-size:11px;font-weight:700;color:var(--brand);letter-spacing:.8px;text-transform:uppercase;margin-bottom:20px;box-shadow:var(--sh);animation:fadeUp .6s .05s both;}
-.hero-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--mint);flex-shrink:0;animation:dotBeat 1.6s ease-in-out infinite;}
-@keyframes dotBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.5)}}
-.hero-brand{font-family:'Righteous',sans-serif;font-size:clamp(64px,20vw,108px);line-height:.9;letter-spacing:-1px;margin-bottom:14px;animation:fadeUp .6s .12s both;position:relative;display:inline-block;}
-.hero-brand .m1{background:linear-gradient(135deg,var(--brand) 0%,var(--coral) 50%,var(--sun) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;}
-.hero-brand .m2{background:linear-gradient(135deg,var(--sky) 0%,var(--mint) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;}
-.hero-brand::after{content:'✦';position:absolute;top:-8px;right:-12px;font-size:20px;color:var(--sun);animation:sparkle 2.5s ease-in-out infinite;}
-@keyframes sparkle{0%,100%{transform:rotate(0) scale(1);opacity:.7}50%{transform:rotate(20deg) scale(1.2);opacity:1}}
-.hero-sub-line{font-family:'Righteous',sans-serif;font-size:clamp(18px,5vw,26px);color:var(--txt2);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;animation:fadeUp .6s .2s both;}
-.hero-desc{font-size:15px;color:var(--txt2);line-height:1.65;margin-bottom:24px;animation:fadeUp .6s .28s both;}
-.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:0;animation:fadeUp .6s .36s both;}
-.hstat{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);padding:14px 8px;text-align:center;box-shadow:var(--sh);}
-.hstat-n{font-family:'Righteous',sans-serif;font-size:28px;color:var(--brand);display:block;line-height:1;}
-.hstat-l{font-size:9px;font-weight:700;color:var(--txt3);letter-spacing:1px;text-transform:uppercase;margin-top:4px}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
-.hero-actions{margin-top:22px;animation:fadeUp .6s .44s both}
-.btn-catalog{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border:none;border-radius:100px;padding:14px 28px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;cursor:pointer;text-decoration:none;box-shadow:0 6px 24px rgba(108,53,222,.38);transition:transform .18s,box-shadow .18s;}
-.btn-catalog:hover{transform:translateY(-2px)}
-.btn-catalog:active{transform:scale(.96)}
-
-.divider{height:1px;background:var(--border);margin:24px 0}
-.sec-t{font-size:10px;font-weight:800;color:var(--txt3);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
-.sec-t::after{content:'';flex:1;height:1px;background:var(--border)}
-
-.trust-row{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-bottom:24px;}
-.trust-row::-webkit-scrollbar{display:none}
-.tpill{flex:0 0 auto;display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--border);border-radius:100px;padding:7px 13px;font-size:11px;font-weight:700;color:var(--txt2);white-space:nowrap;box-shadow:0 2px 8px rgba(108,53,222,.07);}
-.tpill .live{width:6px;height:6px;border-radius:50%;background:var(--mint);flex-shrink:0;animation:dotBeat 1.6s ease-in-out infinite;}
-
-.country-wrap{background:#fff;border:1.5px solid var(--border);border-radius:var(--r);padding:5px;display:grid;grid-template-columns:1fr 1fr;gap:5px;box-shadow:var(--sh);margin-bottom:24px;}
-.cbtn{padding:13px;border-radius:13px;border:none;background:transparent;color:var(--txt2);font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .25s var(--ease);display:flex;align-items:center;justify-content:center;gap:8px;}
-.cbtn.active{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;box-shadow:0 4px 18px rgba(108,53,222,.35);}
-.cbtn:active{transform:scale(.96)}
-
-.wa-card{background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);border:1.5px solid var(--border);margin-bottom:24px;}
-.wa-card-hdr{background:linear-gradient(135deg,#075E54,#128C7E);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;}
-.wa-info{display:flex;align-items:center;gap:10px}
-.wa-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Righteous',sans-serif;font-size:15px;color:#fff;border:2px solid rgba(255,255,255,.3);flex-shrink:0;}
-.wa-nm{font-size:13px;font-weight:800;color:#fff}
-.wa-loc{font-size:10px;color:rgba(255,255,255,.65)}
-.wa-online{display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,.7)}
-.wa-online-dot{width:5px;height:5px;border-radius:50%;background:#4ade80;animation:dotBeat 1.6s ease-in-out infinite}
-.wa-body{padding:14px 16px;min-height:88px}
-.wa-bubble{background:var(--bg);border:1.5px solid var(--border);padding:12px 16px;border-radius:4px 16px 16px 16px;font-size:14px;line-height:1.6;color:var(--txt);max-width:93%;animation:bubblePop .3s var(--ease) both;}
-@keyframes bubblePop{from{opacity:0;transform:scale(.95) translateY(5px)}to{opacity:1;transform:none}}
-.wa-time{font-size:10px;color:var(--txt3);margin-top:6px}
-.wa-dots{display:flex;justify-content:center;gap:5px;padding:10px 0 12px}
-.wdot{width:5px;height:5px;border-radius:3px;background:var(--border2);transition:all .3s;}
-.wdot.on{background:var(--brand);width:18px;box-shadow:0 0 8px rgba(108,53,222,.4)}
-
-.rev-strip{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none;margin-bottom:24px;}
-.rev-strip::-webkit-scrollbar{display:none}
-.rev{flex:0 0 210px;background:#fff;border:1.5px solid var(--border);border-radius:var(--r);padding:14px;box-shadow:var(--sh);flex-shrink:0;transition:transform .2s;position:relative;overflow:hidden;}
-.rev::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--brand),var(--coral),var(--sun));}
-.rev:hover{transform:translateY(-3px);border-color:var(--border2)}
-.rev-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.rev-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Righteous',sans-serif;font-size:13px;color:#fff;flex-shrink:0;}
-.rev-nm{font-size:13px;font-weight:800;color:var(--txt)}
-.rev-loc{font-size:10px;color:var(--txt3)}
-.rev-stars{font-size:12px;color:var(--sun);letter-spacing:1px;margin-bottom:6px}
-.rev-txt{font-size:12px;color:var(--txt2);line-height:1.6}
-.rev-badge{display:inline-flex;align-items:center;gap:3px;margin-top:8px;background:rgba(0,199,140,.1);border:1px solid rgba(0,199,140,.25);color:var(--mint);padding:2px 8px;border-radius:100px;font-size:9px;font-weight:800;}
-
-.metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:24px;}
-.metric{background:#fff;border:1.5px solid var(--border);border-radius:var(--r);padding:16px 14px;display:flex;align-items:center;gap:12px;box-shadow:var(--sh);transition:transform .2s;}
-.metric:hover{transform:translateY(-2px)}
-.metric-icon{font-size:26px;flex-shrink:0}
-.metric-val{font-family:'Righteous',sans-serif;font-size:24px;color:var(--brand);line-height:1;}
-.metric-lbl{font-size:9px;font-weight:700;color:var(--txt3);letter-spacing:1px;text-transform:uppercase;margin-top:3px}
-
-.svcs{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
-.svc{background:#fff;border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);transition:border-color .2s,box-shadow .2s;}
-.svc.on{border-color:var(--brand2);box-shadow:0 6px 32px rgba(108,53,222,.18);}
-.svc-hdr{display:flex;align-items:center;gap:12px;padding:14px 16px 0}
-.svc-nm{font-size:15px;font-weight:800;color:var(--txt);display:flex;align-items:center;gap:7px}
-.svc-desc{font-size:11px;color:var(--txt3);margin-top:2px}
-.tag-hot{font-size:8px;font-weight:800;letter-spacing:.8px;background:var(--coral);color:#fff;padding:2px 8px;border-radius:100px;text-transform:uppercase;}
-.svc-logo-box{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.svc-logo-txt{font-family:'Righteous',sans-serif;font-weight:900;color:#fff;line-height:1;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,.25);user-select:none;letter-spacing:-0.5px;}
-.svc-opts{padding:10px 12px 13px;display:flex;flex-direction:column;gap:7px}
-.opt{display:flex;justify-content:space-between;align-items:center;padding:13px 14px;border-radius:13px;border:1.5px solid var(--border);background:var(--bg);cursor:pointer;font-family:'Nunito',sans-serif;color:var(--txt);transition:all .2s var(--ease);position:relative;overflow:hidden;}
-.opt::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(108,53,222,.07),transparent);opacity:0;transition:opacity .2s;}
-.opt.on{border-color:var(--brand);background:#fff}
-.opt.on::after{opacity:1}
-.opt:active{transform:scale(.98)}
-.opt-l{z-index:1}
-.opt-plan{font-size:13px;font-weight:800}
-.opt-sub{font-size:10px;color:var(--txt3);margin-top:1px}
-.opt-r{display:flex;align-items:center;gap:6px;z-index:1}
-.opt-price-orig{font-size:11px;font-weight:700;color:var(--txt3);text-decoration:line-through;}
-.opt-price{font-size:20px;font-weight:900}
-.opt-price.on{color:var(--brand)}
-.opt-chk{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:900;transform:scale(0);transition:transform .2s var(--ease);box-shadow:0 3px 10px rgba(108,53,222,.4);}
-.opt.on .opt-chk{transform:scale(1)}
-
-.cat-filters{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-bottom:16px;}
-.cat-filters::-webkit-scrollbar{display:none}
-.cat-f{flex:0 0 auto;padding:8px 16px;border-radius:100px;border:1.5px solid var(--border);background:#fff;color:var(--txt2);font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;cursor:pointer;transition:all .2s var(--ease);white-space:nowrap;box-shadow:0 2px 8px rgba(108,53,222,.06);}
-.cat-f.active{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border-color:transparent;box-shadow:0 4px 16px rgba(108,53,222,.3);}
-.cat-f:active{transform:scale(.95)}
-
-.faq-list{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
-.faq{background:#fff;border:1.5px solid var(--border);border-radius:var(--r2);overflow:hidden;box-shadow:var(--sh);transition:border-color .2s;}
-.faq.open{border-color:var(--brand2)}
-.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;padding:16px;background:none;border:none;color:var(--txt);font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;text-align:left;gap:12px;}
-.faq-ico{width:24px;height:24px;border-radius:7px;background:var(--bg);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--txt2);flex-shrink:0;transition:all .25s var(--ease);}
-.faq.open .faq-ico{background:linear-gradient(135deg,var(--brand),var(--brand2));border-color:transparent;color:#fff;transform:rotate(45deg);}
-.faq-a{max-height:0;overflow:hidden;transition:max-height .35s var(--ease)}
-.faq.open .faq-a{max-height:220px}
-.faq-a-txt{padding:0 16px 16px;font-size:13px;color:var(--txt2);line-height:1.75}
-
-.steps{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;position:relative}
-.steps::before{content:'';position:absolute;left:21px;top:28px;bottom:28px;width:2px;background:linear-gradient(180deg,var(--brand),var(--mint));border-radius:2px}
-.step{display:flex;align-items:flex-start;gap:16px;background:#fff;border:1.5px solid var(--border);border-radius:var(--r);padding:18px 16px;box-shadow:var(--sh);position:relative;z-index:1;transition:transform .2s}
-.step:hover{transform:translateX(4px);border-color:var(--border2)}
-.step-num{width:44px;height:44px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Righteous',sans-serif;font-size:20px;color:#fff;box-shadow:0 4px 14px rgba(108,53,222,.3)}
-.step-title{font-size:15px;font-weight:800;color:var(--txt);margin-bottom:4px}
-.step-desc{font-size:13px;color:var(--txt2);line-height:1.6}
-
-.garantia-banner{background:linear-gradient(135deg,var(--brand) 0%,var(--brand2) 100%);border-radius:var(--r);padding:24px 20px;margin-bottom:24px;color:#fff;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(108,53,222,.35)}
-.garantia-banner::before{content:'🛡️';position:absolute;right:-10px;bottom:-10px;font-size:90px;opacity:.12;line-height:1}
-.garantia-title{font-family:'Righteous',sans-serif;font-size:22px;margin-bottom:4px}
-.garantia-sub{font-size:13px;opacity:.85}
-.garantia-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:12px}
-.garantia-list li{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600}
-.garantia-list li::before{content:'✓';width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0}
-.garantia-btn{display:inline-flex;align-items:center;gap:8px;margin-top:18px;background:#fff;color:var(--brand);border:none;border-radius:100px;padding:12px 22px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.15);transition:transform .18s}
-.garantia-btn:active{transform:scale(.96)}
-
-.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
-.why-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--r);padding:18px 14px;box-shadow:var(--sh);text-align:center;transition:transform .2s}
-.why-card:hover{transform:translateY(-3px);border-color:var(--border2)}
-.why-emoji{font-size:32px;display:block;margin-bottom:8px}
-.why-title{font-size:13px;font-weight:800;color:var(--txt);margin-bottom:4px}
-.why-desc{font-size:11px;color:var(--txt2);line-height:1.55}
-
-.cta-mid{background:linear-gradient(135deg,rgba(255,87,87,.07),rgba(255,184,0,.07));border:1.5px solid rgba(108,53,222,.15);border-radius:var(--r);padding:24px 18px;text-align:center;margin-bottom:24px}
-.cta-mid-icon{font-size:38px;display:block;margin-bottom:10px}
-.cta-mid-title{font-family:'Righteous',sans-serif;font-size:21px;color:var(--txt);margin-bottom:6px}
-.cta-mid-sub{font-size:13px;color:var(--txt2);margin-bottom:16px;line-height:1.6}
-.cta-mid-btn{display:inline-flex;align-items:center;gap:8px;background:var(--wa);color:#fff;border:none;border-radius:100px;padding:14px 28px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;text-decoration:none;box-shadow:0 6px 22px rgba(37,211,102,.35);transition:transform .18s}
-.cta-mid-btn:active{transform:scale(.96)}
-
-.contact-section{background:#fff;border:1.5px solid var(--border);border-radius:var(--r);padding:22px 18px;margin-bottom:24px;box-shadow:var(--sh)}
-.contact-title{font-family:'Righteous',sans-serif;font-size:20px;color:var(--txt);margin-bottom:6px}
-.contact-sub{font-size:13px;color:var(--txt2);margin-bottom:18px;line-height:1.6}
-.contact-options{display:flex;flex-direction:column;gap:10px}
-.contact-opt{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:var(--r2);border:1.5px solid var(--border);background:var(--bg);text-decoration:none;color:var(--txt);transition:all .2s var(--ease)}
-.contact-opt:hover{border-color:var(--border2);transform:translateX(4px)}
-.contact-icon{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.contact-opt-title{font-size:14px;font-weight:800;margin-bottom:2px}
-.contact-opt-sub{font-size:11px;color:var(--txt3)}
-
-#bar{position:fixed;bottom:0;left:0;right:0;z-index:2000;padding:10px 16px 22px;transform:translateY(115%);transition:transform .4s var(--ease);}
-#bar.show{transform:translateY(0)}
-.bar-in{background:#fff;border:2px solid var(--brand2);border-radius:22px;padding:16px;box-shadow:0 -12px 48px rgba(108,53,222,.18);}
-.bar-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.bar-lbl{font-size:10px;font-weight:800;color:var(--txt3);letter-spacing:2px;text-transform:uppercase}
-.bar-clr{font-size:12px;color:var(--coral);cursor:pointer;font-weight:800}
-.bar-items{max-height:88px;overflow-y:auto;scrollbar-width:none;margin-bottom:12px}
-.bar-items::-webkit-scrollbar{display:none}
-.bar-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border);font-size:13px;}
-.bar-row:last-child{border:none}
-.bar-nm{color:var(--txt2);font-weight:600}
-.bar-pr{font-weight:800;color:var(--txt)}
-.bar-foot{display:flex;align-items:center;gap:12px}
-.tot-wrap{flex:1}
-.tot-lbl{font-size:9px;font-weight:800;color:var(--txt3);letter-spacing:2px;text-transform:uppercase}
-.tot-val{font-family:'Righteous',sans-serif;font-size:40px;color:var(--brand);line-height:1;letter-spacing:-1px;}
-.btn-order{display:flex;align-items:center;gap:8px;background:var(--wa);color:#fff;border:none;border-radius:15px;padding:0 20px;height:56px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;flex-shrink:0;white-space:nowrap;box-shadow:0 6px 24px rgba(37,211,102,.35);transition:transform .18s;}
-.btn-order:active{transform:scale(.95)}
-
-#waf{position:fixed;right:16px;bottom:22px;z-index:1999;width:56px;height:56px;border-radius:18px;background:var(--wa);display:flex;align-items:center;justify-content:center;font-size:26px;text-decoration:none;box-shadow:0 6px 28px rgba(37,211,102,.45);animation:waBounce 3s ease-in-out infinite;transition:opacity .3s;}
-#waf.hide{opacity:0;pointer-events:none}
-@keyframes waBounce{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-8px) rotate(-3deg)}}
-
-.footer{padding:28px 0 200px;text-align:center;border-top:1px solid var(--border);}
-.foot-brand{font-family:'Righteous',sans-serif;font-size:28px;letter-spacing:1px;background:linear-gradient(135deg,var(--brand),var(--coral),var(--sun));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;display:block;}
-.foot-txt{font-size:12px;color:var(--txt3);line-height:2.2}
-.foot-wa{color:var(--mint);font-weight:800;text-decoration:none;font-size:13px}
-
-.rv{opacity:0;transform:translateY(18px);transition:opacity .5s,transform .5s}
-.rv.in{opacity:1;transform:none}
-
-@media(min-width:640px){
-  .page{max-width:980px}
-  .hero-brand{font-size:130px}
-  .svcs{display:grid;grid-template-columns:repeat(2,1fr)}
-  .metrics{grid-template-columns:repeat(4,1fr)}
-  #bar{left:auto;right:20px;width:400px;bottom:20px;padding:0}
-  #waf{display:none}
-  .hero-stats{grid-template-columns:repeat(4,1fr)}
-  .why-grid{grid-template-columns:repeat(4,1fr)}
-  .steps::before{display:none}
+body {
+  background: var(--paper);
+  color: var(--t);
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
 }
-@media(min-width:1024px){
-  .svcs{grid-template-columns:repeat(3,1fr)}
-  .hero-brand{font-size:150px}
+
+/* ══ NOISE TEXTURE ══ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: .6;
+}
+
+/* ══ TYPOGRAPHY ══ */
+.syne { font-family: 'Syne', sans-serif; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* ══ NAV ══ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 18px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(245,243,238,.88);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--paper3);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -.5px;
+  text-decoration: none;
+  color: var(--t);
+}
+
+.nav-logo-mark {
+  width: 32px; height: 32px;
+  background: var(--acc);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: white;
+  font-weight: 900;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-badge {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--t3);
+  padding: 5px 12px;
+  border: 1px solid var(--paper3);
+  border-radius: 20px;
+  display: none;
+}
+
+@media(min-width: 600px) { .nav-badge { display: block; } }
+
+.btn-nav {
+  background: var(--acc);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-nav:hover { background: var(--acc3); transform: translateY(-1px); }
+.btn-nav:active { transform: translateY(0); }
+
+/* ══ HERO ══ */
+.hero {
+  min-height: 100vh;
+  padding: 120px 5% 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 80% 20%, rgba(232,87,42,.07) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 10% 90%, rgba(201,168,76,.05) 0%, transparent 50%);
+  z-index: 0;
+}
+
+/* Large decorative number */
+.hero-deco {
+  position: absolute;
+  right: -2%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(180px, 25vw, 380px);
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(12,12,14,.06);
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--acc);
+  background: rgba(232,87,42,.08);
+  border: 1px solid rgba(232,87,42,.2);
+  border-radius: 20px;
+  padding: 6px 14px;
+  margin-bottom: 28px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  animation: fadeUp .6s ease both;
+}
+
+.hero-tag-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--acc);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.5;transform:scale(1.4);} }
+
+.hero-h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(42px, 7vw, 88px);
+  font-weight: 900;
+  line-height: .95;
+  letter-spacing: -3px;
+  margin-bottom: 28px;
+  animation: fadeUp .6s .1s ease both;
+}
+
+.hero-h1 em {
+  font-style: normal;
+  color: var(--acc);
+  position: relative;
+  display: inline-block;
+}
+
+.hero-h1 em::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 0; right: 0;
+  height: 3px;
+  background: var(--acc);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: underline 1s .8s ease forwards;
+}
+
+@keyframes underline { to { transform: scaleX(1); } }
+
+.hero-sub {
+  font-size: clamp(16px, 2vw, 20px);
+  color: var(--t2);
+  max-width: 520px;
+  margin-bottom: 40px;
+  line-height: 1.65;
+  font-weight: 400;
+  animation: fadeUp .6s .2s ease both;
+}
+
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  animation: fadeUp .6s .3s ease both;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--acc);
+  color: white;
+  border: none;
+  padding: 16px 28px;
+  border-radius: 10px;
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  text-decoration: none;
+  box-shadow: 0 4px 24px rgba(232,87,42,.3);
+}
+
+.btn-primary:hover { background: var(--acc3); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(232,87,42,.35); }
+.btn-primary:active { transform: translateY(0); }
+
+.btn-primary svg { width: 20px; height: 20px; fill: white; flex-shrink: 0; }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--t);
+  border: 1.5px solid var(--paper3);
+  padding: 16px 28px;
+  border-radius: 10px;
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  text-decoration: none;
+}
+
+.btn-secondary:hover { border-color: var(--t); background: var(--paper2); }
+
+.hero-stats {
+  display: flex;
+  gap: 32px;
+  margin-top: 56px;
+  flex-wrap: wrap;
+  animation: fadeUp .6s .4s ease both;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--t);
+  letter-spacing: -1px;
+}
+
+.stat-lbl {
+  font-size: 12px;
+  color: var(--t3);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: .3px;
+}
+
+.stat-div {
+  width: 1px;
+  background: var(--paper3);
+  align-self: stretch;
+}
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+
+/* ══ MARQUEE ══ */
+.marquee-wrap {
+  background: var(--ink);
+  padding: 14px 0;
+  overflow: hidden;
+  border-top: 1px solid var(--ink3);
+  border-bottom: 1px solid var(--ink3);
+}
+
+.marquee-track {
+  display: flex;
+  gap: 0;
+  animation: marquee 20s linear infinite;
+  white-space: nowrap;
+}
+
+.marquee-track:hover { animation-play-state: paused; }
+
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 32px;
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(245,243,238,.5);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.marquee-item strong { color: var(--acc2); }
+.marquee-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--acc); flex-shrink: 0; }
+
+@keyframes marquee { from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+/* ══ SECTIONS ══ */
+section { position: relative; z-index: 1; }
+
+.section-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 5%;
+}
+
+/* ══ FEATURES ══ */
+.features {
+  padding: 100px 0;
+  background: var(--paper);
+}
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--acc);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-label::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--acc);
+}
+
+.section-h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(30px, 4.5vw, 52px);
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  line-height: 1.05;
+  margin-bottom: 16px;
+}
+
+.section-h2 em { font-style: normal; color: var(--acc); }
+
+.section-sub {
+  font-size: 16px;
+  color: var(--t2);
+  max-width: 500px;
+  margin-bottom: 60px;
+  line-height: 1.65;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2px;
+  background: var(--paper3);
+  border: 1px solid var(--paper3);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.feat-card {
+  background: var(--paper);
+  padding: 36px 32px;
+  transition: background .2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.feat-card:hover { background: var(--paper2); }
+
+.feat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px;
+  height: 0;
+  background: var(--acc);
+  transition: height .3s ease;
+}
+
+.feat-card:hover::before { height: 100%; }
+
+.feat-icon {
+  width: 48px; height: 48px;
+  background: rgba(232,87,42,.08);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin-bottom: 20px;
+  transition: background .2s;
+}
+
+.feat-card:hover .feat-icon { background: rgba(232,87,42,.15); }
+
+.feat-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -.3px;
+}
+
+.feat-desc {
+  font-size: 14px;
+  color: var(--t2);
+  line-height: 1.65;
+}
+
+/* ══ DARK SECTION ══ */
+.dark-section {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 100px 0;
+}
+
+.dark-section .section-h2 { color: var(--paper); }
+.dark-section .section-sub { color: rgba(245,243,238,.6); }
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.plan-card-l {
+  background: var(--ink2);
+  border: 1px solid var(--ink3);
+  border-radius: 16px;
+  padding: 28px 24px;
+  transition: all .2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.plan-card-l::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ink3);
+  transition: background .2s;
+}
+
+.plan-card-l:hover { border-color: rgba(232,87,42,.3); transform: translateY(-4px); }
+.plan-card-l:hover::before { background: var(--acc); }
+
+.plan-card-l.featured {
+  border-color: rgba(232,87,42,.4);
+  background: rgba(232,87,42,.05);
+}
+
+.plan-card-l.featured::before { background: var(--acc); }
+
+.plan-badge-l {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--acc);
+  background: rgba(232,87,42,.15);
+  border: 1px solid rgba(232,87,42,.3);
+  border-radius: 20px;
+  padding: 3px 10px;
+  margin-bottom: 16px;
+  display: inline-block;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+.plan-name-l {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  letter-spacing: -.5px;
+  color: var(--paper);
+}
+
+.plan-model-l {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: rgba(245,243,238,.4);
+  margin-bottom: 20px;
+  letter-spacing: .3px;
+}
+
+.plan-features-l {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.plan-feat-l {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 13px;
+  color: rgba(245,243,238,.7);
+  line-height: 1.4;
+}
+
+.plan-feat-l::before {
+  content: '→';
+  color: var(--acc);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.plan-cta-l {
+  width: 100%;
+  padding: 12px;
+  background: var(--ink3);
+  color: rgba(245,243,238,.7);
+  border: 1px solid var(--ink3);
+  border-radius: 8px;
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  text-align: center;
+}
+
+.plan-card-l:hover .plan-cta-l,
+.plan-card-l.featured .plan-cta-l {
+  background: var(--acc);
+  color: white;
+  border-color: var(--acc);
+}
+
+/* ══ HOW IT WORKS ══ */
+.how-section {
+  padding: 100px 0;
+  background: var(--paper2);
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2px;
+  background: var(--paper3);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--paper3);
+}
+
+.step {
+  background: var(--paper2);
+  padding: 36px 28px;
+  position: relative;
+  transition: background .2s;
+}
+
+.step:hover { background: var(--paper); }
+
+.step-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 56px;
+  font-weight: 900;
+  color: rgba(12,12,14,.06);
+  line-height: 1;
+  margin-bottom: 16px;
+  letter-spacing: -2px;
+}
+
+.step-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -.3px;
+}
+
+.step-desc {
+  font-size: 14px;
+  color: var(--t2);
+  line-height: 1.65;
+}
+
+/* ══ INCLUDES / NOT INCLUDES ══ */
+.includes-section {
+  padding: 100px 0;
+  background: var(--paper);
+}
+
+.includes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+@media(max-width: 640px) { .includes-grid { grid-template-columns: 1fr; } }
+
+.includes-col {
+  background: var(--paper2);
+  border: 1px solid var(--paper3);
+  border-radius: 16px;
+  padding: 32px 28px;
+}
+
+.includes-col-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: -.3px;
+}
+
+.includes-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--paper3);
+  font-size: 14px;
+  color: var(--t2);
+  line-height: 1.5;
+}
+
+.includes-item:last-child { border-bottom: none; }
+
+.includes-check { color: #22a35a; font-size: 15px; flex-shrink: 0; margin-top: 1px; font-weight: 700; }
+.includes-x { color: var(--acc); font-size: 15px; flex-shrink: 0; margin-top: 1px; font-weight: 700; }
+
+/* ══ CTA SECTION ══ */
+.cta-section {
+  padding: 100px 0;
+  background: var(--ink);
+  overflow: hidden;
+  position: relative;
+}
+
+.cta-bg-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(80px, 18vw, 220px);
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(245,243,238,.04);
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+}
+
+.cta-inner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 5%;
+}
+
+.cta-h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(32px, 5vw, 60px);
+  font-weight: 900;
+  letter-spacing: -2px;
+  line-height: 1.05;
+  color: var(--paper);
+  margin-bottom: 16px;
+}
+
+.cta-h2 em { font-style: normal; color: var(--acc2); }
+
+.cta-sub {
+  font-size: 16px;
+  color: rgba(245,243,238,.55);
+  margin-bottom: 40px;
+  line-height: 1.65;
+}
+
+.btn-wa {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--wa);
+  color: white;
+  border: none;
+  padding: 18px 36px;
+  border-radius: 12px;
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  text-decoration: none;
+  box-shadow: 0 4px 32px rgba(37,211,102,.3);
+}
+
+.btn-wa:hover { background: #1fab54; transform: translateY(-2px); box-shadow: 0 8px 40px rgba(37,211,102,.4); }
+.btn-wa:active { transform: translateY(0); }
+.btn-wa svg { width: 22px; height: 22px; fill: white; flex-shrink: 0; }
+
+.cta-note {
+  margin-top: 16px;
+  font-size: 12px;
+  color: rgba(245,243,238,.3);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: .3px;
+}
+
+/* ══ FOOTER ══ */
+footer {
+  background: var(--ink);
+  border-top: 1px solid var(--ink3);
+  padding: 32px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(245,243,238,.5);
+}
+
+.footer-note {
+  font-size: 11px;
+  color: rgba(245,243,238,.25);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: .3px;
+}
+
+/* ══ FLOATING WA ══ */
+.wa-float {
+  position: fixed;
+  bottom: 24px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  background: var(--wa);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 24px rgba(37,211,102,.4);
+  cursor: pointer;
+  z-index: 90;
+  border: none;
+  transition: all .2s;
+  text-decoration: none;
+}
+
+.wa-float:hover { transform: scale(1.08); box-shadow: 0 6px 32px rgba(37,211,102,.5); }
+.wa-float svg { width: 28px; height: 28px; fill: white; }
+
+/* ══ SCROLL REVEAL ══ */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width: 768px) {
+  .hero-deco { display: none; }
+  .hero { padding: 100px 5% 60px; }
+  .hero-stats { gap: 20px; }
+  .stat-div { display: none; }
+  nav { padding: 14px 5%; }
 }
 </style>
 </head>
 <body>
 
-<div class="bg-blob blob1"></div>
-<div class="bg-blob blob2"></div>
-<div class="bg-blob blob3"></div>
-
-<div class="ticker"><div class="ticker-track" id="ticker"></div></div>
-
+<!-- NAV -->
 <nav>
-  <a class="nav-brand" href="#">
-    <div class="nav-mark">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-        <path d="M10 2L13 7H18L14 11L16 17L10 13L4 17L6 11L2 7H7L10 2Z" fill="white"/>
-      </svg>
-    </div>
-    MISAKROOS
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-mark">✦</div>
+    Claude Fast
   </a>
-  <div style="display:flex;align-items:center;gap:8px">
-    <button class="btn-disc" id="disc-btn" onclick="openDisc()" title="Código de descuento">
-      %
-      <div class="disc-dot" id="disc-dot"></div>
-    </button>
-    <button class="btn-theme" id="theme-btn" onclick="toggleTheme()" title="Modo oscuro">🌙</button>
-    <a class="nav-wa" href="https://wa.me/5492645182955">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M5.077 19.928A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10a9.96 9.96 0 0 1-5.593-1.705L2 22l3.077-2.072z"/></svg>
-      Escribinos
+  <div class="nav-right">
+    <span class="nav-badge mono">by MISAKROOS</span>
+    <a class="btn-nav" href="#contacto" id="navWaBtn">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Contratar
     </a>
   </div>
 </nav>
 
-<!-- MODAL DESCUENTO -->
-<div class="disc-overlay" id="disc-overlay" onclick="handleOverlay(event)">
-  <div class="disc-modal-inner">
-    <div class="disc-title">🏷️ Código de descuento</div>
-    <div class="disc-sub">Ingresá tu código para obtener un descuento en el catálogo.</div>
-    <div class="disc-row">
-      <input class="disc-input" id="disc-input" type="text" placeholder="CÓDIGO" maxlength="20"
-        oninput="this.value=this.value.toUpperCase()"
-        onkeydown="if(event.key==='Enter')applyDisc()">
-      <button class="disc-apply" onclick="applyDisc()">Aplicar</button>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-deco">IA</div>
+  <div class="hero-content">
+    <div class="hero-tag">
+      <div class="hero-tag-dot"></div>
+      Disponible ahora · Acceso inmediato
     </div>
-    <div class="disc-msg" id="disc-msg"></div>
-    <div class="disc-active-row" id="disc-active-row">
-      <span class="disc-active-lbl" id="disc-active-lbl"></span>
-      <span class="disc-remove" onclick="removeDisc()">Quitar ×</span>
+    <h1 class="hero-h1 syne">
+      Tu IA.<br>
+      <em>Sin límites.</em><br>
+      En tu celular.
+    </h1>
+    <p class="hero-sub">
+      Claude Fast te da acceso a inteligencia artificial avanzada con búsqueda web en tiempo real. Creá páginas web, escribí código, redactá textos y consultá lo que quieras — todo desde el celular.
+    </p>
+    <div class="hero-cta">
+      <a class="btn-primary" href="#contacto" id="heroBtnPrimary">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Consultar por WhatsApp
+      </a>
+      <a class="btn-secondary" href="#planes">Ver planes</a>
     </div>
-    <button class="disc-close" onclick="closeDisc()">Cerrar</button>
-  </div>
-</div>
-
-<a href="https://wa.me/5492645182955" id="waf">💬</a>
-
-<div class="page">
-
-  <section class="hero">
-    <div class="hero-pill"><span class="dot"></span>+150 clientes activos · AR & UY</div>
-    <div class="hero-brand">
-      <span class="m1">MISA</span>
-      <span class="m2">KROOS</span>
-    </div>
-    <div class="hero-sub-line">Suscripciones Premium</div>
-    <p class="hero-desc">Streaming, música, IA y diseño.<br>Activación inmediata · Soporte 24/7 · Garantía real.</p>
     <div class="hero-stats">
-      <div class="hstat"><span class="hstat-n" id="s1">0+</span><div class="hstat-l">Clientes</div></div>
-      <div class="hstat"><span class="hstat-n" id="s2">0</span><div class="hstat-l">Servicios</div></div>
-      <div class="hstat"><span class="hstat-n" id="s3">0%</span><div class="hstat-l">Garantía</div></div>
-    </div>
-    <div class="hero-actions">
-      <a class="btn-catalog" href="#catalogo">
-        <span>🎬</span> Ver catálogo completo
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-      </a>
-    </div>
-  </section>
-
-  <div class="divider rv"></div>
-
-  <div class="trust-row rv">
-    <div class="tpill"><span class="live"></span>En línea ahora</div>
-    <div class="tpill">⚡ Activación en minutos</div>
-    <div class="tpill">🔐 100% seguro</div>
-    <div class="tpill">🔁 Renovación garantizada</div>
-    <div class="tpill">💳 Sin tarjeta propia</div>
-  </div>
-
-  <div class="rv">
-    <div class="sec-t">Tu país</div>
-    <div class="country-wrap">
-      <button class="cbtn active" id="btn-AR" onclick="setCountry('AR')">🇦🇷 Argentina</button>
-      <button class="cbtn" id="btn-UY" onclick="setCountry('UY')">🇺🇾 Uruguay</button>
-    </div>
-  </div>
-
-  <div class="rv">
-    <div class="sec-t">Clientes felices</div>
-    <div class="wa-card">
-      <div class="wa-card-hdr" id="wa-hdr"></div>
-      <div class="wa-body" id="wa-body"></div>
-      <div class="wa-dots" id="wa-dots"></div>
-    </div>
-  </div>
-
-  <div class="rv">
-    <div class="sec-t">Reseñas verificadas</div>
-    <div class="rev-strip" id="revs"></div>
-  </div>
-
-  <div class="rv">
-    <div class="sec-t">Nuestros números</div>
-    <div class="metrics">
-      <div class="metric"><span class="metric-icon">🚀</span><div><div class="metric-val">5min</div><div class="metric-lbl">Activación</div></div></div>
-      <div class="metric"><span class="metric-icon">⭐</span><div><div class="metric-val">4.9</div><div class="metric-lbl">Rating</div></div></div>
-      <div class="metric"><span class="metric-icon">🔄</span><div><div class="metric-val">98%</div><div class="metric-lbl">Renovación</div></div></div>
-      <div class="metric"><span class="metric-icon">💬</span><div><div class="metric-val">24/7</div><div class="metric-lbl">Soporte</div></div></div>
-    </div>
-  </div>
-
-  <div class="rv">
-    <div class="sec-t">Cómo funciona</div>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num" style="background:linear-gradient(135deg,var(--brand),var(--brand2))">1</div>
-        <div><div class="step-title">Elegís tu servicio y plan</div><div class="step-desc">Seleccioná el streaming, música o app que querés. Podés combinar varios servicios en un solo pedido.</div></div>
+      <div class="stat">
+        <div class="stat-num syne">4</div>
+        <div class="stat-lbl mono">Planes disponibles</div>
       </div>
-      <div class="step">
-        <div class="step-num" style="background:linear-gradient(135deg,var(--sky),var(--mint))">2</div>
-        <div><div class="step-title">Nos escribís por WhatsApp</div><div class="step-desc">Tocás "Pedir por WhatsApp" y te llega el mensaje listo. Nosotros te respondemos de inmediato con las instrucciones de pago.</div></div>
+      <div class="stat-div"></div>
+      <div class="stat">
+        <div class="stat-num syne">Real</div>
+        <div class="stat-lbl mono">Búsqueda web</div>
       </div>
-      <div class="step">
-        <div class="step-num" style="background:linear-gradient(135deg,var(--sun),var(--coral))">3</div>
-        <div><div class="step-title">Confirmás el pago</div><div class="step-desc">Transferencia, MercadoPago o efectivo. Aceptamos múltiples métodos según tu país.</div></div>
+      <div class="stat-div"></div>
+      <div class="stat">
+        <div class="stat-num syne">100%</div>
+        <div class="stat-lbl mono">Privado</div>
       </div>
-      <div class="step">
-        <div class="step-num" style="background:linear-gradient(135deg,var(--mint),var(--sky))">4</div>
-        <div><div class="step-title">¡Listo! Activamos en minutos</div><div class="step-desc">En 5-10 minutos tenés tu acceso activo. Te acompañamos con soporte 24/7 durante toda tu suscripción.</div></div>
+      <div class="stat-div"></div>
+      <div class="stat">
+        <div class="stat-num syne">24/7</div>
+        <div class="stat-lbl mono">Disponible</div>
       </div>
     </div>
   </div>
+</section>
 
-  <div class="rv">
-    <div class="sec-t">¿Por qué MISAKROOS?</div>
-    <div class="why-grid">
-      <div class="why-card"><span class="why-emoji">⚡</span><div class="why-title">Activación rápida</div><div class="why-desc">Tu servicio activo en minutos, no en días.</div></div>
-      <div class="why-card"><span class="why-emoji">🤝</span><div class="why-title">Trato personal</div><div class="why-desc">Hablás con personas reales, no con bots.</div></div>
-      <div class="why-card"><span class="why-emoji">💰</span><div class="why-title">Mejor precio</div><div class="why-desc">Precios fijos, sin sorpresas ni costos ocultos.</div></div>
-      <div class="why-card"><span class="why-emoji">🔁</span><div class="why-title">Sin compromisos</div><div class="why-desc">Renovás solo cuando querés. Sin ataduras.</div></div>
-      <div class="why-card"><span class="why-emoji">📱</span><div class="why-title">Todos los dispositivos</div><div class="why-desc">TV, celular, tablet, PC. Donde quieras.</div></div>
-      <div class="why-card"><span class="why-emoji">🌍</span><div class="why-title">AR y UY</div><div class="why-desc">Precios locales para Argentina y Uruguay.</div></div>
-      <div class="why-card"><span class="why-emoji">🛡️</span><div class="why-title">Garantía real</div><div class="why-desc">Problema → lo resolvemos o te devolvemos el dinero.</div></div>
-      <div class="why-card"><span class="why-emoji">💬</span><div class="why-title">Soporte 24/7</div><div class="why-desc">Siempre disponibles. A cualquier hora del día.</div></div>
-    </div>
-  </div>
-
-  <div class="cta-mid rv">
-    <span class="cta-mid-icon">🎬</span>
-    <div class="cta-mid-title">¿Ya sabés lo que querés?</div>
-    <div class="cta-mid-sub">Seleccioná tus servicios y pedinos todo junto.<br>Te activamos en minutos.</div>
-    <a class="cta-mid-btn" href="https://wa.me/5492645182955">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M5.077 19.928A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10a9.96 9.96 0 0 1-5.593-1.705L2 22l3.077-2.072z"/></svg>
-      Consultar ahora gratis
-    </a>
-  </div>
-
-  <div class="garantia-banner rv">
-    <div class="garantia-title">🛡️ Nuestra garantía</div>
-    <div class="garantia-sub">Comprás con total tranquilidad. Si algo no funciona, lo solucionamos.</div>
-    <ul class="garantia-list">
-      <li>Reponemos los días perdidos si el servicio falla</li>
-      <li>Devolvemos el dinero si no podemos resolver</li>
-      <li>Soporte inmediato por WhatsApp las 24hs</li>
-      <li>Más de 150 clientes satisfechos lo confirman</li>
-    </ul>
-    <a class="garantia-btn" href="https://wa.me/5492645182955">💬 Preguntanos sin compromiso</a>
-  </div>
-
-  <div class="contact-section rv">
-    <div class="contact-title">Estamos para ayudarte 👋</div>
-    <div class="contact-sub">¿Tenés dudas antes de comprar? Escribinos, respondemos rápido y con gusto.</div>
-    <div class="contact-options">
-      <a class="contact-opt" href="https://wa.me/5492645182955">
-        <div class="contact-icon" style="background:#dcfce7">💬</div>
-        <div><div class="contact-opt-title">WhatsApp directo</div><div class="contact-opt-sub">+54 9 264 518-2955 · Respuesta inmediata</div></div>
-      </a>
-      <a class="contact-opt" href="https://wa.me/5492645182955?text=Hola%20MISAKROOS%2C%20quiero%20saber%20m%C3%A1s%20sobre%20los%20servicios">
-        <div class="contact-icon" style="background:#ede9fe">🎁</div>
-        <div><div class="contact-opt-title">Consultá por combos</div><div class="contact-opt-sub">Pedí varios servicios juntos y preguntá por descuentos</div></div>
-      </a>
-      <a class="contact-opt" href="https://wa.me/5492645182955?text=Hola%2C%20necesito%20soporte%20con%20mi%20suscripci%C3%B3n">
-        <div class="contact-icon" style="background:#fef3c7">🔧</div>
-        <div><div class="contact-opt-title">Soporte técnico</div><div class="contact-opt-sub">¿Algo no funciona? Te ayudamos ahora mismo</div></div>
-      </a>
-    </div>
-  </div>
-
-  <!-- CATÁLOGO -->
-  <div id="catalogo" class="rv">
-    <div class="sec-t">Catálogo completo</div>
-
-    <!-- Banner descuento activo -->
-    <div class="disc-banner" id="disc-banner">
-      <span>🏷️</span>
-      <span id="disc-banner-txt" style="flex:1"></span>
-      <span class="disc-banner-pct" id="disc-banner-pct"></span>
-    </div>
-
-    <div class="country-wrap" style="margin-bottom:14px">
-      <button class="cbtn active" id="btn-AR2" onclick="setCountry2('AR')">🇦🇷 Argentina</button>
-      <button class="cbtn" id="btn-UY2" onclick="setCountry2('UY')">🇺🇾 Uruguay</button>
-    </div>
-
-    <div class="cat-filters">
-      <button class="cat-f active" onclick="filterCat('all',this)">Todos</button>
-      <button class="cat-f" onclick="filterCat('streaming',this)">🎬 Streaming</button>
-      <button class="cat-f" onclick="filterCat('musica',this)">🎵 Música</button>
-      <button class="cat-f" onclick="filterCat('ia',this)">🤖 IA & Diseño</button>
-      <button class="cat-f" onclick="filterCat('anime',this)">⛩️ Anime</button>
-    </div>
-
-    <div class="svcs" id="svcs"></div>
-  </div>
-
-  <div class="rv">
-    <div class="sec-t">Preguntas frecuentes</div>
-    <div class="faq-list" id="faqs"></div>
-  </div>
-
-  <div class="footer rv">
-    <span class="foot-brand">MISAKROOS</span>
-    <div class="foot-txt">
-      Argentina 🇦🇷 · Uruguay 🇺🇾<br>
-      <a class="foot-wa" href="https://wa.me/5492645182955">+54 9 264 518-2955</a><br>
-      <span style="opacity:.5">© 2025 MISAKROOS · Todos los derechos reservados</span>
-    </div>
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item"><span class="marquee-dot"></span> Búsqueda web <strong>en tiempo real</strong></span>
+    <span class="marquee-item"><span class="marquee-dot"></span> Creación de <strong>páginas web</strong></span>
+    <span class="marquee-item"><span class="marquee-dot"></span> Escritura de <strong>código</strong></span>
+    <span class="marquee-item"><span class="marquee-dot"></span> Análisis de <strong>imágenes y PDFs</strong></span>
+    <span class="marquee-item"><span class="marquee-dot"></span> Traducción de <strong>textos</strong></span>
+    <span class="marquee-item"><span class="marquee-dot"></span> Historial <strong>privado</strong></span>
+    <span class="marquee-item"><span class="marquee-dot"></span> Búsqueda web <strong>en tiempo real</strong></span>
+    <span class="marquee-item"><span class="marquee-dot"></span> Creación de <strong>páginas web</strong></span>
+    <span class="marquee-item"><span class="marquee-dot"></span> Escritura de <strong>código</strong></span>
+    <span class="marquee-item"><span class="marquee-dot"></span> Análisis de <strong>imágenes y PDFs</strong></span>
+    <span class="marquee-item"><span class="marquee-dot"></span> Traducción de <strong>textos</strong></span>
+    <span class="marquee-item"><span class="marquee-dot"></span> Historial <strong>privado</strong></span>
   </div>
 </div>
 
-<div id="bar">
-  <div class="bar-in">
-    <div class="bar-top">
-      <span class="bar-lbl">Tu pedido</span>
-      <span class="bar-clr" onclick="clearAll()">Limpiar ×</span>
+<!-- FEATURES -->
+<section class="features">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Capacidades</div>
+      <h2 class="section-h2 syne">Todo lo que podés<br><em>hacer con Claude Fast</em></h2>
+      <p class="section-sub">Un asistente completo que entiende lo que necesitás y te da resultados reales.</p>
     </div>
-    <div class="bar-items" id="bar-items"></div>
-    <div class="bar-foot">
-      <div class="tot-wrap">
-        <div class="tot-lbl">Total</div>
-        <div class="tot-val" id="tot">$0</div>
+    <div class="features-grid reveal">
+      <div class="feat-card">
+        <div class="feat-icon">🔍</div>
+        <div class="feat-title syne">Búsqueda web real</div>
+        <div class="feat-desc">Buscá noticias, precios, dólar, clima y cualquier información actualizada. No trabaja con datos viejos — busca en internet en el momento.</div>
       </div>
-      <button class="btn-order" onclick="sendWA()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M5.077 19.928A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10a9.96 9.96 0 0 1-5.593-1.705L2 22l3.077-2.072z"/></svg>
-        Pedir por WhatsApp
-      </button>
+      <div class="feat-card">
+        <div class="feat-icon">💻</div>
+        <div class="feat-title syne">Páginas web y código</div>
+        <div class="feat-desc">Describís lo que querés y Claude Fast genera el código HTML, CSS y JavaScript completo. Podés previsualizar el resultado directamente en el chat.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📄</div>
+        <div class="feat-title syne">Documentos e imágenes</div>
+        <div class="feat-desc">Subí PDFs, fotos o documentos y Claude Fast los analiza, resume o extrae la información que necesitás.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">✍️</div>
+        <div class="feat-title syne">Redacción profesional</div>
+        <div class="feat-desc">Emails, contratos, propuestas, publicaciones para redes. Textos listos para usar en segundos.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🧠</div>
+        <div class="feat-title syne">Memoria personal</div>
+        <div class="feat-desc">Guardá información sobre vos para que Claude Fast recuerde tus preferencias y contexto en cada conversación.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">💬</div>
+        <div class="feat-title syne">Historial privado</div>
+        <div class="feat-desc">Tus conversaciones se guardan localmente en tu dispositivo. Nadie más puede verlas. Accedés cuando quieras.</div>
+      </div>
     </div>
   </div>
-</div>
+</section>
+
+<!-- PLANES -->
+<section class="dark-section" id="planes">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label" style="color:var(--acc2)">Planes</div>
+      <h2 class="section-h2 syne">Elegí el plan<br><em>que más te conviene</em></h2>
+      <p class="section-sub" style="color:rgba(245,243,238,.55)">Todos los planes incluyen búsqueda web, historial privado y soporte por WhatsApp. Los precios los consultás directamente con tu distribuidor.</p>
+    </div>
+    <div class="plans-grid reveal">
+      <div class="plan-card-l">
+        <div class="plan-badge-l">Haiku 4.5</div>
+        <div class="plan-name-l syne">🚀 Básico</div>
+        <div class="plan-model-l mono">Modelo ultra rápido</div>
+        <div class="plan-features-l">
+          <div class="plan-feat-l">Preguntas y respuestas rápidas</div>
+          <div class="plan-feat-l">Traducciones y correcciones</div>
+          <div class="plan-feat-l">Resúmenes de documentos</div>
+          <div class="plan-feat-l">Búsqueda web en tiempo real</div>
+        </div>
+        <button class="plan-cta-l" onclick="openWaContact('Plan Básico')">Consultar precio →</button>
+      </div>
+      <div class="plan-card-l featured">
+        <div class="plan-badge-l">Más popular</div>
+        <div class="plan-name-l syne">⚡ Estándar</div>
+        <div class="plan-model-l mono">Haiku + Sonnet 4.6</div>
+        <div class="plan-features-l">
+          <div class="plan-feat-l">Todo lo del Plan Básico</div>
+          <div class="plan-feat-l">Crear páginas web completas</div>
+          <div class="plan-feat-l">Escritura y corrección de código</div>
+          <div class="plan-feat-l">Redacción de textos profesionales</div>
+          <div class="plan-feat-l">Análisis de imágenes</div>
+        </div>
+        <button class="plan-cta-l" onclick="openWaContact('Plan Estándar')">Consultar precio →</button>
+      </div>
+      <div class="plan-card-l">
+        <div class="plan-badge-l">Opus 4.6</div>
+        <div class="plan-name-l syne">🧠 Pro</div>
+        <div class="plan-model-l mono">Haiku + Sonnet + Opus</div>
+        <div class="plan-features-l">
+          <div class="plan-feat-l">Todo lo del Plan Estándar</div>
+          <div class="plan-feat-l">Análisis estratégicos complejos</div>
+          <div class="plan-feat-l">Arquitectura de sistemas</div>
+          <div class="plan-feat-l">Máxima inteligencia disponible</div>
+        </div>
+        <button class="plan-cta-l" onclick="openWaContact('Plan Pro')">Consultar precio →</button>
+      </div>
+      <div class="plan-card-l">
+        <div class="plan-badge-l">Todos los modelos</div>
+        <div class="plan-name-l syne">✦ Automático</div>
+        <div class="plan-model-l mono">IA elige según tu tarea</div>
+        <div class="plan-features-l">
+          <div class="plan-feat-l">Acceso a todos los modelos</div>
+          <div class="plan-feat-l">IA elige el más eficiente</div>
+          <div class="plan-feat-l">Créditos: 100k / 300k / 500k / 1M</div>
+          <div class="plan-feat-l">Ideal para uso variado</div>
+        </div>
+        <button class="plan-cta-l" onclick="openWaContact('Plan Automático')">Consultar precio →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA -->
+<section class="how-section">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Proceso</div>
+      <h2 class="section-h2 syne">Tres pasos para<br><em>empezar hoy</em></h2>
+      <p class="section-sub">Sin tarjeta de crédito internacional, sin configuraciones técnicas.</p>
+    </div>
+    <div class="steps reveal">
+      <div class="step">
+        <div class="step-num syne">01</div>
+        <div class="step-title syne">Elegís tu plan</div>
+        <div class="step-desc">Revisás los planes disponibles y consultás el precio por WhatsApp con tu distribuidor.</div>
+      </div>
+      <div class="step">
+        <div class="step-num syne">02</div>
+        <div class="step-title syne">Recibís tu acceso</div>
+        <div class="step-desc">En minutos recibís tu usuario y contraseña para ingresar a Claude Fast desde cualquier dispositivo.</div>
+      </div>
+      <div class="step">
+        <div class="step-num syne">03</div>
+        <div class="step-title syne">Empezás a usar</div>
+        <div class="step-desc">Ingresás, elegís tu modelo preferido y ya podés usar la IA para todo lo que necesitás.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INCLUYE / NO INCLUYE -->
+<section class="includes-section">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Transparencia</div>
+      <h2 class="section-h2 syne">Qué <em>incluye</em> y<br>qué no incluye</h2>
+      <p class="section-sub">Sin sorpresas. Sabés exactamente para qué sirve.</p>
+    </div>
+    <div class="includes-grid reveal">
+      <div class="includes-col">
+        <div class="includes-col-title syne">✅ Sí incluye</div>
+        <div class="includes-item"><span class="includes-check">✓</span>Búsqueda web en tiempo real</div>
+        <div class="includes-item"><span class="includes-check">✓</span>Creación de páginas web y código</div>
+        <div class="includes-item"><span class="includes-check">✓</span>Análisis de imágenes y PDFs</div>
+        <div class="includes-item"><span class="includes-check">✓</span>Redacción de textos profesionales</div>
+        <div class="includes-item"><span class="includes-check">✓</span>Traducciones y correcciones</div>
+        <div class="includes-item"><span class="includes-check">✓</span>Historial de chats privado</div>
+        <div class="includes-item"><span class="includes-check">✓</span>Memoria personal personalizable</div>
+        <div class="includes-item"><span class="includes-check">✓</span>Modo claro y oscuro</div>
+        <div class="includes-item"><span class="includes-check">✓</span>Funciona en celular, tablet y PC</div>
+        <div class="includes-item"><span class="includes-check">✓</span>Soporte por WhatsApp</div>
+      </div>
+      <div class="includes-col">
+        <div class="includes-col-title syne">❌ No incluye</div>
+        <div class="includes-item"><span class="includes-x">✕</span>Generación de imágenes o videos</div>
+        <div class="includes-item"><span class="includes-x">✕</span>Reconocimiento de voz</div>
+        <div class="includes-item"><span class="includes-x">✕</span>Envío de emails o mensajes</div>
+        <div class="includes-item"><span class="includes-x">✕</span>Acceso a tus redes sociales</div>
+        <div class="includes-item"><span class="includes-x">✕</span>Sincronización entre dispositivos del historial</div>
+        <div class="includes-item"><span class="includes-x">✕</span>Asesoramiento médico, legal o financiero</div>
+        <div class="includes-item"><span class="includes-x">✕</span>Llamadas o videollamadas</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section" id="contacto">
+  <div class="cta-bg-text">FAST</div>
+  <div class="cta-inner">
+    <h2 class="cta-h2 syne">Empezá hoy.<br><em>Es más simple</em><br>de lo que creés.</h2>
+    <p class="cta-sub">Contactá a tu distribuidor por WhatsApp, elegí tu plan y en minutos tenés acceso a una IA avanzada.</p>
+    <button class="btn-wa" id="ctaWaBtn" onclick="openWaContact('consulta general')">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Contactar al distribuidor
+    </button>
+    <p class="cta-note" id="ctaNote">Si no tenés un distribuidor asignado, contactá a MISAKROOS directamente.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <div class="nav-logo-mark" style="width:24px;height:24px;font-size:11px;">✦</div>
+    Claude Fast
+  </div>
+  <div class="footer-note mono">Servicio ofrecido por distribuidores autorizados</div>
+</footer>
+
+<!-- FLOATING WA -->
+<button class="wa-float" id="floatWaBtn" onclick="openWaContact('flotante')" title="Contactar por WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</button>
 
 <script>
-/* ══ DESCUENTOS ══
-   Para agregar más códigos: { pct: X, country: 'AR'|'UY'|'ALL' }
-*/
-const CODES = {
-  'BRASIL': { pct: 10, country: 'AR' }
-};
+// ══ SUPABASE ══
+const SB_URL = 'https://vxnevcoimljpowwceirv.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ4bmV2Y29pbWxqcG93d2NlaXJ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMTU0MTEsImV4cCI6MjA5NDY5MTQxMX0.0THQmWeRYOf3t9oeK2DXN1N0IV0B7D4cxMw0iGgOgS4';
+const sb = supabase.createClient(SB_URL, SB_KEY);
 
-let activeDiscount = null;
+let resellerWa = '';
+let resellerName = '';
 
-function openDisc(){
-  document.getElementById('disc-overlay').classList.add('open');
-  document.getElementById('disc-msg').textContent='';
-  document.getElementById('disc-msg').className='disc-msg';
-  if(activeDiscount){
-    document.getElementById('disc-active-row').classList.add('show');
-    document.getElementById('disc-active-lbl').textContent='✓ '+activeDiscount.code+' — −'+activeDiscount.pct+'% aplicado';
-    document.getElementById('disc-input').value='';
-  } else {
-    document.getElementById('disc-active-row').classList.remove('show');
-  }
-  setTimeout(()=>document.getElementById('disc-input').focus(),150);
-}
-function closeDisc(){ document.getElementById('disc-overlay').classList.remove('open'); }
-function handleOverlay(e){ if(e.target.id==='disc-overlay') closeDisc(); }
+// ══ LOAD RESELLER FROM URL ══
+async function loadReseller() {
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get('ref');
 
-function applyDisc(){
-  const code = document.getElementById('disc-input').value.trim().toUpperCase();
-  const msg = document.getElementById('disc-msg');
-  if(!code){ msg.className='disc-msg err'; msg.textContent='Ingresá un código.'; return; }
-  const found = CODES[code];
-  if(found){
-    activeDiscount = { code, ...found };
-    msg.className='disc-msg ok';
-    msg.textContent='¡Código aplicado! −'+found.pct+'% en Argentina';
-    document.getElementById('disc-btn').classList.add('active-code');
-    document.getElementById('disc-active-row').classList.add('show');
-    document.getElementById('disc-active-lbl').textContent='✓ '+code+' — −'+found.pct+'% aplicado';
-    updateDiscBanner();
-    renderSvcs();
-    updateBar();
-    setTimeout(closeDisc, 1300);
-  } else {
-    msg.className='disc-msg err';
-    msg.textContent='Código inválido. Verificá e intentá de nuevo.';
+  if (ref) {
+    try {
+      const { data } = await sb
+        .from('revendedores')
+        .select('nombre, whatsapp')
+        .eq('codigo', ref)
+        .eq('activo', true)
+        .single();
+
+      if (data) {
+        resellerWa = data.whatsapp;
+        resellerName = data.nombre || 'tu distribuidor';
+        // Update CTA note
+        const note = document.getElementById('ctaNote');
+        if (note) note.textContent = `Distribuidor: ${resellerName}`;
+      }
+    } catch (e) {
+      // Reseller not found, use generic
+    }
   }
 }
 
-function removeDisc(){
-  activeDiscount = null;
-  document.getElementById('disc-btn').classList.remove('active-code');
-  document.getElementById('disc-active-row').classList.remove('show');
-  document.getElementById('disc-msg').textContent='';
-  document.getElementById('disc-msg').className='disc-msg';
-  updateDiscBanner();
-  renderSvcs();
-  updateBar();
-  closeDisc();
-}
+// ══ WHATSAPP ══
+function openWaContact(context) {
+  let wa = resellerWa;
+  let nombre = resellerName || 'MISAKROOS';
 
-function updateDiscBanner(){
-  const b = document.getElementById('disc-banner');
-  const pct = getDiscountPct();
-  if(pct > 0){
-    b.classList.add('show');
-    document.getElementById('disc-banner-txt').textContent='Código '+activeDiscount.code+' activo:';
-    document.getElementById('disc-banner-pct').textContent='−'+pct+'%';
+  const msgs = {
+    'consulta general': `Hola! Vi la página de Claude Fast y me gustaría obtener más información sobre los planes disponibles.`,
+    'Plan Básico': `Hola! Me interesa el 🚀 Plan Básico de Claude Fast. ¿Me podés dar más información sobre precios?`,
+    'Plan Estándar': `Hola! Me interesa el ⚡ Plan Estándar de Claude Fast. ¿Me podés dar más información sobre precios?`,
+    'Plan Pro': `Hola! Me interesa el 🧠 Plan Pro de Claude Fast. ¿Me podés dar más información sobre precios?`,
+    'Plan Automático': `Hola! Me interesa el ✦ Plan Automático de Claude Fast. ¿Me podés dar más información sobre precios?`,
+    'flotante': `Hola! Vi la página de Claude Fast y quiero consultar sobre los planes disponibles.`,
+  };
+
+  const msg = encodeURIComponent(msgs[context] || msgs['consulta general']);
+
+  if (wa) {
+    window.open(`https://wa.me/${wa}?text=${msg}`, '_blank');
   } else {
-    b.classList.remove('show');
+    // No reseller — show generic message
+    alert('Para contratar Claude Fast, contactá a tu distribuidor autorizado o buscá a MISAKROOS.');
   }
 }
 
-function getDiscountPct(){
-  if(!activeDiscount) return 0;
-  if(activeDiscount.country==='ALL') return activeDiscount.pct;
-  if(activeDiscount.country===country) return activeDiscount.pct;
-  return 0;
+// ══ SCROLL REVEAL ══
+function initReveal() {
+  const els = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  els.forEach(el => obs.observe(el));
 }
 
-function finalPrice(base){
-  const pct = getDiscountPct();
-  return pct ? Math.round(base*(1-pct/100)) : base;
-}
-
-/* ══ UY +40% silencioso ══ */
-function u(p){ return Math.round(p*1.4); }
-
-const SVCS=[
-  {name:'Netflix',     desc:'Series, películas y documentales', hot:true, cat:'streaming',
-   bg:'#E50914',  logoTxt:'N',   ar:{1:7500,2:12900},       uy:{1:u(250),2:u(450)}},
-  {name:'Disney+',    desc:'Marvel, Star Wars, Pixar y más',   cat:'streaming',
-   bg:'#113CCF',  logoTxt:'D+',  ar:{1:6500,2:12000},       uy:{1:u(300),2:u(550)}},
-  {name:'Max',        desc:'HBO Originals y series exclusivas', cat:'streaming',
-   bg:'#0029FF',  logoTxt:'max', ar:{1:4500,2:8000},        uy:{1:u(150),2:u(280)}},
-  {name:'Universal+', desc:'Cine, series y estrenos exclusivos', cat:'streaming',
-   bg:'#0057A8',  logoTxt:'U+',  ar:{1:4500,2:8000},        uy:{1:u(150),2:u(280)}},
-  {name:'Apple TV+',  desc:'Originales premiados · Ted Lasso', cat:'streaming',
-   bg:'#1C1C1E',  logoTxt:'TV+', ar:{1:4500,2:8000},        uy:{1:u(150),2:u(280)}},
-  {name:'ViX Premium',desc:'Series, novelas y fútbol en español', cat:'streaming',
-   bg:'#0050B3',  logoTxt:'ViX', ar:{1:4500,2:8000},        uy:{1:u(150),2:u(280)}},
-  {name:'YouTube',    desc:'Sin publicidad + Music incluido',  cat:'streaming',
-   bg:'#FF0000',  logoTxt:'▶',   ar:{1:4500},               uy:{1:u(190)}},
-  {name:'Crunchyroll',desc:'Anime en HD · Megafan sin límites', cat:'anime',
-   bg:'#F47521',  logoTxt:'CR',  ar:{1:4500,2:8000},        uy:{1:u(150),2:u(280)}},
-  {name:'Spotify',    desc:'Música ilimitada sin anuncios',   cat:'musica',
-   bg:'#1DB954',  logoTxt:'♫',   ar:{1:4500},               uy:{1:u(190)}},
-  {name:'Deezer',     desc:'Música en alta calidad sin anuncios', cat:'musica',
-   bg:'#A238FF',  logoTxt:'Dz',  ar:{1:4500,2:8000},        uy:{1:u(150),2:u(280)}},
-  {name:'ChatGPT+',   desc:'GPT-4o · DALL·E · sin límites',  hot:true, cat:'ia',
-   bg:'#10A37F',  logoTxt:'AI',  ar:{1:8000},               uy:{1:u(400)}},
-  {name:'Canva Pro',  desc:'Diseño profesional ilimitado',    cat:'ia',
-   bg:'#7D2AE8',  logoTxt:'Ca',  ar:{1:5500},               uy:{1:u(220)}},
-  {name:'Gemini Plus',desc:'IA de Google · multimodal avanzado', hot:true, cat:'ia',
-   bg:'#1A73E8',  logoTxt:'Ge',  ar:{1:7900},               uy:{1:u(7900)}},
-  {name:'Grok',       desc:'IA de xAI · análisis y razonamiento', cat:'ia',
-   bg:'#1C1C1C',  logoTxt:'Gk',  ar:{1:7900},               uy:{1:u(7900)}},
-  {name:'CapCut Pro', desc:'Edición de video · PC, Web y Móvil', cat:'ia',
-   bg:'#000000',  logoTxt:'CC',  ar:{1:7900},               uy:{1:u(7900)}},
-  {name:'Microsoft 365',desc:'Word, Excel, PowerPoint, Teams y más', cat:'ia',
-   bg:'#0078D4',  logoTxt:'M',   ar:{1:5000},               uy:{1:u(5000)}},
-  {name:'Perplexity', desc:'Buscador con IA · respuestas exactas', cat:'ia',
-   bg:'#20B2AA',  logoTxt:'Px',  ar:{1:2500},               uy:{1:u(2500)}},
-  {name:'Adobe CC',   desc:'Photoshop, Illustrator, Premiere y más', hot:true, cat:'ia',
-   bg:'#FF0000',  logoTxt:'Ae',  ar:{1:9990},               uy:{1:u(9990)}},
-];
-
-const WA=[
-  {n:"Marcos G.",   loc:"Rosario, AR",        c:"#c0392b", t:"Activaron Disney en menos de 5 minutos. Atención impecable 🔥", ago:"hace 2 min"},
-  {n:"Sofía R.",    loc:"Montevideo, UY",     c:"#2980b9", t:"Segunda vez que renuevo. Siempre confiables y rápidos 👌",     ago:"hace 8 min"},
-  {n:"Juan I.",     loc:"Córdoba, AR",        c:"#8e44ad", t:"Mejor precio de Netflix que encontré. Muy recomendado ⭐",     ago:"hace 15 min"},
-  {n:"Valentina L.",loc:"Punta del Este, UY", c:"#27ae60", t:"Configuraron mi Smart TV en 5 minutos por WhatsApp 🙌",       ago:"hace 22 min"},
-];
-const REVS=[
-  {n:"Marcos G.",   loc:"Rosario, AR",        c:"#c0392b", s:5, t:"Disney activado al instante. Atención impecable 🔥"},
-  {n:"Sofía R.",    loc:"Montevideo, UY",     c:"#2980b9", s:5, t:"Segunda renovación. Siempre confiables y rápidos."},
-  {n:"Juan I.",     loc:"Córdoba, AR",        c:"#8e44ad", s:5, t:"Mejor precio de Netflix del mercado. Muy recomendado."},
-  {n:"Valentina L.",loc:"Punta del Este, UY", c:"#27ae60", s:5, t:"Soporte inmediato. Me ayudaron a configurar la TV."},
-  {n:"Diego M.",    loc:"Buenos Aires, AR",   c:"#d35400", s:5, t:"Netflix + Spotify + ChatGPT. Todo perfecto."},
-  {n:"Carla P.",    loc:"Rosario, AR",        c:"#16a085", s:5, t:"4 meses sin un solo problema. Los recomiendo al 100%."},
-];
-const FAQS=[
-  {q:"¿Cómo funciona la activación?",a:"Confirmado el pago, enviamos las credenciales o te sumamos a la cuenta en 5-10 minutos por WhatsApp. Funciona cualquier hora del día."},
-  {q:"¿Es seguro comprar así las suscripciones?",a:"Sí. Trabajamos con cuentas compartidas 100% legítimas. Si hay cualquier inconveniente, lo resolvemos o te devolvemos el dinero sin vueltas."},
-  {q:"¿Por cuánto tiempo dura la suscripción?",a:"Las suscripciones son mensuales. Podés renovar mes a mes sin compromiso. También ofrecemos planes trimestrales con descuento."},
-  {q:"¿En qué dispositivos funciona?",a:"En todos: Smart TV, celular, tablet, PC y consolas. Compatible con cualquier dispositivo que tenga la app de cada plataforma."},
-  {q:"¿Qué pasa si el servicio falla?",a:"Soporte 24/7 por WhatsApp. Si no resolvemos el problema en el día, te reponemos los días perdidos o te devolvemos el dinero."},
-  {q:"¿Qué medios de pago aceptan?",a:"Transferencia bancaria, MercadoPago y efectivo. Para Uruguay también hay opciones adicionales. Consultanos por WhatsApp."},
-];
-
-let country='AR', selected={}, waIdx=0;
-
-function setCountry(c){
-  country=c; selected={};
-  document.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('btn-'+c)?.classList.add('active');
-  document.getElementById('btn-'+c+'2')?.classList.add('active');
-  updateDiscBanner(); renderSvcs(); updateBar();
-}
-function setCountry2(c){ setCountry(c); }
-
-function toggleOpt(name,qty){
-  selected[name]===qty ? delete selected[name] : selected[name]=qty;
-  renderSvcs(); updateBar();
-}
-function clearAll(){ selected={}; renderSvcs(); updateBar(); }
-
-let activeCat='all';
-function filterCat(cat,btn){
-  activeCat=cat;
-  document.querySelectorAll('.cat-f').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderSvcs();
-}
-
-function renderSvcs(){
-  const discPct = getDiscountPct();
-  const list = activeCat==='all' ? SVCS : SVCS.filter(s=>s.cat===activeCat);
-  document.getElementById('svcs').innerHTML = list.map(s=>{
-    const basePrices = country==='AR' ? s.ar : s.uy;
-    const hasSel = selected[s.name]!==undefined;
-    const fs = s.logoTxt.length<=2?'24px':s.logoTxt.length===3?'18px':'14px';
-    const opts = Object.entries(basePrices).map(([q,baseP])=>{
-      const on = selected[s.name]==q;
-      const p = finalPrice(baseP);
-      const showOrig = discPct>0 && p!==baseP;
-      return `<button class="opt${on?' on':''}" onclick="toggleOpt('${s.name}',${q})"
-        style="${on?`border-color:${s.bg};background:#fff;`:''}">
-        <div class="opt-l">
-          <div class="opt-plan">${q==1?'1 Pantalla':q+' Pantallas'}</div>
-          <div class="opt-sub">${q==1?'Acceso individual':'Acceso familiar'}</div>
-        </div>
-        <div class="opt-r">
-          ${showOrig?`<span class="opt-price-orig">$${baseP.toLocaleString('es-AR')}</span>`:''}
-          <span class="opt-price${on?' on':''}" style="${on?`color:${s.bg};`:''}">$${p.toLocaleString('es-AR')}</span>
-          <div class="opt-chk" style="transform:scale(${on?1:0});background:${s.bg}">✓</div>
-        </div>
-      </button>`;
-    }).join('');
-    return `<div class="svc${hasSel?' on':''}" style="${hasSel?`border-color:${s.bg}66;box-shadow:0 6px 28px ${s.bg}22;`:''}">
-      <div style="height:4px;background:${s.bg};opacity:${hasSel?1:.18};transition:opacity .3s;border-radius:var(--r) var(--r) 0 0"></div>
-      <div class="svc-hdr">
-        <div class="svc-logo-box" style="background:${s.bg};box-shadow:0 3px 12px ${s.bg}55">
-          <div class="svc-logo-txt" style="font-size:${fs}">${s.logoTxt}</div>
-        </div>
-        <div>
-          <div class="svc-nm">${s.name}${s.hot?'<span class="tag-hot">HOT</span>':''}</div>
-          <div class="svc-desc">${s.desc}</div>
-        </div>
-      </div>
-      <div class="svc-opts">${opts}</div>
-    </div>`;
-  }).join('');
-}
-
-function updateBar(){
-  const bar=document.getElementById('bar'), items=document.getElementById('bar-items'), waf=document.getElementById('waf');
-  const keys=Object.keys(selected);
-  if(!keys.length){bar.classList.remove('show');waf.classList.remove('hide');return;}
-  let total=0;
-  items.innerHTML=keys.map(k=>{
-    const s=SVCS.find(x=>x.name===k);
-    const baseP=(country==='AR'?s.ar:s.uy)[selected[k]];
-    const p=finalPrice(baseP); total+=p;
-    return `<div class="bar-row"><span class="bar-nm">${s.name} · ${selected[k]}P</span><span class="bar-pr">$${p.toLocaleString('es-AR')}</span></div>`;
-  }).join('');
-  document.getElementById('tot').textContent='$'+total.toLocaleString('es-AR');
-  bar.classList.add('show'); waf.classList.add('hide');
-}
-
-function sendWA(){
-  const keys=Object.keys(selected); if(!keys.length)return;
-  const discPct=getDiscountPct();
-  let msg='¡Hola MISAKROOS! Quiero contratar:\n\n',total=0;
-  keys.forEach(k=>{
-    const s=SVCS.find(x=>x.name===k);
-    const baseP=(country==='AR'?s.ar:s.uy)[selected[k]];
-    const p=finalPrice(baseP); total+=p;
-    msg+=`• ${s.name} — ${selected[k]} pantalla${selected[k]>1?'s':''} → $${p.toLocaleString('es-AR')}\n`;
+// ══ SMOOTH ANCHOR ══
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const id = a.getAttribute('href').slice(1);
+    if (!id) return;
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
   });
-  if(discPct>0) msg+=`\n🏷️ Código: ${activeDiscount.code} (−${discPct}%)`;
-  msg+=`\n💰 Total: $${total.toLocaleString('es-AR')}\n🌍 País: ${country==='AR'?'Argentina 🇦🇷':'Uruguay 🇺🇾'}`;
-  window.open('https://wa.me/5492645182955?text='+encodeURIComponent(msg));
-}
+});
 
-/* TESTIMONIAL */
-function initDots(){ document.getElementById('wa-dots').innerHTML=WA.map((_,i)=>`<div class="wdot${i===0?' on':''}"></div>`).join(''); }
-function cycleWA(){
-  const r=WA[waIdx];
-  document.getElementById('wa-hdr').innerHTML=`<div class="wa-info"><div class="wa-av" style="background:${r.c}">${r.n[0]}</div><div><div class="wa-nm">${r.n}</div><div class="wa-loc">📍 ${r.loc}</div></div></div><div class="wa-online"><div class="wa-online-dot"></div>en línea</div>`;
-  document.getElementById('wa-body').innerHTML=`<div class="wa-bubble">${r.t}</div><div class="wa-time">${r.ago}</div>`;
-  document.querySelectorAll('.wdot').forEach((d,i)=>d.classList.toggle('on',i===waIdx));
-  waIdx=(waIdx+1)%WA.length;
-}
-
-function renderRevs(){
-  document.getElementById('revs').innerHTML=REVS.map(r=>`<div class="rev"><div class="rev-top"><div class="rev-av" style="background:${r.c}">${r.n[0]}</div><div><div class="rev-nm">${r.n}</div><div class="rev-loc">📍 ${r.loc}</div></div></div><div class="rev-stars">${'★'.repeat(r.s)}</div><div class="rev-txt">${r.t}</div><div class="rev-badge">✓ Compra verificada</div></div>`).join('');
-}
-
-function renderFAQs(){
-  document.getElementById('faqs').innerHTML=FAQS.map((f,i)=>`<div class="faq" id="faq${i}"><button class="faq-q" onclick="toggleFAQ(${i})"><span>${f.q}</span><div class="faq-ico">+</div></button><div class="faq-a"><div class="faq-a-txt">${f.a}</div></div></div>`).join('');
-}
-function toggleFAQ(i){
-  const el=document.getElementById('faq'+i),was=el.classList.contains('open');
-  document.querySelectorAll('.faq').forEach(f=>f.classList.remove('open'));
-  if(!was)el.classList.add('open');
-}
-
-function animCount(el,target,suffix){
-  let v=0;const go=()=>{v+=Math.max(1,Math.ceil(target/28));if(v>=target)el.textContent=target+suffix;else{el.textContent=v+suffix;requestAnimationFrame(go);}};go();
-}
-setTimeout(()=>{
-  animCount(document.getElementById('s1'),150,'+');
-  animCount(document.getElementById('s2'),18,'');
-  animCount(document.getElementById('s3'),100,'%');
-},500);
-
-document.querySelectorAll('.rv').forEach(el=>{new IntersectionObserver(([e])=>{if(e.isIntersecting)el.classList.add('in');},{threshold:.08}).observe(el);});
-
-function toggleTheme(){
-  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
-  document.documentElement.setAttribute('data-theme',isDark?'light':'dark');
-  document.getElementById('theme-btn').textContent=isDark?'🌙':'☀️';
-}
-
-const tkTxt=' ⚡ ACTIVACIÓN INMEDIATA  ·  GARANTÍA TOTAL  ·  SOPORTE 24/7  ·  SIN TARJETA PROPIA  ·  AR & UY  · ';
-document.getElementById('ticker').innerHTML=`<span>${tkTxt.repeat(8)}</span><span>${tkTxt.repeat(8)}</span>`;
-
-initDots(); cycleWA(); renderRevs(); renderFAQs(); renderSvcs();
-setInterval(cycleWA,4500);
+// ══ INIT ══
+window.addEventListener('DOMContentLoaded', () => {
+  loadReseller();
+  initReveal();
+});
 </script>
 </body>
 </html>
