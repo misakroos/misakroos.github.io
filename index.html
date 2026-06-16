@@ -365,38 +365,39 @@ nav{
    WA TESTIMONIAL CARD
    ════════════════════════════════════════ */
 .wa-card{
-  background:var(--s1);border-radius:var(--r);
-  overflow:hidden;border:1px solid var(--b1);margin-bottom:20px;
+  background:#111B21;border-radius:var(--r);
+  overflow:hidden;border:1px solid rgba(37,211,102,.15);margin-bottom:20px;
 }
 .wa-card-hdr{
-  background:var(--s2);padding:11px 14px;
+  background:#202C33;padding:11px 14px;
   display:flex;align-items:center;justify-content:space-between;
-  border-bottom:1px solid var(--b1);
+  border-bottom:1px solid rgba(255,255,255,.06);
 }
 .wa-info{display:flex;align-items:center;gap:9px}
 .wa-av{
-  width:30px;height:30px;border-radius:50%;
+  width:34px;height:34px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  font-family:'Syne',sans-serif;font-size:12px;font-weight:800;
-  background:var(--s3);color:var(--t1);flex-shrink:0;
-  border:1px solid var(--b2);
+  font-family:'Syne',sans-serif;font-size:13px;font-weight:800;
+  background:#2A3942;color:#E9EDEF;flex-shrink:0;
+  border:1.5px solid rgba(37,211,102,.3);
 }
-.wa-nm{font-size:12px;font-weight:700;color:var(--t1)}
-.wa-loc{font-size:9px;color:var(--t3)}
-.wa-online{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--t3)}
-.wa-online-dot{width:5px;height:5px;border-radius:50%;background:var(--wa);animation:dotBeat 2s ease-in-out infinite}
-.wa-body{padding:13px 14px;min-height:76px}
+.wa-nm{font-size:13px;font-weight:700;color:#E9EDEF}
+.wa-loc{font-size:9px;color:#8696A0}
+.wa-online{display:flex;align-items:center;gap:4px;font-size:9px;color:#8696A0}
+.wa-online-dot{width:5px;height:5px;border-radius:50%;background:#25D366;animation:dotBeat 2s ease-in-out infinite}
+.wa-body{padding:13px 14px;min-height:76px;background:#0B141A}
 .wa-bubble{
-  background:var(--s2);border:1px solid var(--b1);
+  background:#202C33;
   padding:10px 13px;border-radius:3px 12px 12px 12px;
-  font-size:13px;line-height:1.6;color:var(--t1);max-width:92%;
+  font-size:13px;line-height:1.6;color:#E9EDEF;max-width:92%;
   animation:bubblePop .25s var(--ease) both;
+  box-shadow:0 1px 2px rgba(0,0,0,.3);
 }
 @keyframes bubblePop{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-.wa-time{font-size:9px;color:var(--t3);margin-top:4px}
-.wa-dots{display:flex;justify-content:center;gap:4px;padding:8px 0 10px}
-.wdot{width:4px;height:4px;border-radius:2px;background:var(--b2);transition:all .3s;}
-.wdot.on{background:var(--bl2);width:16px;}
+.wa-time{font-size:9px;color:#8696A0;margin-top:4px;text-align:right;max-width:92%}
+.wa-dots{display:flex;justify-content:center;gap:4px;padding:8px 0 10px;background:#0B141A}
+.wdot{width:4px;height:4px;border-radius:2px;background:rgba(134,150,160,.3);transition:all .3s;}
+.wdot.on{background:#25D366;width:16px;}
 
 /* ════════════════════════════════════════
    REVIEWS
@@ -495,14 +496,16 @@ nav{
   z-index:1;
 }
 .svc-logo-box{
-  width:44px;height:44px;border-radius:10px;
+  width:48px;height:48px;border-radius:12px;
   display:flex;align-items:center;justify-content:center;
   flex-shrink:0;overflow:hidden;position:relative;
+  background:transparent!important;
 }
 .svc-logo-box img{
-  width:28px;height:28px;
-  object-fit:contain;border-radius:4px;
+  width:46px;height:46px;
+  object-fit:cover;
   display:block;
+  border-radius:11px;
 }
 .svc-logo-txt{
   font-family:'DM Mono',monospace;font-weight:600;color:#fff;
@@ -1184,24 +1187,25 @@ function finalPrice(base){
 function u(p){ return Math.round(p*1.4); }
 
 const LOGOS={
-  'Netflix Perfil Privado': `<img src="https://assets.nflxext.com/ffe/siteui/common/icons/nficon2016.ico" width="28" height="28" style="object-fit:contain;border-radius:4px;display:block" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Netflix Perfil Privado"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:13px;font-weight:600;width:28px;text-align:center">NE</span>`,
-  'Netflix': `<img src="https://assets.nflxext.com/ffe/siteui/common/icons/nficon2016.ico" width="28" height="28" style="object-fit:contain;border-radius:4px;display:block" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Netflix"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:13px;font-weight:600;width:28px;text-align:center">NE</span>`,
-  'Disney+': `<img src="https://www.disneyplus.com/favicon.ico" width="28" height="28" style="object-fit:contain;border-radius:4px;display:block" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Disney+"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:13px;font-weight:600;width:28px;text-align:center">DI</span>`,
-  'Max': `<img src="https://www.max.com/favicon.ico" width="28" height="28" style="object-fit:contain;border-radius:4px;display:block" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Max"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:13px;font-weight:600;width:28px;text-align:center">MA</span>`,
-  'Prime Video': `<img src="https://m.media-amazon.com/images/G/01/digital/video/acquisition/web/PV_favicon.ico" width="28" height="28" style="object-fit:contain;border-radius:4px;display:block" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Prime Video"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:13px;font-weight:600;width:28px;text-align:center">PR</span>`,
-  'Universal+': `<img src="https://www.universalplus.com/favicon.ico" width="28" height="28" style="object-fit:contain;border-radius:4px;display:block" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Universal+"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:13px;font-weight:600;width:28px;text-align:center">UN</span>`,
-  'Apple TV+': `<img src="https://www.apple.com/favicon.ico" width="28" height="28" style="object-fit:contain;border-radius:4px;display:block" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Apple TV+"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:13px;font-weight:600;width:28px;text-align:center">AP</span>`,
-  'ViX Premium': `<img src="https://www.vix.com/favicon.ico" width="28" height="28" style="object-fit:contain;border-radius:4px;display:block" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="ViX Premium"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:13px;font-weight:600;width:28px;text-align:center">VI</span>`,
-  'YouTube': `<img src="https://www.youtube.com/favicon.ico" width="28" height="28" style="object-fit:contain;border-radius:4px;display:block" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="YouTube"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:13px;font-weight:600;width:28px;text-align:center">YO</span>`,
-  'Crunchyroll': `<img src="https://www.crunchyroll.com/favicon.ico" width="28" height="28" style="object-fit:contain;border-radius:4px;display:block" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Crunchyroll"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:13px;font-weight:600;width:28px;text-align:center">CR</span>`,
-  'Spotify': `<img src="https://open.spotify.com/favicon.ico" width="28" height="28" style="object-fit:contain;border-radius:4px;display:block" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Spotify"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:13px;font-weight:600;width:28px;text-align:center">SP</span>`,
-  'Deezer': `<img src="https://www.deezer.com/favicon.ico" width="28" height="28" style="object-fit:contain;border-radius:4px;display:block" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Deezer"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:13px;font-weight:600;width:28px;text-align:center">DE</span>`,
-  'Canva Pro': `<img src="https://www.canva.com/favicon.ico" width="28" height="28" style="object-fit:contain;border-radius:4px;display:block" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Canva Pro"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:13px;font-weight:600;width:28px;text-align:center">CA</span>`,
-  'Gemini Plus': `<img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" width="28" height="28" style="object-fit:contain;border-radius:4px;display:block" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Gemini Plus"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:13px;font-weight:600;width:28px;text-align:center">GE</span>`,
-  'CapCut Pro': `<img src="https://www.capcut.com/favicon.ico" width="28" height="28" style="object-fit:contain;border-radius:4px;display:block" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="CapCut Pro"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:13px;font-weight:600;width:28px;text-align:center">CA</span>`,
-  'Microsoft 365': `<img src="https://www.microsoft.com/favicon.ico" width="28" height="28" style="object-fit:contain;border-radius:4px;display:block" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Microsoft 365"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:13px;font-weight:600;width:28px;text-align:center">MI</span>`,
-  'Perplexity': `<img src="https://www.perplexity.ai/favicon.ico" width="28" height="28" style="object-fit:contain;border-radius:4px;display:block" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Perplexity"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:13px;font-weight:600;width:28px;text-align:center">PE</span>`,
-  'Adobe CC': `<img src="https://www.adobe.com/favicon.ico" width="28" height="28" style="object-fit:contain;border-radius:4px;display:block" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Adobe CC"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:13px;font-weight:600;width:28px;text-align:center">AD</span>`,
+  'Netflix Perfil Privado': `<img src="https://www.google.com/s2/favicons?domain=netflix.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Netflix Perfil Privado"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">NP</span>`,
+  'Netflix': `<img src="https://www.google.com/s2/favicons?domain=netflix.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Netflix"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">N</span>`,
+  'Disney+': `<img src="https://www.google.com/s2/favicons?domain=disneyplus.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Disney+"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">D</span>`,
+  'Max': `<img src="https://www.google.com/s2/favicons?domain=max.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Max"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">M</span>`,
+  'Prime Video': `<img src="https://www.google.com/s2/favicons?domain=primevideo.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Prime Video"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">PV</span>`,
+  'Paramount+':  `<img src="https://www.google.com/s2/favicons?domain=paramountplus.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Paramount+"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">P+</span>`,
+  'Universal+': `<img src="https://www.google.com/s2/favicons?domain=universalplus.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Universal+"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">U</span>`,
+  'Apple TV+': `<img src="https://www.google.com/s2/favicons?domain=tv.apple.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Apple TV+"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">AT</span>`,
+  'ViX Premium': `<img src="https://www.google.com/s2/favicons?domain=vix.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="ViX Premium"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">VP</span>`,
+  'YouTube': `<img src="https://www.google.com/s2/favicons?domain=youtube.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="YouTube"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">Y</span>`,
+  'Crunchyroll': `<img src="https://www.google.com/s2/favicons?domain=crunchyroll.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Crunchyroll"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">C</span>`,
+  'Spotify': `<img src="https://www.google.com/s2/favicons?domain=spotify.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Spotify"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">S</span>`,
+  'Deezer': `<img src="https://www.google.com/s2/favicons?domain=deezer.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Deezer"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">D</span>`,
+  'Canva Pro': `<img src="https://www.google.com/s2/favicons?domain=canva.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Canva Pro"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">CP</span>`,
+  'Gemini Plus': `<img src="https://www.google.com/s2/favicons?domain=gemini.google.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Gemini Plus"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">GP</span>`,
+  'CapCut Pro': `<img src="https://www.google.com/s2/favicons?domain=capcut.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="CapCut Pro"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">CP</span>`,
+  'Microsoft 365': `<img src="https://www.google.com/s2/favicons?domain=microsoft365.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Microsoft 365"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">M3</span>`,
+  'Perplexity': `<img src="https://www.google.com/s2/favicons?domain=perplexity.ai&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Perplexity"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">P</span>`,
+  'Adobe CC': `<img src="https://www.google.com/s2/favicons?domain=adobe.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Adobe CC"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">AC</span>`,
 };
 
 const SVCS=[
@@ -1215,6 +1219,8 @@ const SVCS=[
    bg:'#0029FF',  ar:{1:5000,2:9500},        uy:{1:u(150),2:u(280)}},
   {name:'Prime Video',desc:'Originales Amazon · películas y series', cat:'streaming',
    bg:'#00A8E1',  ar:{1:5000,2:9500},        uy:{1:u(150),2:u(280)}},
+  {name:'Paramount+', desc:'Series, películas y deportes en vivo',  cat:'streaming',
+   bg:'#0064FF',  ar:{1:5000,2:9500},        uy:{1:u(150),2:u(280)}},
   {name:'Universal+', desc:'Cine, series y estrenos exclusivos', cat:'streaming',
    bg:'#0057A8',  ar:{1:5000,2:9500},        uy:{1:u(150),2:u(280)}},
   {name:'Apple TV+',  desc:'Originales premiados · Ted Lasso', cat:'streaming',
@@ -1320,7 +1326,7 @@ function renderSvcs(){
                  + (s.destacado?'<span class="tag-dest">Destacado</span>':'');
     return `<div class="svc${hasSel?' on':''}${s.top?' svc-top':''}">
       <div class="svc-hdr">
-        <div class="svc-logo-box" style="background:${s.bg}">${logo}</div>
+        <div class="svc-logo-box">${logo}</div>
         <div style="flex:1;min-width:0">
           <div class="svc-nm">${s.name}${badges}</div>
           <div class="svc-desc">${s.desc}</div>
@@ -1389,7 +1395,7 @@ function animCount(el,target,suffix){
 }
 setTimeout(()=>{
   animCount(document.getElementById('s1'),150,'+');
-  animCount(document.getElementById('s2'),18,'');
+  animCount(document.getElementById('s2'),20,'+');
   animCount(document.getElementById('s3'),100,'%');
 },500);
 
