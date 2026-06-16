@@ -816,7 +816,39 @@ nav{
   .hero-brand{font-size:130px}
   .hero-stats{grid-template-columns:repeat(4,1fr)}
 }
-/* ── CATALOG HINT ── */
+/* ── MESES DROPDOWN (Canva Pro) ── */
+.meses-hint{
+  font-family:'DM Mono',monospace;font-size:8px;font-weight:500;
+  color:var(--t3);letter-spacing:2px;text-transform:uppercase;
+  margin-bottom:8px;
+}
+.meses-wrap{
+  display:flex;align-items:center;gap:10px;
+  background:var(--s2);border:1px solid var(--b1);
+  border-radius:var(--r2);padding:4px 4px 4px 12px;
+  transition:border-color var(--trans);
+}
+.meses-wrap.has-sel{border-color:var(--bl-border);background:var(--bl-metal);}
+.meses-select{
+  flex:1;background:transparent;border:none;outline:none;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;
+  color:var(--t1);cursor:pointer;padding:8px 0;
+  appearance:none;-webkit-appearance:none;
+}
+.meses-select option{background:#1E1E27;color:var(--t1);}
+.meses-price{
+  font-family:'DM Mono',monospace;font-size:16px;font-weight:500;
+  color:var(--bl2);white-space:nowrap;padding:8px 10px;
+  background:rgba(96,165,250,.08);border-radius:7px;
+}
+.opt-chk-row{
+  display:flex;align-items:center;gap:8px;margin-top:8px;
+}
+.meses-sel-lbl{
+  font-size:12px;font-weight:600;color:var(--bl2);
+  font-family:'DM Sans',sans-serif;
+}
+</style>
 .cat-hint{
   font-family:'DM Mono',monospace;
   font-size:10px;font-weight:500;
@@ -1235,8 +1267,8 @@ const SVCS=[
    bg:'#1DB954',  ar:{1:5000},               uy:{1:u(190)}},
   {name:'Deezer',     desc:'Música en alta calidad sin anuncios', cat:'musica',
    bg:'#A238FF',  ar:{1:5000,2:9500},        uy:{1:u(150),2:u(280)}},
-  {name:'Canva Pro',  desc:'Diseño profesional ilimitado',    cat:'ia',
-   bg:'#7D2AE8',  ar:{1:5500},               uy:{1:u(220)}},
+  {name:'Canva Pro',  desc:'Diseño profesional ilimitado',    cat:'ia', meses:true,
+   bg:'#7D2AE8',  ar:{1:5500, 3:9990, 6:16990, 12:21990},  uy:{1:u(220), 3:u(399), 6:u(679), 12:u(879)}},
   {name:'Gemini Plus',desc:'IA de Google · multimodal avanzado', destacado:true, cat:'ia',
    bg:'#1A73E8',  ar:{1:7900},               uy:{1:u(7900)}},
   {name:'CapCut Pro', desc:'Edición de video · PC, Web y Móvil', cat:'ia',
@@ -1304,26 +1336,52 @@ function renderSvcs(){
     const basePrices = country==='AR' ? s.ar : s.uy;
     const hasSel = selected[s.name]!==undefined;
     const logo = LOGOS[s.name] || s.name.slice(0,2);
-    const opts = Object.entries(basePrices).map(([q,baseP])=>{
-      const on = selected[s.name]==q;
-      const p = finalPrice(baseP);
-      const showOrig = discPct>0 && p!==baseP;
-      const planLabel = q==1?'1 Pantalla':q+' Pantallas';
-      const subLabel  = q==1?'Acceso individual':'Acceso familiar';
-      return `<button class="opt${on?' on':''}" onclick="toggleOpt('${s.name}',${q})">
-        <div class="opt-l">
-          <div class="opt-plan">${planLabel}</div>
-          <div class="opt-sub">${subLabel}</div>
-        </div>
-        <div class="opt-r">
-          ${showOrig?`<span class="opt-price-orig">$${baseP.toLocaleString('es-AR')}</span>`:''}
-          <span class="opt-price${on?' on':''}">$${p.toLocaleString('es-AR')}</span>
-          <div class="opt-chk">✓</div>
-        </div>
-      </button>`;
-    }).join('');
     const badges = (s.top?'<span class="tag-top">★ Lo más solicitado</span>':'')
                  + (s.destacado?'<span class="tag-dest">Destacado</span>':'');
+
+    let optsHtml;
+    if(s.meses){
+      // ── Dropdown de meses ──
+      const selVal = selected[s.name] || '';
+      const selPrice = selVal ? finalPrice(basePrices[selVal]) : null;
+      const options = Object.entries(basePrices).map(([m, baseP])=>{
+        const p = finalPrice(baseP);
+        const label = m==1 ? '1 Mes' : `${m} Meses`;
+        return `<option value="${m}" ${selVal==m?'selected':''}>${label} — $${p.toLocaleString('es-AR')}</option>`;
+      }).join('');
+      optsHtml = `<div class="svc-opts">
+        <div class="meses-hint">Seleccioná el período</div>
+        <div class="meses-wrap${hasSel?' has-sel':''}">
+          <select class="meses-select" onchange="selectMeses('${s.name}',this)">
+            <option value="" disabled ${!selVal?'selected':''}>— elegir duración —</option>
+            ${options}
+          </select>
+          ${hasSel?`<div class="meses-price">$${selPrice.toLocaleString('es-AR')}</div>`:''}
+        </div>
+        ${hasSel?`<div class="opt-chk-row"><div class="opt-chk" style="transform:scale(1)">✓</div><span class="meses-sel-lbl">${selVal==1?'1 Mes':selVal+' Meses'} seleccionado</span></div>`:''}
+      </div>`;
+    } else {
+      const opts = Object.entries(basePrices).map(([q,baseP])=>{
+        const on = selected[s.name]==q;
+        const p = finalPrice(baseP);
+        const showOrig = discPct>0 && p!==baseP;
+        const planLabel = q==1?'1 Pantalla':q+' Pantallas';
+        const subLabel  = q==1?'Acceso individual':'Acceso familiar';
+        return `<button class="opt${on?' on':''}" onclick="toggleOpt('${s.name}',${q})">
+          <div class="opt-l">
+            <div class="opt-plan">${planLabel}</div>
+            <div class="opt-sub">${subLabel}</div>
+          </div>
+          <div class="opt-r">
+            ${showOrig?`<span class="opt-price-orig">$${baseP.toLocaleString('es-AR')}</span>`:''}
+            <span class="opt-price${on?' on':''}">$${p.toLocaleString('es-AR')}</span>
+            <div class="opt-chk">✓</div>
+          </div>
+        </button>`;
+      }).join('');
+      optsHtml = `<div class="svc-opts">${opts}</div>`;
+    }
+
     return `<div class="svc${hasSel?' on':''}${s.top?' svc-top':''}">
       <div class="svc-hdr">
         <div class="svc-logo-box">${logo}</div>
@@ -1332,9 +1390,17 @@ function renderSvcs(){
           <div class="svc-desc">${s.desc}</div>
         </div>
       </div>
-      <div class="svc-opts">${opts}</div>
+      ${optsHtml}
     </div>`;
   }).join('');
+}
+
+function selectMeses(name, el){
+  const val = el.value;
+  if(!val){ delete selected[name]; }
+  else { selected[name] = parseInt(val); }
+  updateBar();
+  renderSvcs();
 }
 
 function updateBar(){
@@ -1346,7 +1412,8 @@ function updateBar(){
     const s=SVCS.find(x=>x.name===k);
     const baseP=(country==='AR'?s.ar:s.uy)[selected[k]];
     const p=finalPrice(baseP); total+=p;
-    const lbl = selected[k]+'P'; return `<div class="bar-row"><span class="bar-nm">${s.name} · ${lbl}</span><span class="bar-pr">$${p.toLocaleString('es-AR')}</span></div>`;
+    const lbl = s.meses ? (selected[k]==1?'1 Mes':selected[k]+' Meses') : selected[k]+'P';
+    return `<div class="bar-row"><span class="bar-nm">${s.name} · ${lbl}</span><span class="bar-pr">$${p.toLocaleString('es-AR')}</span></div>`;
   }).join('');
   document.getElementById('tot').textContent='$'+total.toLocaleString('es-AR');
   bar.classList.add('show'); waf.classList.add('hide');
@@ -1360,7 +1427,8 @@ function sendWA(){
     const s=SVCS.find(x=>x.name===k);
     const baseP=(country==='AR'?s.ar:s.uy)[selected[k]];
     const p=finalPrice(baseP); total+=p;
-    msg+=`• ${s.name} — ${selected[k]} pantalla${selected[k]>1?'s':''} → $${p.toLocaleString('es-AR')}\n`;
+    const planTxt = s.meses ? (selected[k]==1?'1 Mes':selected[k]+' Meses') : `${selected[k]} pantalla${selected[k]>1?'s':''}`;
+    msg+=`• ${s.name} — ${planTxt} → $${p.toLocaleString('es-AR')}\n`;
   });
   if(discPct>0) msg+=`\n🏷️ Código: ${activeDiscount.code} (−${discPct}%)`;
   msg+=`\n💰 Total: $${total.toLocaleString('es-AR')}\n🌍 País: ${country==='AR'?'Argentina 🇦🇷':'Uruguay 🇺🇾'}`;
