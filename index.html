@@ -939,6 +939,51 @@ nav{
   will-change:opacity;
   image-rendering:auto;
 }
+
+/* ════════════════════════════════════════
+   BANNER INTEGRADO EN EL HERO
+   ════════════════════════════════════════ */
+.hero-banner-bg{
+  position:absolute;
+  top:0;left:-14px;right:-14px;
+  aspect-ratio:1/1;
+  overflow:hidden;
+  z-index:0;
+  border-radius:0;
+  display:none;               /* hidden until banner is loaded */
+}
+.hero-banner-bg img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:top center;
+  display:block;
+}
+/* Gradient fade — transparent at top, full bg color at bottom */
+.hero-banner-bg::after{
+  content:'';
+  position:absolute;inset:0;
+  background:
+    linear-gradient(to bottom,
+      rgba(10,10,14,0.15) 0%,
+      rgba(10,10,14,0.0)  30%,
+      rgba(10,10,14,0.55) 60%,
+      rgba(10,10,14,0.92) 82%,
+      rgba(10,10,14,1)    100%
+    );
+}
+/* When banner is active, push hero content down to ~75% of image */
+.hero.has-banner{
+  padding-top:calc(72vw + 16px);
+}
+@media(min-width:480px){
+  .hero.has-banner{ padding-top:calc(0.72 * 452px + 16px); }
+  .hero-banner-bg{ left:-14px;right:-14px; }
+}
+@media(min-width:640px){
+  .hero.has-banner{ padding-top:calc(0.72 * 672px + 16px); }
+}
+@media(min-width:1024px){
+  .hero.has-banner{ padding-top:calc(0.72 * 872px + 16px); }
+}
 </style>
 </head>
 <body>
@@ -993,8 +1038,15 @@ nav{
 <a href="https://wa.me/5492645182955" id="waf">💬</a>
 
 <div class="page">
-
+  <!-- ══════════════════════════════════════
+       BANNER SUPERIOR
+       Para cambiar la imagen sin tocar el código:
+       → Subí tu imagen a Cloudinary, ImgBB o GitHub
+       → Copiá la URL directa y pegala en BANNER_URL abajo
+       ══════════════════════════════════════ -->
   <section class="hero" style="position:relative">
+    <!-- BANNER BG -->
+    <div class="hero-banner-bg" id="top-banner"></div>
     <!-- HERO BACKDROP -->
     <div class="hero-backdrop">
       <img class="hero-backdrop-logo" src="https://www.google.com/s2/favicons?domain=openai.com&sz=128"    style="width:180px;height:180px;top:-40px;left:-50px;opacity:.15">
@@ -1226,6 +1278,53 @@ nav{
 </div>
 
 <script>
+
+/* ══════════════════════════════════════════════════
+   🖼️  BANNER SUPERIOR — CONFIGURACIÓN
+   ══════════════════════════════════════════════════
+   Para cambiar la imagen desde afuera sin editar código:
+
+   OPCIÓN RECOMENDADA → Cloudinary (gratis):
+   1. Entrá a cloudinary.com y creá cuenta gratis
+   2. Subí tu imagen con el nombre "misakroos-banner"
+   3. Copiá la URL que termina en /misakroos-banner.jpg
+   4. Pegala abajo en BANNER_URL
+   5. La próxima vez que quieras cambiarla: subí nueva imagen
+      con el MISMO nombre en Cloudinary → se actualiza solo ✓
+
+   OPCIÓN ALTERNATIVA → ImgBB (gratis, sin registro):
+   1. Entrá a imgbb.com
+   2. Subí tu imagen → copiá el "Direct link"
+   3. Pegalo en BANNER_URL abajo
+   (Cada vez que cambies la imagen tenés que pegar la nueva URL)
+
+   Formato de imagen: 1:1 (cuadrado) — ej. 1080×1080px
+   LINK del banner (dejá vacío para ocultar):
+   ══════════════════════════════════════════════════ */
+const BANNER_URL = 'https://res.cloudinary.com/divu4yknt/image/upload/f_auto,q_auto/misakroos-banner_owyu9o';
+const BANNER_LINK = '';         // ← (opcional) URL a donde lleva al tocar la imagen
+
+function renderBanner(){
+  const el = document.getElementById('top-banner');
+  const hero = document.querySelector('.hero');
+  if(!el || !hero) return;
+  if(!BANNER_URL){
+    el.style.display = 'none';
+    hero.classList.remove('has-banner');
+    return;
+  }
+  const inner = `<img src="${BANNER_URL}" alt="Banner" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block"/>`;
+  el.innerHTML = BANNER_LINK
+    ? `<a href="${BANNER_LINK}" target="_blank" style="display:block;width:100%;height:100%">${inner}</a>`
+    : inner;
+  el.style.display = 'block';
+  hero.classList.add('has-banner');
+  /* hide the floating logo backdrop when banner is active */
+  const bd = document.querySelector('.hero-backdrop');
+  if(bd) bd.style.opacity = '0';
+}
+renderBanner();
+
 /* ══ DESCUENTOS ══
    Para agregar más códigos: { pct: X, country: 'AR'|'UY'|'ALL' }
 */
