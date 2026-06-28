@@ -27,8 +27,8 @@
 
   /* Text */
   --t1:#EEEEF5;
-  --t2:#8080A0;
-  --t3:#3A3A55;
+  --t2:#A0A0C8;
+  --t3:#7070A8;
 
   /* Metallic blue accent */
   --bl:#3B82F6;       /* blue-500 */
@@ -485,6 +485,13 @@ nav{
   color:#FF6B6B;padding:2px 7px;border-radius:3px;
   text-transform:uppercase;font-family:'DM Mono',monospace;
 }
+.tag-mundial{
+  font-size:7px;font-weight:700;letter-spacing:.8px;
+  background:linear-gradient(90deg,rgba(34,197,94,.18),rgba(34,197,94,.06));
+  border:1px solid rgba(34,197,94,.4);
+  color:#4ade80;padding:2px 7px;border-radius:3px;
+  text-transform:uppercase;font-family:'DM Mono',monospace;
+}
 /* Top / featured card */
 .svc-top{
   border-color:rgba(229,9,20,.3)!important;
@@ -909,20 +916,33 @@ nav{
 /* ════════════════════════════════════════
    HERO AUTO-SCROLL STRIP
    ════════════════════════════════════════ */
+.hero-svcs-wrap{position:relative}
 .hero-svcs-row{
-  display:flex;gap:7px;overflow:hidden;
-  padding-bottom:4px;position:relative;
+  display:flex;gap:7px;
+  overflow-x:auto;scroll-behavior:smooth;
+  padding-bottom:4px;scrollbar-width:none;
 }
-.hero-svcs-inner{
-  display:flex;gap:7px;flex-shrink:0;
-  animation:heroScroll 28s linear infinite;
-  will-change:transform;
+.hero-svcs-row::-webkit-scrollbar{display:none}
+.hero-svcs-inner{display:flex;gap:7px;flex-shrink:0}
+.hero-strip-nav{
+  display:flex;align-items:center;gap:6px;
+  margin-bottom:7px;
 }
-.hero-svcs-inner:hover{animation-play-state:paused}
-@keyframes heroScroll{
-  from{transform:translateX(0)}
-  to{transform:translateX(-50%)}
+.hero-strip-lbl{
+  flex:1;
+  font-family:'DM Mono',monospace;font-size:8px;font-weight:500;
+  color:var(--t3);letter-spacing:3px;text-transform:uppercase;
 }
+.hero-strip-btn{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--s2);border:1px solid var(--b1);
+  color:var(--t2);font-size:13px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;flex-shrink:0;
+  transition:border-color var(--trans),background var(--trans);
+  user-select:none;
+}
+.hero-strip-btn:active{background:var(--bl-metal);border-color:var(--bl-border);color:var(--bl2)}
 
 /* ════════════════════════════════════════
    HERO BACKDROP LOGOS
@@ -993,6 +1013,39 @@ nav{
 }
 .bnr-dot.on{
   background:#fff;width:18px;
+}
+
+/* ════════════════════════════════════════
+   BUSCADOR DE SERVICIOS
+   ════════════════════════════════════════ */
+.search-wrap{
+  position:relative;display:flex;align-items:center;
+  margin-bottom:12px;
+}
+.search-input{
+  width:100%;padding:11px 38px 11px 38px;
+  border-radius:var(--r2);border:1px solid var(--b1);
+  background:var(--s2);color:var(--t1);
+  font-family:'DM Sans',sans-serif;font-size:13px;
+  outline:none;transition:border-color var(--trans);
+}
+.search-input::placeholder{color:var(--t3)}
+.search-input:focus{border-color:var(--bl-border);box-shadow:0 0 0 3px var(--bl-glow)}
+.search-icon{
+  position:absolute;left:11px;color:var(--t3);
+  font-size:15px;pointer-events:none;
+}
+.search-clear{
+  position:absolute;right:10px;
+  width:22px;height:22px;border-radius:50%;
+  background:var(--s3);border:none;color:var(--t2);
+  font-size:14px;cursor:pointer;
+  display:none;align-items:center;justify-content:center;
+}
+.search-clear:active{opacity:.7}
+.search-empty{
+  text-align:center;padding:28px 0;
+  color:var(--t3);font-size:13px;
 }
 </style>
 </head>
@@ -1087,8 +1140,14 @@ nav{
     </div>
 
         <div class="hero-svcs" style="position:relative;z-index:1">
-      <div class="hero-svcs-lbl">Servicios disponibles</div>
-      <div class="hero-svcs-row" id="hero-svcs-row"></div>
+      <div class="hero-svcs-wrap">
+        <div class="hero-strip-nav">
+          <span class="hero-strip-lbl">Servicios disponibles</span>
+          <button class="hero-strip-btn" onclick="heroStripPrev()" aria-label="Anterior">‹</button>
+          <button class="hero-strip-btn" onclick="heroStripNext()" aria-label="Siguiente">›</button>
+        </div>
+        <div class="hero-svcs-row" id="hero-svcs-row"></div>
+      </div>
     </div>
   </section>
 
@@ -1237,6 +1296,13 @@ nav{
       <div class="country-wrap" style="margin-bottom:14px">
         <button class="cbtn active" id="btn-AR2" onclick="setCountry2('AR')">🇦🇷 Argentina</button>
         <button class="cbtn" id="btn-UY2" onclick="setCountry2('UY')">🇺🇾 Uruguay</button>
+      </div>
+
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input class="search-input" id="svc-search" type="search" placeholder="Buscar servicio…"
+          oninput="searchSvcs(this.value)" autocomplete="off" autocorrect="off" spellcheck="false">
+        <button class="search-clear" id="search-clear" onclick="clearSearch()">×</button>
       </div>
 
       <div class="cat-filters">
@@ -1508,6 +1574,8 @@ const LOGOS={
   'ChatGPT Plus Privada': `<img src="https://www.google.com/s2/favicons?domain=openai.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="ChatGPT Plus Privada"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">GP</span>`,
   'ChatGPT Plus Compartida': `<img src="https://www.google.com/s2/favicons?domain=openai.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="ChatGPT Plus Compartida"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">GC</span>`,
   'Grok Premium': `<img src="https://www.google.com/s2/favicons?domain=x.ai&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Grok Premium"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">GK</span>`,
+  'MegaX': `<img src="https://i.ibb.co/7tnfXHMk/megaxicono.jpg" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="MegaX"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">MX</span>`,
+  'FlujoTV': `<img src="https://i.ibb.co/DgLXz8P8/flujo-1.png" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="FlujoTV"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">FT</span>`,
 };
 
 const SVCS=[
@@ -1558,6 +1626,11 @@ const SVCS=[
   {name:'Grok Premium', desc:'IA de xAI · cuenta mensual privada', destacado:true, cat:'ia',
    bg:'#1B1B1B',  ar:{1:9000},               uy:{1:u(9000)},
    labels:{1:{plan:'Cuenta Privada', sub:'Acceso mensual exclusivo'}}},
+  {name:'MegaX', desc:'TV digital · miles de canales · series · ⚽ Mundial 2026', destacado:true, cat:'streaming',
+   bg:'#1A1A2E',  ar:{1:8000},               uy:{1:400},
+   labels:{1:{plan:'3 Dispositivos', sub:'Solo Android · TV en vivo'}}},
+  {name:'FlujoTV', desc:'TV digital · miles de canales · series · ⚽ Mundial 2026', destacado:true, cat:'streaming',
+   bg:'#0D1B2A',  ar:{1:8000},               uy:{1:400}},
 ];
 
 const WA=[
@@ -1600,6 +1673,20 @@ function toggleOpt(name,qty){
 }
 function clearAll(){ selected={}; renderSvcs(); updateBar(); }
 
+
+/* ── Buscador ── */
+let _searchQuery = '';
+function searchSvcs(q){
+  _searchQuery = q.trim().toLowerCase();
+  document.getElementById('search-clear').style.display = _searchQuery ? 'flex' : 'none';
+  renderSvcs();
+}
+function clearSearch(){
+  const inp = document.getElementById('svc-search');
+  if(inp) inp.value = '';
+  searchSvcs('');
+}
+
 let activeCat='all';
 function filterCat(cat,btn){
   activeCat=cat;
@@ -1610,13 +1697,21 @@ function filterCat(cat,btn){
 
 function renderSvcs(){
   const discPct = getDiscountPct();
-  const list = activeCat==='all' ? SVCS : SVCS.filter(s=>s.cat===activeCat);
+  let list = activeCat==='all' ? SVCS : SVCS.filter(s=>s.cat===activeCat);
+  if(_searchQuery) list = list.filter(s=>
+    s.name.toLowerCase().includes(_searchQuery) ||
+    (s.desc && s.desc.toLowerCase().includes(_searchQuery))
+  );
+  if(!list.length) return document.getElementById('svcs').innerHTML =
+    '<div class="search-empty">No se encontraron servicios para "'+_searchQuery+'"</div>';
   document.getElementById('svcs').innerHTML = list.map(s=>{
     const basePrices = country==='AR' ? s.ar : s.uy;
     const hasSel = selected[s.name]!==undefined;
     const logo = LOGOS[s.name] || s.name.slice(0,2);
+    const hasMundial = s.desc && s.desc.includes('Mundial 2026');
     const badges = (s.top?'<span class="tag-top">★ Lo más solicitado</span>':'')
-                 + (s.destacado?'<span class="tag-dest">Destacado</span>':'');
+                 + (hasMundial?'<span class="tag-mundial">⚽ Mundial 2026</span>':'')
+                 + (s.destacado && !hasMundial?'<span class="tag-dest">Destacado</span>':'');
 
     let optsHtml;
     if(s.meses){
@@ -1747,10 +1842,44 @@ function renderHeroStrip(){
       ${item.isNew?'<div class="hero-svc-new-tag">New</div>':''}
     </div>`;
   }).join('');
-  row.innerHTML =
-    `<div class="hero-svcs-inner">${cards}</div>` +
-    `<div class="hero-svcs-inner" aria-hidden="true">${cards}</div>`;
+  row.innerHTML = `<div class="hero-svcs-inner">${cards}</div>`;
 }
+
+/* ── Hero strip auto-scroll ── */
+let _heroTimer = null;
+function _heroCardWidth(){
+  const row = document.getElementById('hero-svcs-row');
+  if(!row) return 175;
+  const card = row.querySelector('.hero-svc-card');
+  return card ? card.offsetWidth + 7 : 175;
+}
+function heroStripNext(){
+  const row = document.getElementById('hero-svcs-row');
+  if(!row) return;
+  const w = _heroCardWidth();
+  if(row.scrollLeft + row.clientWidth >= row.scrollWidth - 10){
+    row.scrollTo({left:0,behavior:'smooth'});
+  } else {
+    row.scrollBy({left:w*2,behavior:'smooth'});
+  }
+  _resetHeroTimer();
+}
+function heroStripPrev(){
+  const row = document.getElementById('hero-svcs-row');
+  if(!row) return;
+  const w = _heroCardWidth();
+  if(row.scrollLeft <= 0){
+    row.scrollTo({left:row.scrollWidth,behavior:'smooth'});
+  } else {
+    row.scrollBy({left:-w*2,behavior:'smooth'});
+  }
+  _resetHeroTimer();
+}
+function _resetHeroTimer(){
+  clearInterval(_heroTimer);
+  _heroTimer = setInterval(heroStripNext, 4000);
+}
+function startHeroAutoplay(){ _resetHeroTimer(); }
 
 function heroCardClick(name){
   const svc = SVCS.find(s=>s.name===name);
@@ -1801,7 +1930,7 @@ function animCount(el,target,suffix){
 }
 setTimeout(()=>{
   animCount(document.getElementById('s1'),150,'+');
-  animCount(document.getElementById('s2'),22,'+');
+  animCount(document.getElementById('s2'),24,'+');
   animCount(document.getElementById('s3'),100,'%');
 },500);
 
@@ -1838,7 +1967,7 @@ function toggleCatalog(){
 const tkTxt=' ⚡ ACTIVACIÓN INMEDIATA  ·  GARANTÍA TOTAL  ·  SOPORTE 24/7  ·  SIN TARJETA PROPIA  ·  AR & UY  · ';
 document.getElementById('ticker').innerHTML=`<span>${tkTxt.repeat(8)}</span><span>${tkTxt.repeat(8)}</span>`;
 
-initDots(); cycleWA(); renderRevs(); renderFAQs(); renderHeroStrip();
+initDots(); cycleWA(); renderRevs(); renderFAQs(); renderHeroStrip(); startHeroAutoplay();
 setInterval(cycleWA,4500);
 </script>
 </body>
