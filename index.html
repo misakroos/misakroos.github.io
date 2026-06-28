@@ -984,6 +984,16 @@ nav{
 @media(min-width:1024px){
   .hero.has-banner{ padding-top:calc(72px + 0.72 * 872px + 16px); }
 }
+
+/* Banner dots */
+.bnr-dot{
+  width:6px;height:6px;border-radius:3px;
+  background:rgba(255,255,255,.35);
+  transition:all .35s var(--ease);
+}
+.bnr-dot.on{
+  background:#fff;width:18px;
+}
 </style>
 </head>
 <body>
@@ -1280,50 +1290,114 @@ nav{
 <script>
 
 /* ══════════════════════════════════════════════════
-   🖼️  BANNER SUPERIOR — CONFIGURACIÓN
+   🖼️  BANNER — CONFIGURACIÓN
    ══════════════════════════════════════════════════
-   Para cambiar la imagen desde afuera sin editar código:
+   Lee AUTOMÁTICAMENTE todos los archivos de tu repo de GitHub.
+   Solo subí imágenes o videos con cualquier nombre → aparecen solos.
 
-   OPCIÓN RECOMENDADA → Cloudinary (gratis):
-   1. Entrá a cloudinary.com y creá cuenta gratis
-   2. Subí tu imagen con el nombre "misakroos-banner"
-   3. Copiá la URL que termina en /misakroos-banner.jpg
-   4. Pegala abajo en BANNER_URL
-   5. La próxima vez que quieras cambiarla: subí nueva imagen
-      con el MISMO nombre en Cloudinary → se actualiza solo ✓
+   Para agregar/quitar slides:
+   → Entrá a github.com/misakroos/banner
+   → Subí o borrá archivos (jpg, png, gif, webp, mp4, webm)
+   → En pocos minutos se actualiza la página ✓
 
-   OPCIÓN ALTERNATIVA → ImgBB (gratis, sin registro):
-   1. Entrá a imgbb.com
-   2. Subí tu imagen → copiá el "Direct link"
-   3. Pegalo en BANNER_URL abajo
-   (Cada vez que cambies la imagen tenés que pegar la nueva URL)
+   Formatos soportados:
+   · Imágenes: jpg, png, gif, webp  (recomendado 1:1, ej. 1080×1080px)
+   · Videos:   mp4, webm            (se reproducen en loop silencioso)
 
-   Formato de imagen: 1:1 (cuadrado) — ej. 1080×1080px
-   LINK del banner (dejá vacío para ocultar):
+   Si hay 1 archivo → imagen fija
+   Si hay varios   → carrusel automático con fade
    ══════════════════════════════════════════════════ */
-const BANNER_URL = 'https://res.cloudinary.com/divu4yknt/image/upload/f_auto,q_auto/misakroos-banner_owyu9o';
-const BANNER_LINK = '';         // ← (opcional) URL a donde lleva al tocar la imagen
+const BANNER_REPO   = 'misakroos/banner';  // tu repo de GitHub
+const BANNER_BRANCH = 'main';
+const BANNER_INTERVAL = 5000;   // ms entre slides (5 seg)
+const BANNER_LINK   = '';       // URL al tocar el banner (opcional)
 
-function renderBanner(){
-  const el = document.getElementById('top-banner');
+let _bannerSlides = [], _bannerIdx = 0, _bannerTimer = null;
+
+async function initBanner(){
+  const el   = document.getElementById('top-banner');
   const hero = document.querySelector('.hero');
-  if(!el || !hero) return;
-  if(!BANNER_URL){
-    el.style.display = 'none';
-    hero.classList.remove('has-banner');
-    return;
-  }
-  const inner = `<img src="${BANNER_URL}" alt="Banner" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block"/>`;
-  el.innerHTML = BANNER_LINK
-    ? `<a href="${BANNER_LINK}" target="_blank" style="display:block;width:100%;height:100%">${inner}</a>`
-    : inner;
-  el.style.display = 'block';
-  hero.classList.add('has-banner');
-  /* hide the floating logo backdrop when banner is active */
-  const bd = document.querySelector('.hero-backdrop');
-  if(bd) bd.style.opacity = '0';
+  if(!el || !hero || !BANNER_REPO) return;
+  try {
+    const cb  = Math.floor(Date.now() / 3600000);
+    const api = 'https://api.github.com/repos/' + BANNER_REPO + '/contents/?ref=' + BANNER_BRANCH + '&_cb=' + cb;
+    const res = await fetch(api);
+    if(!res.ok) throw new Error('GitHub API ' + res.status);
+    const files = await res.json();
+    const imgRx = /\.(jpg|jpeg|png|gif|webp|avif)$/i;
+    const vidRx = /\.(mp4|webm|mov)$/i;
+    _bannerSlides = files
+      .filter(f => f.type === 'file' && (imgRx.test(f.name) || vidRx.test(f.name)))
+      .sort((a,b) => a.name.localeCompare(b.name))
+      .map(f => ({ url: f.download_url, isVideo: vidRx.test(f.name) }));
+    if(!_bannerSlides.length) return;
+    el.style.display   = 'block';
+    hero.classList.add('has-banner');
+    const bd = document.querySelector('.hero-backdrop');
+    if(bd) bd.style.opacity = '0';
+    _showBannerSlide(0);
+    if(_bannerSlides.length > 1){
+      _renderBannerDots();
+      _bannerTimer = setInterval(()=>{
+        _showBannerSlide((_bannerIdx + 1) % _bannerSlides.length);
+      }, BANNER_INTERVAL);
+    }
+  } catch(e){ console.warn('Banner error:', e); }
 }
-renderBanner();
+
+function _cacheSrc(url){
+  const cb = Math.floor(Date.now() / 3600000);
+  return url + (url.includes('?') ? '&' : '?') + '_cb=' + cb;
+}
+
+function _showBannerSlide(idx){
+  const el = document.getElementById('top-banner');
+  if(!el) return;
+  _bannerIdx = idx;
+  const slide = _bannerSlides[idx];
+  const src   = _cacheSrc(slide.url);
+
+  if(slide.isVideo){
+    el.innerHTML = '';
+    const v = document.createElement('video');
+    Object.assign(v, {autoplay:true, muted:true, loop:true, playsInline:true});
+    v.setAttribute('playsinline','');
+    v.src = src;
+    v.style.cssText = 'width:100%;height:100%;object-fit:cover;object-position:top center;display:block';
+    el.appendChild(v);
+  } else {
+    const img = document.createElement('img');
+    img.alt = 'Banner';
+    img.src = src;
+    img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;display:block;opacity:0;transition:opacity .75s ease';
+    if(BANNER_LINK){ img.style.cursor = 'pointer'; img.onclick = ()=> window.open(BANNER_LINK,'_blank'); }
+    el.appendChild(img);
+    requestAnimationFrame(()=> requestAnimationFrame(()=>{ img.style.opacity = '1'; }));
+    setTimeout(()=>{
+      el.querySelectorAll('img').forEach((im,i,arr)=>{ if(i < arr.length-1) im.remove(); });
+    }, 900);
+  }
+  _updateBannerDots(idx);
+}
+
+function _renderBannerDots(){
+  const el = document.getElementById('top-banner');
+  if(!el) return;
+  let dots = document.getElementById('bnr-dots');
+  if(!dots){
+    dots = document.createElement('div');
+    dots.id = 'bnr-dots';
+    dots.style.cssText = 'position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:5px;z-index:3;pointer-events:none';
+    el.appendChild(dots);
+  }
+  dots.innerHTML = _bannerSlides.map((_,i)=>'<div class="bnr-dot'+(i===0?' on':'')+'"></div>').join('');
+}
+
+function _updateBannerDots(idx){
+  document.querySelectorAll('.bnr-dot').forEach((d,i)=> d.classList.toggle('on', i===idx));
+}
+
+initBanner();
 
 /* ══ DESCUENTOS ══
    Para agregar más códigos: { pct: X, country: 'AR'|'UY'|'ALL' }
