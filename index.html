@@ -1126,7 +1126,7 @@ nav{
       <span class="m2">KROOS</span>
     </div>
     <div class="hero-sub-line" style="position:relative;z-index:1">Suscripciones Premium</div>
-    <p class="hero-desc" style="position:relative;z-index:1">Streaming, música, IA y diseño.<br>ChatGPT · Grok · Netflix y más.<br>Activación inmediata · Soporte 24/7 · Garantía real.</p>
+    <p class="hero-desc" style="position:relative;z-index:1">Streaming, música y entretenimiento.<br>Netflix · Disney+ · Max y más.<br>Activación inmediata · Soporte 24/7 · Garantía real.</p>
     <div class="hero-stats" style="position:relative;z-index:1">
       <div class="hstat"><span class="hstat-n" id="s1">0+</span><div class="hstat-l">Clientes</div></div>
       <div class="hstat"><span class="hstat-n" id="s2">0</span><div class="hstat-l">Servicios</div></div>
@@ -1309,7 +1309,6 @@ nav{
         <button class="cat-f active" onclick="filterCat('all',this)">Todos</button>
         <button class="cat-f" onclick="filterCat('streaming',this)">🎬 Streaming</button>
         <button class="cat-f" onclick="filterCat('musica',this)">🎵 Música</button>
-        <button class="cat-f" onclick="filterCat('ia',this)">🤖 IA & Diseño</button>
         <button class="cat-f" onclick="filterCat('anime',this)">⛩️ Anime</button>
       </div>
 
@@ -1469,7 +1468,8 @@ initBanner();
    Para agregar más códigos: { pct: X, country: 'AR'|'UY'|'ALL' }
 */
 const CODES = {
-  'BRASIL': { pct: 10, country: 'AR' }
+  'BRASIL': { pct: 10, country: 'AR' },
+  'ELIAS':  { pct: 30, country: 'AR' }
 };
 
 let activeDiscount = null;
@@ -1565,15 +1565,6 @@ const LOGOS={
   'Crunchyroll': `<img src="https://www.google.com/s2/favicons?domain=crunchyroll.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Crunchyroll"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">C</span>`,
   'Spotify': `<img src="https://www.google.com/s2/favicons?domain=spotify.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Spotify"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">S</span>`,
   'Deezer': `<img src="https://www.google.com/s2/favicons?domain=deezer.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Deezer"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">D</span>`,
-  'Canva Pro': `<img src="https://www.google.com/s2/favicons?domain=canva.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Canva Pro"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">CP</span>`,
-  'Gemini Plus': `<img src="https://www.google.com/s2/favicons?domain=gemini.google.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Gemini Plus"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">GP</span>`,
-  'CapCut Pro': `<img src="https://www.google.com/s2/favicons?domain=capcut.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="CapCut Pro"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">CP</span>`,
-  'Microsoft 365': `<img src="https://www.google.com/s2/favicons?domain=microsoft365.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Microsoft 365"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">M3</span>`,
-  'Perplexity': `<img src="https://www.google.com/s2/favicons?domain=perplexity.ai&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Perplexity"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">P</span>`,
-  'Adobe CC': `<img src="https://www.google.com/s2/favicons?domain=adobe.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Adobe CC"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">AC</span>`,
-  'ChatGPT Plus Privada': `<img src="https://www.google.com/s2/favicons?domain=openai.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="ChatGPT Plus Privada"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">GP</span>`,
-  'ChatGPT Plus Compartida': `<img src="https://www.google.com/s2/favicons?domain=openai.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="ChatGPT Plus Compartida"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">GC</span>`,
-  'Grok Premium': `<img src="https://www.google.com/s2/favicons?domain=x.ai&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Grok Premium"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">GK</span>`,
   'MegaX': `<img src="https://i.ibb.co/7tnfXHMk/megaxicono.jpg" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="MegaX"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">MX</span>`,
   'FlujoTV': `<img src="https://i.ibb.co/DgLXz8P8/flujo-1.png" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="FlujoTV"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">FT</span>`,
 };
@@ -1605,27 +1596,6 @@ const SVCS=[
    bg:'#1DB954',  ar:{1:5000},               uy:{1:u(190)}},
   {name:'Deezer',     desc:'Música en alta calidad sin anuncios', cat:'musica',
    bg:'#A238FF',  ar:{1:5000,2:9500},        uy:{1:u(150),2:u(280)}},
-  {name:'Canva Pro',  desc:'Diseño profesional ilimitado',    cat:'ia', meses:true,
-   bg:'#7D2AE8',  ar:{1:5500, 3:9990, 6:16990, 12:21990},  uy:{1:u(220), 3:u(399), 6:u(679), 12:u(879)}},
-  {name:'Gemini Plus',desc:'IA de Google · multimodal avanzado', destacado:true, cat:'ia',
-   bg:'#1A73E8',  ar:{1:7900},               uy:{1:u(7900)}},
-  {name:'CapCut Pro', desc:'Edición de video · PC, Web y Móvil', cat:'ia',
-   bg:'#000000',  ar:{1:7900},               uy:{1:u(7900)}},
-  {name:'Microsoft 365',desc:'Word, Excel, PowerPoint, Teams y más', cat:'ia',
-   bg:'#0078D4',  ar:{1:5000},               uy:{1:u(5000)}},
-  {name:'Perplexity', desc:'Buscador con IA · respuestas exactas', cat:'ia',
-   bg:'#20B2AA',  ar:{1:2500},               uy:{1:u(2500)}},
-  {name:'Adobe CC',   desc:'Photoshop, Illustrator, Premiere y más', destacado:true, cat:'ia',
-   bg:'#FF0000',  ar:{1:9990},               uy:{1:u(9990)}},
-  {name:'ChatGPT Plus Privada', desc:'Cuenta privada · solo para vos · acceso total', destacado:true, top:true, cat:'ia',
-   bg:'#10A37F',  ar:{1:17000},              uy:{1:u(17000)},
-   labels:{1:{plan:'Cuenta Privada', sub:'Solo para vos · acceso exclusivo'}}},
-  {name:'ChatGPT Plus Compartida', desc:'Proyectos separados · tu espacio propio', destacado:true, cat:'ia',
-   bg:'#10A37F',  ar:{1:9000},               uy:{1:u(9000)},
-   labels:{1:{plan:'Cuenta Compartida', sub:'Proyectos separados · tu espacio'}}},
-  {name:'Grok Premium', desc:'IA de xAI · cuenta mensual privada', destacado:true, cat:'ia',
-   bg:'#1B1B1B',  ar:{1:9000},               uy:{1:u(9000)},
-   labels:{1:{plan:'Cuenta Privada', sub:'Acceso mensual exclusivo'}}},
   {name:'MegaX', desc:'TV digital · miles de canales · series · ⚽ Mundial 2026', destacado:true, cat:'streaming',
    bg:'#1A1A2E',  ar:{1:8000},               uy:{1:400},
    labels:{1:{plan:'3 Dispositivos', sub:'Solo Android · TV en vivo'}}},
@@ -1812,16 +1782,12 @@ function sendWA(){
 
 /* ══ HERO STRIP ══ */
 const HERO_STRIP = [
-  {name:'ChatGPT Plus Privada',    label:'ChatGPT Plus',    subdesc:'Cuenta privada · solo para vos', isNew:true},
-  {name:'ChatGPT Plus Compartida', label:'ChatGPT Plus',    subdesc:'Tu espacio, proyectos separados', isNew:true},
-  {name:'Grok Premium',            label:'Grok Premium',    subdesc:'IA de xAI · cuenta privada',     isNew:true},
   {name:'Netflix Perfil Privado',  label:'Netflix Privado', subdesc:'Perfil 4K exclusivo',            isNew:false},
   {name:'Spotify',                 label:'Spotify',         subdesc:'Música sin publicidad',          isNew:false},
-  {name:'Canva Pro',               label:'Canva Pro',       subdesc:'Diseño profesional ilimitado',   isNew:false},
   {name:'Disney+',                 label:'Disney+',         subdesc:'Marvel · Star Wars · Pixar',     isNew:false},
-  {name:'Adobe CC',                label:'Adobe CC',        subdesc:'Photoshop · Premiere y más',     isNew:false},
-  {name:'Gemini Plus',             label:'Gemini Plus',     subdesc:'IA multimodal de Google',        isNew:false},
-  {name:'Microsoft 365',           label:'Microsoft 365',   subdesc:'Word · Excel · PowerPoint',      isNew:false},
+  {name:'Max',                     label:'Max',             subdesc:'HBO Originals y series',         isNew:false},
+  {name:'Prime Video',             label:'Prime Video',     subdesc:'Películas y series de Amazon',   isNew:false},
+  {name:'Paramount+',              label:'Paramount+',      subdesc:'Series, películas y deportes',   isNew:false},
 ];
 
 function renderHeroStrip(){
