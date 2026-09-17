@@ -1556,7 +1556,7 @@ initBanner();
 */
 const CODES = {
   'BRASIL': { pct: 10, country: 'AR' },
-  'BIAN':  { pct: 30, country: 'UY' }
+  'BRIAN':  { pct: 30, country: 'UY' }
 };
 
 let activeDiscount = null;
@@ -1585,7 +1585,7 @@ function applyDisc(){
   if(found){
     activeDiscount = { code, ...found };
     msg.className='disc-msg ok';
-    msg.textContent='¡Código aplicado! −'+found.pct+'% en Argentina';
+    msg.textContent='¡Código aplicado! −'+found.pct+'% en catalogo';
     document.getElementById('disc-btn').classList.add('active-code');
     document.getElementById('disc-active-row').classList.add('show');
     document.getElementById('disc-active-lbl').textContent='✓ '+code+' — −'+found.pct+'% aplicado';
