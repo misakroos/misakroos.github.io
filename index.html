@@ -1440,150 +1440,687 @@ body.catalog-lock{overflow:hidden}
 </div>
 
 <script>
-/* ════════════════════════════════════════
-   STATE & DATA
-   ════════════════════════════════════════ */
-let country = 'AR';
-let cart = {};
-let activeDiscount = null;
 
-// CÓDIGOS DE DESCUENTO (solo UY con BRIAN 30%)
-const COUPONS = {
-  'BRIAN': { pct: 30, country: 'UY', code: 'BRIAN' }
+/* ══════════════════════════════════════════════════
+   🖼️  BANNER — CONFIGURACIÓN
+   ══════════════════════════════════════════════════
+   Lee AUTOMÁTICAMENTE todos los archivos de tu repo de GitHub.
+   Solo subí imágenes o videos con cualquier nombre → aparecen solos.
+
+   Para agregar/quitar slides:
+   → Entrá a github.com/misakroos/banner
+   → Subí o borrá archivos (jpg, png, gif, webp, mp4, webm)
+   → En pocos minutos se actualiza la página ✓
+
+   Formatos soportados:
+   · Imágenes: jpg, png, gif, webp  (recomendado 1:1, ej. 1080×1080px)
+   · Videos:   mp4, webm            (se reproducen en loop silencioso)
+
+   Si hay 1 archivo → imagen fija
+   Si hay varios   → carrusel automático con fade
+   ══════════════════════════════════════════════════ */
+const BANNER_REPO   = 'misakroos/banner';  // tu repo de GitHub
+const BANNER_BRANCH = 'main';
+const BANNER_INTERVAL = 5000;   // ms entre slides (5 seg)
+const BANNER_LINK   = '';       // URL al tocar el banner (opcional)
+
+let _bannerSlides = [], _bannerIdx = 0, _bannerTimer = null;
+
+async function initBanner(){
+  const el   = document.getElementById('top-banner');
+  const hero = document.querySelector('.hero');
+  if(!el || !hero || !BANNER_REPO) return;
+  try {
+    const cb  = Math.floor(Date.now() / 3600000);
+    const api = 'https://api.github.com/repos/' + BANNER_REPO + '/contents/?ref=' + BANNER_BRANCH + '&_cb=' + cb;
+    const res = await fetch(api);
+    if(!res.ok) throw new Error('GitHub API ' + res.status);
+    const files = await res.json();
+    const imgRx = /\.(jpg|jpeg|png|gif|webp|avif)$/i;
+    const vidRx = /\.(mp4|webm|mov)$/i;
+    _bannerSlides = files
+      .filter(f => f.type === 'file' && (imgRx.test(f.name) || vidRx.test(f.name)))
+      .sort((a,b) => a.name.localeCompare(b.name))
+      .map(f => ({ url: f.download_url, isVideo: vidRx.test(f.name) }));
+    if(!_bannerSlides.length) return;
+    el.style.display   = 'block';
+    hero.classList.add('has-banner');
+    const bd = document.querySelector('.hero-backdrop');
+    if(bd) bd.style.opacity = '0';
+    _showBannerSlide(0);
+    if(_bannerSlides.length > 1){
+      _renderBannerDots();
+      _bannerTimer = setInterval(()=>{
+        _showBannerSlide((_bannerIdx + 1) % _bannerSlides.length);
+      }, BANNER_INTERVAL);
+    }
+  } catch(e){ console.warn('Banner error:', e); }
+}
+
+function _cacheSrc(url){
+  const cb = Math.floor(Date.now() / 3600000);
+  return url + (url.includes('?') ? '&' : '?') + '_cb=' + cb;
+}
+
+function _showBannerSlide(idx){
+  const el = document.getElementById('top-banner');
+  if(!el) return;
+  _bannerIdx = idx;
+  const slide = _bannerSlides[idx];
+  const src   = _cacheSrc(slide.url);
+
+  if(slide.isVideo){
+    el.innerHTML = '';
+    const v = document.createElement('video');
+    Object.assign(v, {autoplay:true, muted:true, loop:true, playsInline:true});
+    v.setAttribute('playsinline','');
+    v.src = src;
+    v.style.cssText = 'width:100%;height:100%;object-fit:cover;object-position:top center;display:block';
+    el.appendChild(v);
+  } else {
+    const img = document.createElement('img');
+    img.alt = 'Banner';
+    img.src = src;
+    img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;display:block;opacity:0;transition:opacity .75s ease';
+    if(BANNER_LINK){ img.style.cursor = 'pointer'; img.onclick = ()=> window.open(BANNER_LINK,'_blank'); }
+    el.appendChild(img);
+    requestAnimationFrame(()=> requestAnimationFrame(()=>{ img.style.opacity = '1'; }));
+    setTimeout(()=>{
+      el.querySelectorAll('img').forEach((im,i,arr)=>{ if(i < arr.length-1) im.remove(); });
+    }, 900);
+  }
+  _updateBannerDots(idx);
+}
+
+function _renderBannerDots(){
+  const el = document.getElementById('top-banner');
+  if(!el) return;
+  let dots = document.getElementById('bnr-dots');
+  if(!dots){
+    dots = document.createElement('div');
+    dots.id = 'bnr-dots';
+    dots.style.cssText = 'position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:5px;z-index:3;pointer-events:none';
+    el.appendChild(dots);
+  }
+  dots.innerHTML = _bannerSlides.map((_,i)=>'<div class="bnr-dot'+(i===0?' on':'')+'"></div>').join('');
+}
+
+function _updateBannerDots(idx){
+  document.querySelectorAll('.bnr-dot').forEach((d,i)=> d.classList.toggle('on', i===idx));
+}
+
+initBanner();
+
+/* ══ DESCUENTOS ══
+   Para agregar más códigos: { pct: X, country: 'AR'|'UY'|'ALL' }
+*/
+const CODES = {
+  'BRASIL': { pct: 10, country: 'AR' },
+  'ELIAS':  { pct: 30, country: 'AR' }
 };
 
-/* ════════════════════════════════════════
-   MODAL DESCUENTO LOGIC
-   ════════════════════════════════════════ */
+let activeDiscount = null;
+
 function openDisc(){
   document.getElementById('disc-overlay').classList.add('open');
-  document.getElementById('disc-input').focus();
+  document.getElementById('disc-msg').textContent='';
+  document.getElementById('disc-msg').className='disc-msg';
+  if(activeDiscount){
+    document.getElementById('disc-active-row').classList.add('show');
+    document.getElementById('disc-active-lbl').textContent='✓ '+activeDiscount.code+' — −'+activeDiscount.pct+'% aplicado';
+    document.getElementById('disc-input').value='';
+  } else {
+    document.getElementById('disc-active-row').classList.remove('show');
+  }
+  setTimeout(()=>document.getElementById('disc-input').focus(),150);
 }
-
-function closeDisc(){
-  document.getElementById('disc-overlay').classList.remove('open');
-}
-
-function handleOverlay(e){
-  if(e.target.id === 'disc-overlay') closeDisc();
-}
+function closeDisc(){ document.getElementById('disc-overlay').classList.remove('open'); }
+function handleOverlay(e){ if(e.target.id==='disc-overlay') closeDisc(); }
 
 function applyDisc(){
-  const val = document.getElementById('disc-input').value.trim().toUpperCase();
-  const msgEl = document.getElementById('disc-msg');
-  
-  if(!val){
-    msgEl.className = 'disc-msg err';
-    msgEl.innerText = 'Ingresá un código.';
-    return;
-  }
-  
-  const coupon = COUPONS[val];
-  
-  if(coupon){
-    if(country !== coupon.country){
-      msgEl.className = 'disc-msg err';
-      msgEl.innerText = `Este código solo es válido para ${coupon.country === 'UY' ? 'Uruguay 🇺🇾' : 'Argentina 🇦🇷'}.`;
-      return;
-    }
-    
-    activeDiscount = coupon;
-    msgEl.className = 'disc-msg ok';
-    msgEl.innerText = `¡Código ${coupon.code} aplicado con éxito!`;
-    updateDiscUI();
+  const code = document.getElementById('disc-input').value.trim().toUpperCase();
+  const msg = document.getElementById('disc-msg');
+  if(!code){ msg.className='disc-msg err'; msg.textContent='Ingresá un código.'; return; }
+  const found = CODES[code];
+  if(found){
+    activeDiscount = { code, ...found };
+    msg.className='disc-msg ok';
+    msg.textContent='¡Código aplicado! −'+found.pct+'% en Argentina';
+    document.getElementById('disc-btn').classList.add('active-code');
+    document.getElementById('disc-active-row').classList.add('show');
+    document.getElementById('disc-active-lbl').textContent='✓ '+code+' — −'+found.pct+'% aplicado';
+    updateDiscBanner();
     renderSvcs();
     updateBar();
+    setTimeout(closeDisc, 1300);
   } else {
-    msgEl.className = 'disc-msg err';
-    msgEl.innerText = 'Código inválido o expirado.';
+    msg.className='disc-msg err';
+    msg.textContent='Código inválido. Verificá e intentá de nuevo.';
   }
 }
 
 function removeDisc(){
   activeDiscount = null;
-  document.getElementById('disc-input').value = '';
-  document.getElementById('disc-msg').innerText = '';
-  updateDiscUI();
+  document.getElementById('disc-btn').classList.remove('active-code');
+  document.getElementById('disc-active-row').classList.remove('show');
+  document.getElementById('disc-msg').textContent='';
+  document.getElementById('disc-msg').className='disc-msg';
+  updateDiscBanner();
   renderSvcs();
   updateBar();
+  closeDisc();
 }
 
-function updateDiscUI(){
-  const btn = document.getElementById('disc-btn');
-  const activeRow = document.getElementById('disc-active-row');
-  const activeLbl = document.getElementById('disc-active-lbl');
-  const banner = document.getElementById('disc-banner');
-  const bannerTxt = document.getElementById('disc-banner-txt');
-  const bannerPct = document.getElementById('disc-banner-pct');
-
-  if(activeDiscount && country === activeDiscount.country){
-    btn.classList.add('active-code');
-    if(activeRow) activeRow.classList.add('show');
-    if(activeLbl) activeLbl.innerText = `Código: ${activeDiscount.code} (-${activeDiscount.pct}%)`;
-    if(banner){
-      banner.classList.add('show');
-      if(bannerTxt) bannerTxt.innerText = `Descuento ${activeDiscount.code} activo`;
-      if(bannerPct) bannerPct.innerText = `-${activeDiscount.pct}%`;
-    }
+function updateDiscBanner(){
+  const b = document.getElementById('disc-banner');
+  const pct = getDiscountPct();
+  if(pct > 0){
+    b.classList.add('show');
+    document.getElementById('disc-banner-txt').textContent='Código '+activeDiscount.code+' activo:';
+    document.getElementById('disc-banner-pct').textContent='−'+pct+'%';
   } else {
-    btn.classList.remove('active-code');
-    if(activeRow) activeRow.classList.remove('show');
-    if(banner) banner.classList.remove('show');
+    b.classList.remove('show');
   }
 }
 
-/* ════════════════════════════════════════
-   COUNTRY SELECTOR
-   ════════════════════════════════════════ */
+function getDiscountPct(){
+  if(!activeDiscount) return 0;
+  if(activeDiscount.country==='ALL') return activeDiscount.pct;
+  if(activeDiscount.country===country) return activeDiscount.pct;
+  return 0;
+}
+
+function finalPrice(base){
+  const pct = getDiscountPct();
+  return pct ? Math.round(base*(1-pct/100)) : base;
+}
+
+/* ══ UY +40% silencioso ══ */
+function u(p){ return Math.round(p*1.4); }
+
+const LOGOS={
+  'Netflix Perfil Privado': `<img src="https://www.google.com/s2/favicons?domain=netflix.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Netflix Perfil Privado"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">NP</span>`,
+  'Netflix': `<img src="https://www.google.com/s2/favicons?domain=netflix.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Netflix"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">N</span>`,
+  'Disney+': `<img src="https://www.google.com/s2/favicons?domain=disneyplus.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Disney+"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">D</span>`,
+  'Max': `<img src="https://www.google.com/s2/favicons?domain=max.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Max"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">M</span>`,
+  'Prime Video': `<img src="https://www.google.com/s2/favicons?domain=primevideo.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Prime Video"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">PV</span>`,
+  'Paramount+':  `<img src="https://www.google.com/s2/favicons?domain=paramountplus.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Paramount+"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">P+</span>`,
+  'Universal+': `<img src="https://www.google.com/s2/favicons?domain=universalplus.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Universal+"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">U</span>`,
+  'Apple TV+': `<img src="https://www.google.com/s2/favicons?domain=tv.apple.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Apple TV+"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">AT</span>`,
+  'ViX Premium': `<img src="https://www.google.com/s2/favicons?domain=vix.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="ViX Premium"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">VP</span>`,
+  'YouTube': `<img src="https://www.google.com/s2/favicons?domain=youtube.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="YouTube"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">Y</span>`,
+  'Crunchyroll': `<img src="https://www.google.com/s2/favicons?domain=crunchyroll.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Crunchyroll"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">C</span>`,
+  'Spotify': `<img src="https://www.google.com/s2/favicons?domain=spotify.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Spotify"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">S</span>`,
+  'Deezer': `<img src="https://www.google.com/s2/favicons?domain=deezer.com&sz=128" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="Deezer"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">D</span>`,
+  'MegaX': `<img src="https://i.ibb.co/7tnfXHMk/megaxicono.jpg" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="MegaX"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">MX</span>`,
+  'FlujoTV': `<img src="https://i.ibb.co/DgLXz8P8/flujo-1.png" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="FlujoTV"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">FT</span>`,
+};
+
+let SVCS=[
+  {name:'Netflix',     desc:'Series, películas y documentales', cat:'streaming',
+   bg:'#E50914',  ar:{1:8500,2:13900},       uy:{1:u(250),2:u(450)}},
+  {name:'Disney+',    desc:'Marvel, Star Wars, Pixar y más',   cat:'streaming',
+   bg:'#113CCF',  ar:{1:6500,2:12000},       uy:{1:u(300),2:u(550)}},
+  {name:'Max',        desc:'HBO Originals y series exclusivas', cat:'streaming',
+   bg:'#0029FF',  ar:{1:5000,2:9500},        uy:{1:u(150),2:u(280)}},
+  {name:'Prime Video',desc:'Originales Amazon · películas y series', cat:'streaming',
+   bg:'#00A8E1',  ar:{1:5000,2:9500},        uy:{1:u(150),2:u(280)}},
+  {name:'Paramount+', desc:'Series, películas y deportes en vivo',  cat:'streaming',
+   bg:'#0064FF',  ar:{1:5000,2:9500},        uy:{1:u(150),2:u(280)}},
+  {name:'Universal+', desc:'Cine, series y estrenos exclusivos', cat:'streaming',
+   bg:'#0057A8',  ar:{1:5000,2:9500},        uy:{1:u(150),2:u(280)}},
+  {name:'Apple TV+',  desc:'Originales premiados · Ted Lasso', cat:'streaming',
+   bg:'#1C1C1E',  ar:{1:5000,2:9500},        uy:{1:u(150),2:u(280)}},
+  {name:'ViX Premium',desc:'Series, novelas y fútbol en español', cat:'streaming',
+   bg:'#0050B3',  ar:{1:5000,2:9500},        uy:{1:u(150),2:u(280)}},
+  {name:'YouTube',    desc:'Sin publicidad + Music incluido',  cat:'streaming',
+   bg:'#FF0000',  ar:{1:5000},               uy:{1:u(190)}},
+  {name:'Crunchyroll',desc:'Anime en HD · Megafan sin límites', cat:'anime',
+   bg:'#F47521',  ar:{1:5000,2:9500},        uy:{1:u(150),2:u(280)}},
+  {name:'Spotify',    desc:'Música ilimitada sin anuncios',   cat:'musica',
+   bg:'#1DB954',  ar:{1:5000},               uy:{1:u(190)}},
+  {name:'Deezer',     desc:'Música en alta calidad sin anuncios', cat:'musica',
+   bg:'#A238FF',  ar:{1:5000,2:9500},        uy:{1:u(150),2:u(280)}},
+  {name:'MegaX', desc:'TV digital · miles de canales · series · ⚽ Mundial 2026', destacado:true, cat:'streaming',
+   bg:'#1A1A2E',  ar:{1:8000},               uy:{1:400},
+   labels:{1:{plan:'3 Dispositivos', sub:'Solo Android · TV en vivo'}}},
+  {name:'FlujoTV', desc:'TV digital · miles de canales · series · ⚽ Mundial 2026', destacado:true, cat:'streaming',
+   bg:'#0D1B2A',  ar:{1:8000},               uy:{1:400}},
+];
+
+let CATALOG_CATEGORIES=[
+  {id:'streaming',slug:'streaming',name:'Streaming',icon:'🎬'},
+  {id:'musica',slug:'musica',name:'Música',icon:'🎵'},
+  {id:'anime',slug:'anime',name:'Anime',icon:'⛩️'}
+];
+
+const CATALOG_SUPABASE_URL='https://ktsszfiqrteklmtgtbgv.supabase.co';
+const CATALOG_SUPABASE_KEY='sb_publishable_tlT-G0ziq1E5Cwnp2AEx3w_Ip0Xzi-6';
+let publicCatalogClient=null, catalogLoaded=false, catalogLoading=false;
+
+function escapeHtml(value){
+  return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+function serviceToken(name){ return encodeURIComponent(name); }
+function serviceName(token){ try{return decodeURIComponent(token)}catch(_){return token} }
+function catalogLogo(s){
+  if(s.logo_url && /^https?:\/\//i.test(s.logo_url)){
+    const src=escapeHtml(s.logo_url), alt=escapeHtml(s.name);
+    return `<img src="${src}" width="30" height="30" style="object-fit:contain;display:block;image-rendering:auto" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="${alt}"/><span style="display:none;color:#fff;font-family:DM Mono,monospace;font-size:12px;font-weight:600;text-align:center">${escapeHtml(s.name.slice(0,2))}</span>`;
+  }
+  return LOGOS[s.name] || escapeHtml(s.name.slice(0,2));
+}
+
+function renderCatalogCategories(){
+  const host=document.getElementById('catalog-categories');
+  if(!host) return;
+  const visible=CATALOG_CATEGORIES.filter(c=>SVCS.some(s=>s.cat===c.slug&&Object.keys(country==='AR'?s.ar:s.uy).length));
+  if(activeCat!=='all' && !visible.some(c=>c.slug===activeCat)) activeCat='all';
+  host.innerHTML=`<button class="cat-f${activeCat==='all'?' active':''}" onclick="filterCat('all',this)">Todos</button>`+
+    visible.map(c=>`<button class="cat-f${activeCat===c.slug?' active':''}" onclick="filterCat('${escapeHtml(c.slug)}',this)">${escapeHtml(c.icon||'')} ${escapeHtml(c.name)}</button>`).join('');
+}
+
+async function loadPublicCatalog(force=false){
+  if(catalogLoading || (catalogLoaded && !force)) return;
+  if(!window.supabase?.createClient) return;
+  catalogLoading=true;
+  try{
+    publicCatalogClient ||= window.supabase.createClient(CATALOG_SUPABASE_URL,CATALOG_SUPABASE_KEY);
+    const [catsRes,svcsRes]=await Promise.all([
+      publicCatalogClient.from('catalog_categories').select('*').eq('active',true).order('sort_order').order('name'),
+      publicCatalogClient.from('catalog_services').select('*').eq('active',true).order('sort_order').order('name')
+    ]);
+    if(catsRes.error) throw catsRes.error;
+    if(svcsRes.error) throw svcsRes.error;
+    const cats=catsRes.data||[], catById=Object.fromEntries(cats.map(c=>[c.id,c]));
+    const mapped=(svcsRes.data||[]).filter(s=>!s.category_id||catById[s.category_id]).map(s=>{
+      const ar={},uy={},labels={};
+      (Array.isArray(s.plans)?s.plans:[]).forEach((p,i)=>{
+        const key=String(i+1), arPrice=Number(p.ar), uyPrice=Number(p.uy);
+        if(p.ar!==null && p.ar!=='' && Number.isFinite(arPrice)) ar[key]=arPrice;
+        if(p.uy!==null && p.uy!=='' && Number.isFinite(uyPrice)) uy[key]=uyPrice;
+        labels[key]={plan:String(p.name||`Plan ${i+1}`),sub:String(p.sub||'')};
+      });
+      return {name:String(s.name||''),desc:String(s.description||''),cat:catById[s.category_id]?.slug||'otros',bg:s.accent_color||'#3B82F6',destacado:!!s.featured,top:!!s.featured,logo_url:s.logo_url||'',ar,uy,labels};
+    }).filter(s=>s.name && (Object.keys(s.ar).length||Object.keys(s.uy).length));
+    SVCS=mapped;
+    CATALOG_CATEGORIES=cats.map(c=>({id:c.id,slug:c.slug,name:c.name,icon:c.icon||''}));
+    Object.keys(selected).forEach(name=>{if(!SVCS.some(s=>s.name===name)) delete selected[name]});
+    catalogLoaded=true;
+    renderCatalogCategories();renderSvcs();updateBar();renderHeroStrip();
+    const count=document.getElementById('s2');if(count) count.textContent=String(SVCS.length);
+  }catch(err){
+    console.warn('Catálogo remoto no disponible; se mantiene el catálogo local.',err);
+    renderCatalogCategories();renderSvcs();
+  }finally{catalogLoading=false}
+}
+
+const WA=[
+  {n:"Marcos G.",   loc:"Rosario, AR",        c:"#c0392b", t:"Activaron Disney en menos de 5 minutos. Atención impecable 🔥", ago:"hace 2 min"},
+  {n:"Sofía R.",    loc:"Montevideo, UY",     c:"#2980b9", t:"Segunda vez que renuevo. Siempre confiables y rápidos 👌",     ago:"hace 8 min"},
+  {n:"Juan I.",     loc:"Córdoba, AR",        c:"#8e44ad", t:"Mejor precio de Netflix que encontré. Muy recomendado ⭐",     ago:"hace 15 min"},
+  {n:"Valentina L.",loc:"Punta del Este, UY", c:"#27ae60", t:"Configuraron mi Smart TV en 5 minutos por WhatsApp 🙌",       ago:"hace 22 min"},
+];
+const REVS=[
+  {n:"Marcos G.",   loc:"Rosario, AR",        c:"#c0392b", s:5, t:"Disney activado al instante. Atención impecable 🔥"},
+  {n:"Sofía R.",    loc:"Montevideo, UY",     c:"#2980b9", s:5, t:"Segunda renovación. Siempre confiables y rápidos."},
+  {n:"Juan I.",     loc:"Córdoba, AR",        c:"#8e44ad", s:5, t:"Mejor precio de Netflix del mercado. Muy recomendado."},
+  {n:"Valentina L.",loc:"Punta del Este, UY", c:"#27ae60", s:5, t:"Soporte inmediato. Me ayudaron a configurar la TV."},
+  {n:"Diego M.",    loc:"Buenos Aires, AR",   c:"#d35400", s:5, t:"Netflix + Spotify + Max. Todo perfecto."},
+  {n:"Carla P.",    loc:"Rosario, AR",        c:"#16a085", s:5, t:"4 meses sin un solo problema. Los recomiendo al 100%."},
+];
+const FAQS=[
+  {q:"¿Cómo funciona la activación?",a:"Confirmado el pago, enviamos las credenciales o te sumamos a la cuenta en 5-10 minutos por WhatsApp. Funciona cualquier hora del día."},
+  {q:"¿Es seguro comprar así las suscripciones?",a:"Sí. Trabajamos con cuentas compartidas 100% legítimas. Si hay cualquier inconveniente, lo resolvemos o te devolvemos el dinero sin vueltas."},
+  {q:"¿Por cuánto tiempo dura la suscripción?",a:"Las suscripciones son mensuales. Podés renovar mes a mes sin compromiso. También ofrecemos planes trimestrales con descuento."},
+  {q:"¿En qué dispositivos funciona?",a:"En todos: Smart TV, celular, tablet, PC y consolas. Compatible con cualquier dispositivo que tenga la app de cada plataforma."},
+  {q:"¿Qué pasa si el servicio falla?",a:"Soporte 24/7 por WhatsApp. Si no resolvemos el problema en el día, te reponemos los días perdidos o te devolvemos el dinero."},
+  {q:"¿Qué medios de pago aceptan?",a:"Transferencia bancaria, MercadoPago y efectivo. Para Uruguay también hay opciones adicionales. Consultanos por WhatsApp."},
+];
+
+let country='AR', selected={}, waIdx=0, expandedService=null;
+
 function setCountry(c){
-  country = c;
-  document.getElementById('btn-AR').classList.toggle('active', c==='AR');
-  document.getElementById('btn-UY').classList.toggle('active', c==='UY');
-  document.getElementById('btn-AR2').classList.toggle('active', c==='AR');
-  document.getElementById('btn-UY2').classList.toggle('active', c==='UY');
-  
-  if(activeDiscount && activeDiscount.country !== c){
-    // Si cambia de país y el cupón no es válido para el nuevo país, se oculta el descuento en la UI
-  }
-  
-  updateDiscUI();
+  country=c; selected={};
+  document.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('btn-'+c)?.classList.add('active');
+  document.getElementById('btn-'+c+'2')?.classList.add('active');
+  updateDiscBanner(); renderCatalogCategories(); renderSvcs(); updateBar();
+}
+function setCountry2(c){ setCountry(c); }
+
+function toggleOpt(name,qty){
+  selected[name]===qty ? delete selected[name] : selected[name]=qty;
+  renderSvcs(); updateBar();
+}
+function clearAll(){ selected={}; renderSvcs(); updateBar(); }
+
+
+/* ── Buscador ── */
+let _searchQuery = '';
+function searchSvcs(q){
+  _searchQuery = q.trim().toLowerCase();
+  document.getElementById('search-clear').style.display = _searchQuery ? 'flex' : 'none';
   renderSvcs();
-  updateBar();
+}
+function clearSearch(){
+  const inp = document.getElementById('svc-search');
+  if(inp) inp.value = '';
+  searchSvcs('');
 }
 
-function setCountry2(c){
-  setCountry(c);
-}
-
-/* ════════════════════════════════════════
-   CATÁLOGOS Y RENDER
-   ════════════════════════════════════════ */
-function openCatalogDrawer(){
-  document.getElementById('catalog-layer').classList.add('open');
-  document.body.classList.add('catalog-lock');
-}
-
-function closeCatalogDrawer(){
-  document.getElementById('catalog-layer').classList.remove('open');
-  document.body.classList.remove('catalog-lock');
+let activeCat='all';
+function filterCat(cat,btn){
+  activeCat=cat;
+  document.querySelectorAll('.cat-f').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderSvcs();
 }
 
 function renderSvcs(){
-  // Esta función debe ser completada con la llamada a la base de datos o arreglo local de servicios.
+  const discPct = getDiscountPct();
+  let list = activeCat==='all' ? SVCS : SVCS.filter(s=>s.cat===activeCat);
+  list = list.filter(s=>Object.keys(country==='AR'?s.ar:s.uy).length);
+  if(_searchQuery) list = list.filter(s=>
+    s.name.toLowerCase().includes(_searchQuery) ||
+    (s.desc && s.desc.toLowerCase().includes(_searchQuery))
+  );
+  if(!list.length) return document.getElementById('svcs').innerHTML =
+    '<div class="search-empty">No se encontraron servicios'+(_searchQuery?' para "'+escapeHtml(_searchQuery)+'"':' disponibles en este momento')+'</div>';
+  document.getElementById('svcs').innerHTML = list.map(s=>{
+    const basePrices = country==='AR' ? s.ar : s.uy;
+    const hasSel = selected[s.name]!==undefined;
+    const isExpanded = expandedService===s.name;
+    const logo = catalogLogo(s);
+    const token = serviceToken(s.name);
+
+    let optsHtml='';
+    if(isExpanded && s.meses){
+      // ── Dropdown de meses ──
+      const selVal = selected[s.name] || '';
+      const selPrice = selVal ? finalPrice(basePrices[selVal]) : null;
+      const options = Object.entries(basePrices).map(([m, baseP])=>{
+        const p = finalPrice(baseP);
+        const label = m==1 ? '1 Mes' : `${m} Meses`;
+        return `<option value="${m}" ${selVal==m?'selected':''}>${label} — $${p.toLocaleString('es-AR')}</option>`;
+      }).join('');
+      optsHtml = `<div class="svc-opts">
+        <div class="meses-hint">Seleccioná el período</div>
+        <div class="meses-wrap${hasSel?' has-sel':''}">
+          <select class="meses-select" onchange="selectMeses(serviceName('${token}'),this)">
+            <option value="" disabled ${!selVal?'selected':''}>— elegir duración —</option>
+            ${options}
+          </select>
+          ${hasSel?`<div class="meses-price">$${selPrice.toLocaleString('es-AR')}</div>`:''}
+        </div>
+        ${hasSel?`<div class="opt-chk-row"><div class="opt-chk" style="transform:scale(1)">✓</div><span class="meses-sel-lbl">${selVal==1?'1 Mes':selVal+' Meses'} seleccionado</span></div>`:''}
+      </div>`;
+    } else if(isExpanded) {
+      const opts = Object.entries(basePrices).map(([q,baseP])=>{
+        const on = selected[s.name]==q;
+        const p = finalPrice(baseP);
+        const showOrig = discPct>0 && p!==baseP;
+        const planLabel = (s.labels && s.labels[q]) ? s.labels[q].plan : (q==1?'1 Pantalla':q+' Pantallas');
+        const subLabel  = (s.labels && s.labels[q]) ? s.labels[q].sub  : (q==1?'Acceso individual':'Acceso familiar');
+        return `<button class="opt${on?' on':''}" onclick="toggleOpt(serviceName('${token}'),${q})">
+          <div class="opt-l">
+            <div class="opt-plan">${escapeHtml(planLabel)}</div>
+            <div class="opt-sub">${escapeHtml(subLabel)}</div>
+          </div>
+          <div class="opt-r">
+            ${showOrig?`<span class="opt-price-orig">$${baseP.toLocaleString('es-AR')}</span>`:''}
+            <span class="opt-price${on?' on':''}">$${p.toLocaleString('es-AR')}</span>
+            <div class="opt-chk">✓</div>
+          </div>
+        </button>`;
+      }).join('');
+      optsHtml = `<div class="svc-opts">${opts}</div>`;
+    }
+
+    return `<div class="svc${hasSel?' on':''}${isExpanded?' expanded':''}${s.top?' svc-top':''}" data-svc="${token}">
+      <button class="svc-hdr" type="button" onclick="toggleServiceDetails(serviceName('${token}'))" aria-expanded="${isExpanded}">
+        <div class="svc-logo-box">${logo}</div>
+        <div style="flex:1;min-width:0">
+          <div class="svc-nm">${escapeHtml(s.name)}</div>
+        </div>
+        ${hasSel?'<span class="svc-picked">✓ ELEGIDO</span>':''}
+        <span class="svc-chevron" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </span>
+      </button>
+      ${optsHtml}
+    </div>`;
+  }).join('');
+}
+
+function toggleServiceDetails(name){
+  expandedService = expandedService===name ? null : name;
+  renderSvcs();
+  if(expandedService){
+    requestAnimationFrame(()=>{
+      const el=document.querySelector(`[data-svc="${serviceToken(name)}"]`);
+      if(el) el.scrollIntoView({behavior:'smooth',block:'nearest'});
+    });
+  }
+}
+
+function selectMeses(name, el){
+  const val = el.value;
+  if(!val){ delete selected[name]; }
+  else { selected[name] = parseInt(val); }
+  updateBar();
+  renderSvcs();
 }
 
 function updateBar(){
-  // Actualiza la barra inferior del carrito
-}
-
-function clearAll(){
-  cart = {};
-  updateBar();
+  const bar=document.getElementById('bar'), items=document.getElementById('bar-items'), waf=document.getElementById('waf'), pull=document.getElementById('catalog-pull');
+  const keys=Object.keys(selected);
+  if(!keys.length){bar.classList.remove('show');waf.classList.remove('hide');pull.classList.remove('has-order');return;}
+  let total=0;
+  items.innerHTML=keys.map(k=>{
+    const s=SVCS.find(x=>x.name===k);
+    const baseP=(country==='AR'?s.ar:s.uy)[selected[k]];
+    const p=finalPrice(baseP); total+=p;
+    const lbl = s.meses ? (selected[k]==1?'1 Mes':selected[k]+' Meses') : (s.labels?.[selected[k]]?.plan||selected[k]+'P');
+    return `<div class="bar-row"><span class="bar-nm">${escapeHtml(s.name)} · ${escapeHtml(lbl)}</span><span class="bar-pr">$${p.toLocaleString('es-AR')}</span></div>`;
+  }).join('');
+  document.getElementById('tot').textContent='$'+total.toLocaleString('es-AR');
+  bar.classList.add('show'); waf.classList.add('hide'); pull.classList.add('has-order');
 }
 
 function sendWA(){
-  // Envío del mensaje por WhatsApp
+  const keys=Object.keys(selected); if(!keys.length)return;
+  const discPct=getDiscountPct();
+  let msg='¡Hola MISAKROOS! Quiero contratar:\n\n',total=0;
+  keys.forEach(k=>{
+    const s=SVCS.find(x=>x.name===k);
+    const baseP=(country==='AR'?s.ar:s.uy)[selected[k]];
+    const p=finalPrice(baseP); total+=p;
+    const planTxt = s.meses ? (selected[k]==1?'1 Mes':selected[k]+' Meses') : (s.labels?.[selected[k]]?.plan||`${selected[k]} pantalla${selected[k]>1?'s':''}`);
+    msg+=`• ${s.name} — ${planTxt} → $${p.toLocaleString('es-AR')}\n`;
+  });
+  if(discPct>0) msg+=`\n🏷️ Código: ${activeDiscount.code} (−${discPct}%)`;
+  msg+=`\n💰 Total: $${total.toLocaleString('es-AR')}\n🌍 País: ${country==='AR'?'Argentina 🇦🇷':'Uruguay 🇺🇾'}`;
+  window.open('https://wa.me/5492645182955?text='+encodeURIComponent(msg));
 }
+
+
+/* ══ HERO STRIP ══ */
+const HERO_STRIP = [
+  {name:'Netflix Perfil Privado',  label:'Netflix Privado', subdesc:'Perfil 4K exclusivo',            isNew:false},
+  {name:'Spotify',                 label:'Spotify',         subdesc:'Música sin publicidad',          isNew:false},
+  {name:'Disney+',                 label:'Disney+',         subdesc:'Marvel · Star Wars · Pixar',     isNew:false},
+  {name:'Max',                     label:'Max',             subdesc:'HBO Originals y series',         isNew:false},
+  {name:'Prime Video',             label:'Prime Video',     subdesc:'Películas y series de Amazon',   isNew:false},
+  {name:'Paramount+',              label:'Paramount+',      subdesc:'Series, películas y deportes',   isNew:false},
+];
+
+function renderHeroStrip(){
+  const row = document.getElementById('hero-svcs-row');
+  if(!row) return;
+  const cards = HERO_STRIP.map(item=>{
+    const svc = SVCS.find(s=>s.name===item.name);
+    if(!svc) return '';
+    const prices = country==='AR' ? svc.ar : svc.uy;
+    const firstKey = Object.keys(prices)[0];
+    const logo = LOGOS[item.name] || `<span style="font-size:18px">${item.name[0]}</span>`;
+    return `<div class="hero-svc-card${item.isNew?' hs-new':''}" onclick="heroCardClick('${item.name}')" style="cursor:pointer">
+      <div class="hero-svc-ico">${logo}</div>
+      <div>
+        <div class="hero-svc-name">${item.label}</div>
+        <div class="hero-svc-subdesc">${item.subdesc}</div>
+      </div>
+      ${item.isNew?'<div class="hero-svc-new-tag">New</div>':''}
+    </div>`;
+  }).join('');
+  row.innerHTML = `<div class="hero-svcs-inner">${cards}</div>`;
+}
+
+/* ── Hero strip auto-scroll ── */
+let _heroTimer = null;
+function _heroCardWidth(){
+  const row = document.getElementById('hero-svcs-row');
+  if(!row) return 175;
+  const card = row.querySelector('.hero-svc-card');
+  return card ? card.offsetWidth + 7 : 175;
+}
+function heroStripNext(){
+  const row = document.getElementById('hero-svcs-row');
+  if(!row) return;
+  const w = _heroCardWidth();
+  if(row.scrollLeft + row.clientWidth >= row.scrollWidth - 10){
+    row.scrollTo({left:0,behavior:'smooth'});
+  } else {
+    row.scrollBy({left:w*2,behavior:'smooth'});
+  }
+  _resetHeroTimer();
+}
+function heroStripPrev(){
+  const row = document.getElementById('hero-svcs-row');
+  if(!row) return;
+  const w = _heroCardWidth();
+  if(row.scrollLeft <= 0){
+    row.scrollTo({left:row.scrollWidth,behavior:'smooth'});
+  } else {
+    row.scrollBy({left:-w*2,behavior:'smooth'});
+  }
+  _resetHeroTimer();
+}
+function _resetHeroTimer(){
+  clearInterval(_heroTimer);
+  _heroTimer = setInterval(heroStripNext, 4000);
+}
+function startHeroAutoplay(){ _resetHeroTimer(); }
+
+function heroCardClick(name){
+  const svc = SVCS.find(s=>s.name===name);
+  if(!svc) return;
+  expandedService = name;
+  openCatalogDrawer();
+  setTimeout(()=>{
+    const el = document.querySelector(`[data-svc="${name}"]`);
+    if(el) el.scrollIntoView({behavior:'smooth', block:'center'});
+  }, 360);
+}
+
+/* TESTIMONIAL */
+function initDots(){ document.getElementById('wa-dots').innerHTML=WA.map((_,i)=>`<div class="wdot${i===0?' on':''}"></div>`).join(''); }
+function cycleWA(){
+  const r=WA[waIdx];
+  document.getElementById('wa-hdr').innerHTML=`<div class="wa-info"><div class="wa-av">${r.n[0]}</div><div><div class="wa-nm">${r.n}</div><div class="wa-loc">📍 ${r.loc}</div></div></div><div class="wa-online"><div class="wa-online-dot"></div>en línea</div>`;
+  document.getElementById('wa-body').innerHTML=`<div class="wa-bubble">${r.t}</div><div class="wa-time">${r.ago}</div>`;
+  document.querySelectorAll('.wdot').forEach((d,i)=>d.classList.toggle('on',i===waIdx));
+  waIdx=(waIdx+1)%WA.length;
+}
+
+function renderRevs(){
+  document.getElementById('revs').innerHTML=REVS.map(r=>`<div class="rev"><div class="rev-top"><div class="rev-av">${r.n[0]}</div><div><div class="rev-nm">${r.n}</div><div class="rev-loc">📍 ${r.loc}</div></div></div><div class="rev-stars">${'★'.repeat(r.s)}</div><div class="rev-txt">${r.t}</div><div class="rev-badge">✓ Compra verificada</div></div>`).join('');
+}
+
+function renderFAQs(){
+  document.getElementById('faqs').innerHTML=FAQS.map((f,i)=>`<div class="faq" id="faq${i}"><button class="faq-q" onclick="toggleFAQ(${i})"><span>${f.q}</span><div class="faq-ico">+</div></button><div class="faq-a"><div class="faq-a-txt">${f.a}</div></div></div>`).join('');
+}
+function toggleFAQ(i){
+  const el=document.getElementById('faq'+i),was=el.classList.contains('open');
+  document.querySelectorAll('.faq').forEach(f=>f.classList.remove('open'));
+  if(!was)el.classList.add('open');
+}
+
+function animCount(el,target,suffix){
+  let v=0;const go=()=>{v+=Math.max(1,Math.ceil(target/28));if(v>=target)el.textContent=target+suffix;else{el.textContent=v+suffix;requestAnimationFrame(go);}};go();
+}
+setTimeout(()=>{
+  animCount(document.getElementById('s1'),150,'+');
+  animCount(document.getElementById('s2'),SVCS.length,'');
+  animCount(document.getElementById('s3'),100,'%');
+},500);
+
+document.querySelectorAll('.rv').forEach(el=>{new IntersectionObserver(([e])=>{if(e.isIntersecting)el.classList.add('in');},{threshold:.08}).observe(el);});
+
+/* theme toggle removed — dark mode only */
+
+let catalogOpen = false;
+function openCatalogDrawer(){
+  if(catalogOpen) return;
+  catalogOpen=true;
+  const layer=document.getElementById('catalog-layer');
+  const pull=document.getElementById('catalog-pull');
+  const drawer=document.getElementById('catalog-drawer');
+  layer.classList.add('open');
+  layer.setAttribute('aria-hidden','false');
+  drawer.removeAttribute('inert');
+  pull.classList.add('is-hidden');
+  pull.setAttribute('aria-expanded','true');
+  document.body.classList.add('catalog-lock');
+  renderSvcs();
+  loadPublicCatalog(true);
+  setTimeout(()=>document.getElementById('catalog-close')?.focus(),350);
+}
+function closeCatalogDrawer(){
+  if(!catalogOpen) return;
+  catalogOpen=false;
+  const layer=document.getElementById('catalog-layer');
+  const pull=document.getElementById('catalog-pull');
+  const drawer=document.getElementById('catalog-drawer');
+  layer.classList.remove('open');
+  layer.setAttribute('aria-hidden','true');
+  drawer.setAttribute('inert','');
+  pull.classList.remove('is-hidden');
+  pull.setAttribute('aria-expanded','false');
+  document.body.classList.remove('catalog-lock');
+}
+function toggleCatalog(){
+  catalogOpen ? closeCatalogDrawer() : openCatalogDrawer();
+}
+
+/* Swipe desde el borde izquierdo hacia la derecha para abrir.
+   Dentro del panel, swipe hacia la izquierda para cerrar. */
+let catalogSwipeStart=null;
+document.addEventListener('pointerdown',e=>{
+  if(!catalogOpen && e.clientX<=38) catalogSwipeStart={x:e.clientX,y:e.clientY,mode:'open'};
+});
+document.addEventListener('pointerup',e=>{
+  if(!catalogSwipeStart || catalogSwipeStart.mode!=='open') return;
+  const dx=e.clientX-catalogSwipeStart.x,dy=Math.abs(e.clientY-catalogSwipeStart.y);
+  if(dx>55 && dy<70) openCatalogDrawer();
+  catalogSwipeStart=null;
+});
+document.getElementById('catalog-drawer').addEventListener('pointerdown',e=>{
+  catalogSwipeStart={x:e.clientX,y:e.clientY,mode:'close'};
+});
+document.getElementById('catalog-drawer').addEventListener('pointerup',e=>{
+  if(!catalogSwipeStart || catalogSwipeStart.mode!=='close') return;
+  const dx=e.clientX-catalogSwipeStart.x,dy=Math.abs(e.clientY-catalogSwipeStart.y);
+  if(dx<-65 && dy<70) closeCatalogDrawer();
+  catalogSwipeStart=null;
+});
+document.addEventListener('keydown',e=>{ if(e.key==='Escape' && catalogOpen) closeCatalogDrawer(); });
+
+const tkTxt=' ⚡ ACTIVACIÓN INMEDIATA  ·  GARANTÍA TOTAL  ·  SOPORTE 24/7  ·  SIN TARJETA PROPIA  ·  AR & UY  · ';
+document.getElementById('ticker').innerHTML=`<span>${tkTxt.repeat(8)}</span><span>${tkTxt.repeat(8)}</span>`;
+
+initDots(); cycleWA(); renderRevs(); renderFAQs(); renderCatalogCategories(); loadPublicCatalog();
+setInterval(cycleWA,4500);
 </script>
 </body>
 </html>
