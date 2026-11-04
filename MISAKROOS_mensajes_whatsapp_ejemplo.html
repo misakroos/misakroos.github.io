@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0f19">
+<meta name="mobile-web-app-capable" content="yes">
+<title>MISAKROOS · Servicios digitales</title>
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#0b0f19;--card:#111726;--line:#232c44;--violet:#a78bfa;--cyan:#22e5ff;--pink:#ff4fd8;--mut:#8f9ab5}
+*{box-sizing:border-box}
+html,body{width:100%;height:100%;min-height:100%;margin:0;overflow:hidden;background:#05070d;color:#e8ecf6;font-family:Inter,system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+h1,h2,h3,.disp{font-family:'Space Grotesk',Inter,system-ui,sans-serif}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0}
+#app{position:fixed;inset:0;width:100%;height:100%;height:100dvh;max-width:520px;margin:0 auto;overflow:hidden;background:var(--bg);display:flex;flex-direction:column;box-shadow:0 0 0 1px var(--line),0 0 60px rgba(34,229,255,.07)}
+.top{display:flex;align-items:center;gap:8px;padding:calc(env(safe-area-inset-top,0px) + 8px) 10px 8px;border-bottom:1px solid var(--line);background:var(--bg);z-index:20}
+.ib{width:44px;height:44px;border-radius:14px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center}
+.ib:active{transform:scale(.94)}
+.ib svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#sel{position:absolute;left:10px;right:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 88px);top:auto;z-index:30;min-height:56px;display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:18px;background:#0e1424;border:1px solid var(--cyan);box-shadow:0 0 0 1px rgba(34,229,255,.25),0 0 24px rgba(34,229,255,.35),0 10px 24px rgba(0,0,0,.5);text-align:left}
+#sel.empty{border-color:var(--line);box-shadow:0 10px 24px rgba(0,0,0,.5)}
+#screens{flex:1 1 auto;min-height:0;min-width:0;width:100%;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;padding:18px 14px 190px;-webkit-overflow-scrolling:touch}
+.screen{display:none;width:100%;min-width:0;max-width:100%;overflow-x:hidden}.screen.on{display:block;animation:in .25s ease-out}
+@keyframes in{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+.bnav{flex:0 0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line);background:var(--bg);padding:6px 6px calc(env(safe-area-inset-bottom,0px) + 6px);z-index:20}
+.navb{min-width:0;position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;border-radius:12px;font-size:11px;font-weight:600;color:var(--mut)}
+.navb svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.navb.on{color:var(--cyan);text-shadow:0 0 10px rgba(34,229,255,.7)}
+.navb.on svg{filter:drop-shadow(0 0 5px rgba(34,229,255,.9))}
+.badge{position:absolute;top:0;right:22%;min-width:18px;height:18px;border-radius:9px;background:var(--pink);color:#1a0412;font-size:11px;font-weight:700;display:grid;place-items:center;box-shadow:0 0 10px rgba(255,79,216,.8)}
+.neon-c{color:var(--cyan);text-shadow:0 0 10px rgba(34,229,255,.8),0 0 26px rgba(34,229,255,.45)}
+.neon-v{color:var(--violet);text-shadow:0 0 10px rgba(167,139,250,.8),0 0 26px rgba(167,139,250,.45)}
+.card{background:var(--card);border:1px solid var(--line);transition:border-color .2s,box-shadow .2s}
+.card.sel{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan),0 0 24px rgba(34,229,255,.3)}
+.pill{border:1px solid var(--violet);box-shadow:0 0 12px rgba(167,139,250,.4);color:var(--violet)}
+.btn{background:var(--cyan);color:#04141a;font-weight:700;box-shadow:0 0 18px rgba(34,229,255,.55);min-height:46px;display:flex;align-items:center;justify-content:center;transition:transform .1s}
+.btn:active{transform:scale(.98)}
+.btn-off{border:1px solid var(--cyan);color:var(--cyan);box-shadow:0 0 12px rgba(34,229,255,.3);min-height:46px;display:flex;align-items:center;justify-content:center}
+.sec{font:700 16px 'Space Grotesk',sans-serif;margin:22px 2px 10px}
+.chip{display:inline-flex;align-items:center;gap:8px;background:#0b1020;border:1px solid var(--line);border-radius:10px;padding:5px 12px 5px 8px;font-weight:600;white-space:nowrap}
+.chip .ic,.chip .fbm{width:22px;height:22px;object-fit:contain;flex:none;border-radius:5px}
+.fbm{display:inline-grid;place-items:center;background:var(--c);color:#06101c;font:700 12px 'Space Grotesk',sans-serif}
+.chip.s{font-size:12px;padding:3px 9px 3px 6px}.chip.s .ic,.chip.s .fbm{width:16px;height:16px;font-size:9px}
+.chip.m{font-size:13px}
+.chip.l{font-size:15px;padding:8px 14px 8px 10px;border-color:var(--c);box-shadow:0 0 14px color-mix(in srgb,var(--c) 45%,transparent)}.chip.l .ic,.chip.l .fbm{width:28px;height:28px;font-size:14px}
+.ico{width:26px;height:26px;border-radius:8px;background:#0b1020;border:1px solid var(--line);display:grid;place-items:center;flex:none}
+.ico img,.ico .fbm{width:18px;height:18px;object-fit:contain;border-radius:4px}
+.stack .ico+.ico{margin-left:-8px}
+.mini-row{display:flex;gap:10px;max-width:100%;min-width:0;overflow-x:auto;padding:4px 2px 10px;scroll-snap-type:x proximity;scrollbar-width:none}
+.mini-row::-webkit-scrollbar{display:none}
+.mini{flex:none;width:170px;scroll-snap-align:start;text-align:left;border-radius:14px;padding:12px}
+.hotc{width:230px}
+.svc{scroll-margin-top:16px;min-width:0;max-width:100%}
+.svc.pulse{animation:pulse 1.4s ease-out 1}
+.qty{display:flex;align-items:center;gap:12px;border:1px solid var(--line);background:#0b1020;border-radius:12px;padding:5px 8px}
+.qty button{width:34px;height:34px;border-radius:9px;background:#182238;font-size:22px;font-weight:700}
+.qty strong{min-width:18px;text-align:center}
+.upsell{border:1px solid var(--violet);background:linear-gradient(135deg,#17152a,#101827);box-shadow:0 0 18px rgba(167,139,250,.16)}
+.rank-tag{display:inline-flex;align-items:center;gap:5px;border:1px solid rgba(255,190,70,.55);background:rgba(255,190,70,.10);color:#ffd27a;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:800;white-space:nowrap}
+.social-bubble{max-width:90%;border:1px solid var(--line);background:#101d20;border-radius:14px 14px 14px 4px;padding:10px 12px;font-size:13px;line-height:1.45}
+.social-bubble.brand{margin-left:auto;background:#17243a;border-color:#2c4564;border-radius:14px 14px 4px 14px}
+.social-input{width:100%;border:1px solid var(--line);background:#0b1020;color:#fff;border-radius:12px;padding:12px;font:inherit}
+.social-input:focus{outline:1px solid var(--cyan);border-color:var(--cyan)}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,229,255,.9)}100%{box-shadow:0 0 0 22px rgba(34,229,255,0)}}
+.deco{position:absolute;color:var(--c);filter:drop-shadow(0 0 5px var(--c)) drop-shadow(0 0 14px var(--c));opacity:.8;animation:fl 7s ease-in-out infinite;pointer-events:none;stroke:currentColor;fill:none}
+@keyframes fl{50%{transform:translateY(-9px) rotate(6deg)}}
+[aria-expanded=true] .chev{transform:rotate(180deg)}
+.chev{transition:transform .2s}
+#q{background:#0b1020;border:1px solid var(--cyan);box-shadow:0 0 14px rgba(34,229,255,.3);color:#fff;font-size:16px;width:100%;border-radius:14px;padding:14px 14px 14px 44px}
+#q:focus{outline:none;box-shadow:0 0 22px rgba(34,229,255,.6)}
+#toast{position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 86px);transform:translate(-50%,20px);opacity:0;background:#0e1424;border:1px solid var(--cyan);box-shadow:0 0 18px rgba(34,229,255,.5);padding:10px 16px;border-radius:999px;font-size:13px;font-weight:600;pointer-events:none;transition:.25s;z-index:40;white-space:nowrap}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+button:focus-visible,a:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+@media(max-width:520px){
+ #app{max-width:none}
+ #sel{left:10px;right:10px;min-height:58px}
+ .bnav{padding-left:4px;padding-right:4px}
+ .navb{font-size:10px}
+ #screens{padding-left:12px;padding-right:12px;padding-bottom:200px}
+ .disp{overflow-wrap:anywhere}
+
+ #app{max-width:none;width:100%;left:0;right:0;margin:0}
+ #screens{padding-left:12px;padding-right:12px}
+ .top{padding-left:12px;padding-right:12px}
+ .card{min-width:0;max-width:100%}
+ .svc .chip.l{max-width:65%;overflow:hidden}
+ .svc .disp{font-size:clamp(18px,5vw,24px)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-combo" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="1.6"/><path d="M10 8l6 4-6 4z" fill="currentColor"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2" stroke-width="1.6"/><path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4" stroke-width="1.6"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+</svg>
+
+<div id="app">
+  <header class="top">
+    <button id="btn-back" class="ib" data-back="1" aria-label="Volver atrás"><svg><use href="#i-back"/></svg></button>
+    <div class="flex-1 text-center"><div id="title" class="disp font-bold text-lg"></div></div>
+    <button id="country-switch" class="ib" data-country="toggle" aria-label="Cambiar país" style="width:auto;min-width:54px;padding:0 10px;font-size:12px;font-weight:800;color:var(--cyan)">AR$</button>
+    <button class="ib" data-nav="home" aria-label="Ir al inicio"><svg><use href="#i-home"/></svg></button>
+  </header>
+
+  <button id="sel" data-nav="pedido" aria-label="Ver mi pedido"></button>
+
+  <main id="screens">
+
+    <!-- INICIO -->
+    <section id="s-home" class="screen">
+      <div class="card rounded-3xl p-5 relative overflow-hidden" style="border-color:var(--violet);box-shadow:0 0 28px rgba(167,139,250,.25)">
+        <svg class="deco" style="--c:var(--cyan);width:48px;height:48px;top:12px;right:14px"><use href="#i-play"/></svg>
+        <svg class="deco" style="--c:var(--pink);width:26px;height:26px;top:70px;right:66px;animation-delay:-2s"><use href="#i-star"/></svg>
+        <svg class="deco" style="--c:var(--violet);width:34px;height:34px;bottom:12px;right:20px;animation-delay:-4s"><use href="#i-film"/></svg>
+        <p id="greet" class="text-sm text-[var(--mut)]"></p>
+        <h1 class="disp text-4xl font-bold leading-none mt-1">MISAK<span class="neon-c">ROOS</span></h1>
+        <p class="mt-2 text-[15px]">Tu streaming, <span class="neon-v font-semibold">sin vueltas</span>.</p>
+        <p id="phrase" class="mt-3 pill inline-block rounded-full text-xs font-semibold px-3 py-1.5"></p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 mt-4">
+        <button data-nav="perfiles" class="card rounded-2xl p-4 text-left">
+          <span class="neon-c block"><svg width="30" height="30" style="stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round"><use href="#i-user"/></svg></span>
+          <span class="block disp font-bold text-lg mt-2">Perfiles</span>
+          <span class="block text-xs text-[var(--mut)] mt-0.5">Cada plataforma a su precio original</span>
+        </button>
+        <button data-nav="combos" class="card rounded-2xl p-4 text-left" style="border-color:var(--violet)">
+          <span class="neon-v block"><svg width="30" height="30" style="stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round"><use href="#i-combo"/></svg></span>
+          <span class="block disp font-bold text-lg mt-2">Combos</span>
+          <span class="block text-xs text-[var(--mut)] mt-0.5">Más plataformas, hasta <b class="neon-v">25% OFF</b></span>
+        </button>
+      </div>
+
+      <h2 class="sec">Elegí tu plataforma</h2>
+      <div id="home-logos" class="flex flex-wrap gap-2.5"></div>
+
+      <h2 class="sec">🔥 Para maratonear ahora</h2>
+      <div id="home-hot" class="mini-row"></div>
+
+      <div class="grid gap-2 mt-3 text-sm">
+        <div class="card rounded-xl px-4 py-3">⚡ <b>Entrega inmediata</b> <span class="text-[var(--mut)]">· lo recibís al toque</span></div>
+        <div class="card rounded-xl px-4 py-3">🛡️ <b>Garantía de activación</b> <span class="text-[var(--mut)]">· si falla, lo resolvemos</span></div>
+        <div class="card rounded-xl px-4 py-3">✅ <b>Cuentas originales</b> <span class="text-[var(--mut)]">· sin trucos</span></div>
+      </div>
+
+      <!-- CONFIANZA Y EXPERIENCIA -->
+      <section class="card rounded-2xl p-4 mt-5" style="border-color:var(--cyan);box-shadow:0 0 18px rgba(34,229,255,.10)">
+        <p class="text-xs font-bold tracking-widest neon-c">TRAYECTORIA MISAKROOS</p>
+        <h2 class="disp text-2xl font-bold mt-1">Tu confianza, nuestra prioridad</h2>
+        <div class="grid grid-cols-2 gap-2 mt-4">
+          <div class="rounded-xl p-3 bg-[#0b1020] border border-[var(--line)]"><div class="disp text-2xl font-bold neon-c">+3 años</div><p class="text-xs text-[var(--mut)] mt-1">Desde julio de 2023</p></div>
+          <div class="rounded-xl p-3 bg-[#0b1020] border border-[var(--line)]"><div class="disp text-2xl font-bold neon-v">+900</div><p class="text-xs text-[var(--mut)] mt-1">Clientes atendidos</p></div>
+        </div>
+        <div class="flex items-center gap-1 mt-4 text-amber-300" aria-label="Estrellas decorativas de confianza">★★★★★ <span class="text-xs text-[var(--mut)] ml-2">Compromiso con cada atención</span></div>
+        <h3 class="sec mt-5">Así es nuestra atención</h3>
+        <div class="rounded-2xl overflow-hidden border border-[#263b36]" style="background:#0b1714">
+          <div class="flex items-center gap-3 px-3 py-3" style="background:#14251f;border-bottom:1px solid #263b36">
+            <div class="w-10 h-10 rounded-full grid place-items-center" style="background:#25D366;color:#062b19">
+              <svg viewBox="0 0 32 32" width="25" height="25" aria-hidden="true"><path fill="currentColor" d="M16 3.2A12.4 12.4 0 0 0 5.3 21.9L3.7 28l6.3-1.6A12.4 12.4 0 1 0 16 3.2Zm0 22.5c-1.9 0-3.7-.5-5.3-1.5l-.4-.2-3.7 1 1-3.6-.3-.4A10.1 10.1 0 1 1 16 25.7Zm5.5-7.6c-.3-.2-1.8-.9-2.1-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1a8.3 8.3 0 0 1-2.5-1.5 9.2 9.2 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.7l.5-.5.3-.6c.1-.2 0-.4 0-.6l-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4s-1.2 1.2-1.2 2.8 1.2 3.2 1.4 3.4a12.5 12.5 0 0 0 4.8 4.2c.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2.1-1.4s.3-1.3.2-1.4-.2-.2-.5-.4Z"/></svg>
+            </div>
+            <div class="min-w-0 flex-1"><div class="font-semibold text-sm">Mensajes de ejemplo</div><div class="text-[10px]" style="color:#9db5a9">WhatsApp · Atención MISAKROOS</div></div>
+            <span class="text-[10px]" style="color:#9db5a9">● en línea</span>
+          </div>
+          <div class="p-3" style="background-color:#0b1714;background-image:radial-gradient(rgba(160,190,170,.08) .7px,transparent .7px);background-size:12px 12px;min-height:142px">
+            <div class="text-center mb-3"><span class="text-[9px] px-2 py-1 rounded-md" style="background:#243a31;color:#c4d8cb">VISTA DE EJEMPLO</span></div>
+            <div class="flex items-start gap-2">
+              <div class="w-8 h-8 rounded-full grid place-items-center shrink-0" style="background:#25D366;color:#062b19">
+                <svg viewBox="0 0 32 32" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16 3.2A12.4 12.4 0 0 0 5.3 21.9L3.7 28l6.3-1.6A12.4 12.4 0 1 0 16 3.2Zm0 22.5c-1.9 0-3.7-.5-5.3-1.5l-.4-.2-3.7 1 1-3.6-.3-.4A10.1 10.1 0 1 1 16 25.7Zm5.5-7.6c-.3-.2-1.8-.9-2.1-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1a8.3 8.3 0 0 1-2.5-1.5 9.2 9.2 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.7l.5-.5.3-.6c.1-.2 0-.4 0-.6l-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4s-1.2 1.2-1.2 2.8 1.2 3.2 1.4 3.4a12.5 12.5 0 0 0 4.8 4.2c.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2.1-1.4s.3-1.3.2-1.4-.2-.2-.5-.4Z"/></svg>
+              </div>
+              <div class="min-w-0 flex-1">
+                <div id="social-client" class="text-[11px] font-semibold mb-1" style="color:#a8d8b8">Ramiro</div>
+                <div id="social-message" class="rounded-xl p-3 text-[13px] leading-relaxed" style="background:#1d3028;color:#e6f0e9;border-radius:4px 14px 14px 14px">Excelente servicio, me atendieron rápido y con mucha buena onda. ¡Gracias!</div>
+                <div class="flex justify-end items-center gap-1 mt-1"><span id="social-time" class="text-[9px]" style="color:#91a89a">18:42</span><span class="text-[11px] font-bold" style="color:#53bdeb">✓✓</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="text-[10px] mt-2 text-center" style="color:var(--mut)">Mensajes ficticios de muestra. Podés reemplazarlos por opiniones reales de tus clientes.</p>
+        <div class="grid grid-cols-2 gap-2 mt-3 text-xs">
+          <div class="rounded-lg p-2 bg-[#0b1020]">⚡ Atención rápida</div>
+          <div class="rounded-lg p-2 bg-[#0b1020]">🤝 Responsabilidad</div>
+          <div class="rounded-lg p-2 bg-[#0b1020]">💬 Trato cercano</div>
+          <div class="rounded-lg p-2 bg-[#0b1020]">🛡️ Acompañamiento</div>
+        </div>
+      </section>
+
+      <section class="card rounded-2xl p-4 mt-4">
+        <h2 class="disp text-xl font-bold">Dejanos tu opinión <span class="neon-v">★</span></h2>
+        <p class="text-xs text-[var(--mut)] mt-1">Tu experiencia nos ayuda a seguir mejorando.</p>
+        <form id="opinion-form" class="grid gap-3 mt-3">
+          <label class="text-xs font-semibold">Tu nombre<input class="social-input mt-1" name="nombre" maxlength="50" placeholder="¿Cómo te llamás?" required></label>
+          <label class="text-xs font-semibold">Tu comentario<textarea class="social-input mt-1" name="comentario" rows="3" maxlength="400" placeholder="Contanos cómo fue tu experiencia..." required></textarea></label>
+          <button class="btn rounded-xl text-sm" type="submit">Enviar opinión</button>
+          <p id="opinion-feedback" class="text-xs text-center text-emerald-300" aria-live="polite"></p>
+        </form>
+      </section>
+      <a id="wa-help" target="_blank" rel="noopener" class="btn rounded-xl mt-4 text-sm">💬 Hablar con Misakroos por WhatsApp</a>
+      <p class="text-center text-xs text-[var(--mut)] mt-4">© MISAKROOS · Servicios digitales · Precios en ARS<br>Las marcas pertenecen a sus respectivos dueños.</p>
+    </section>
+
+    <!-- COMBOS -->
+    <section id="s-combos" class="screen">
+      <h2 class="disp text-2xl font-bold">Combos <span class="neon-v">con descuento</span></h2>
+      <p class="text-sm text-[var(--mut)] mt-1">Más plataformas juntas, más ahorro.</p>
+      <div class="flex flex-wrap gap-2 mt-3 text-xs">
+        <span class="pill rounded-full px-3 py-1.5">2 servicios · 10% OFF</span>
+        <span class="pill rounded-full px-3 py-1.5">3 y 4 · 20% OFF</span>
+        <span class="pill rounded-full px-3 py-1.5">5 y 6 · 25% OFF</span>
+      </div>
+      <div id="filters" class="flex gap-2 overflow-x-auto py-3" style="scrollbar-width:none"></div>
+      <div id="combos-grid" class="grid gap-3"></div>
+    </section>
+
+    <!-- PERFILES -->
+    <section id="s-perfiles" class="screen">
+      <h2 class="disp text-2xl font-bold">Perfiles <span class="neon-c">individuales</span></h2>
+      <p class="text-sm text-[var(--mut)] mt-1">Sumá uno o varios perfiles del mismo servicio. También podés ahorrar con combos.</p>
+      <div class="relative mt-3">
+        <svg class="absolute left-3 top-1/2 -translate-y-1/2" width="22" height="22" style="stroke:#22e5ff;fill:none;stroke-width:2;stroke-linecap:round"><use href="#i-search"/></svg>
+        <input id="q" type="search" autocomplete="off" placeholder="Buscar plataforma (Netflix, Prime, HBO…)" aria-label="Buscar plataforma">
+      </div>
+      <div id="singles-grid" class="grid gap-4 mt-4"></div>
+    </section>
+
+    <!-- PEDIDO -->
+    <section id="s-pedido" class="screen">
+      <h2 class="disp text-2xl font-bold">Tu <span class="neon-c">pedido</span></h2>
+      <div id="pedido-body" class="mt-3"></div>
+    </section>
+
+  </main>
+
+  <nav class="bnav" aria-label="Navegación">
+    <button class="navb" data-nav="home"><svg><use href="#i-home"/></svg>Inicio</button>
+    <button class="navb" data-nav="combos"><svg><use href="#i-combo"/></svg>Combos</button>
+    <button class="navb" data-nav="perfiles"><svg><use href="#i-user"/></svg>Perfiles</button>
+    <button class="navb" data-nav="pedido"><svg><use href="#i-bag"/></svg>Pedido<span id="badge" class="badge" style="display:none"></span></button>
+  </nav>
+  <div id="toast" role="status"></div>
+</div>
+
+<script>
+var WA = '5492645182955';
+function $(id){ return document.getElementById(id); }
+var COUNTRY = 'AR';
+var CURRENCY = {AR:{symbol:'$',locale:'es-AR',code:'ARS'},UY:{symbol:'$U ',locale:'es-UY',code:'UYU'}};
+function fmt(n){ var c=CURRENCY[COUNTRY]; return c.symbol + Math.round(n).toLocaleString(c.locale); }
+function priceLabel(){ return COUNTRY === 'AR' ? 'Precios en pesos argentinos (ARS)' : 'Precios en pesos uruguayos (UYU)'; }
+var STREAMING_DISCOUNT_SERVICES = ['Netflix','Disney+','Prime Video','Paramount+','HBO Max','Universal+','ViX Premium'];
+function hasProfileDiscount(service){ return STREAMING_DISCOUNT_SERVICES.indexOf(service) !== -1; }
+function secondProfileDiscount(){ return COUNTRY === 'AR' ? (3100/8500) : (50/350); }
+function consultCanva(){
+  var msg='¡Hola Misakroos! Quisiera consultar el precio y los planes disponibles de Canva Pro. ¿Me pueden pasar las opciones?';
+  window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+}
+function profileUnitPrice(service, unit){
+  var base = P[service] || 0;
+  if (unit <= 1 || !hasProfileDiscount(service)) return base;
+  // Exact Netflix prices; same streaming discount percentage for other streaming platforms.
+  if (service === 'Netflix' && COUNTRY === 'AR') return unit === 2 ? 5400 : Math.round(base * (1-secondProfileDiscount()));
+  if (service === 'Netflix' && COUNTRY === 'UY') return unit === 2 ? 300 : Math.round(base * (1-secondProfileDiscount()));
+  return Math.round(base * (1-secondProfileDiscount()));
+}
+function setCountry(next){
+  COUNTRY = next === 'UY' ? 'UY' : 'AR';
+  P = COUNTRY === 'AR'
+    ? {'Netflix':8500,'Disney+':7500,'Prime Video':5000,'Paramount+':5000,'HBO Max':5000,'Universal+':5000,'ViX Premium':5000,'CapCut':8900,'ChatGPT':15000,'YouTube Premium':4500,'Spotify Premium':4500,'Apple TV+ Premium con MLS':5000,'Perplexity Premium':5000,'Deezer':5000,'Surfshark VPN':5000,'Viki Rakuten':5000,'Flujo TV':9000,'Stella TV':9000,'PS Next':9000}
+    : {'Netflix':350,'Disney+':400,'Prime Video':150,'Paramount+':150,'HBO Max':150,'Universal+':150,'ViX Premium':150,'CapCut':350,'ChatGPT':500,'YouTube Premium':200,'Spotify Premium':190,'Apple TV+ Premium con MLS':250,'Perplexity Premium':250,'Deezer':250,'Surfshark VPN':250,'Viki Rakuten':250,'Flujo TV':400,'Stella TV':400,'PS Next':300};
+  singles = Object.keys(P).map(function(n){ return {id:BRANDS[n].k,name:n,price:P[n],category:BRANDS[n].category || 'Otros servicios'}; }).concat([{id:'canva',name:'Canva Pro',price:null,consult:true}]);
+  combos = DEF.map(function(d){
+    var reg=d[2].reduce(function(a,n){return a+P[n];},0),pct=PCT[d[2].length];
+    return {id:d[0],name:d[1],items:d[2],reg:reg,pct:pct,price:Math.round(reg*(1-pct))};
+  });
+  $('country-switch').textContent = COUNTRY === 'AR' ? 'AR$' : 'UY$';
+  var foot=document.querySelector('#s-home .text-center.text-xs');
+  if(foot) foot.innerHTML='© MISAKROOS · Servicios digitales · '+priceLabel()+'<br>Las marcas pertenecen a sus respectivos dueños.';
+  render();
+}
+function norm(s){
+  var out = '', t = String(s).normalize('NFD');
+  for (var i = 0; i !== t.length; i++) { var c = t.charCodeAt(i); if (c > 879 || 768 > c) out += t.charAt(i); }
+  return out.toLowerCase();
+}
+function showErr(err){
+  var b = $('errbox');
+  if (!b) { b = document.createElement('div'); b.id = 'errbox'; b.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99;background:#7f1d1d;color:#fff;font:12px monospace;padding:6px 10px'; document.body.appendChild(b); }
+  b.textContent = 'Error: ' + (err && err.message ? err.message : err);
+}
+
+/* ---------- LOGOS ONLINE ---------- */
+var BRANDS = {
+  'Netflix':     {k:'netflix',   slug:'netflix',       domain:'netflix.com',       c:'E50914', i:'N',  al:''},
+  'Disney+':     {k:'disney',    slug:'disneyplus',    domain:'disneyplus.com',    c:'4F7CFF', i:'D+', al:'disney plus'},
+  'Prime Video': {k:'prime',     slug:'primevideo',    domain:'primevideo.com',    c:'00A8E1', i:'P',  al:'amazon'},
+  'Paramount+':  {k:'paramount', slug:'paramountplus', domain:'paramountplus.com', c:'2F7BFF', i:'P+', al:'paramount plus'},
+  'HBO Max':     {k:'hbo',       slug:'hbomax',        domain:'max.com',           c:'A855F7', i:'H',  al:'max'},
+   'Universal+':  {k:'universal', slug:null,            domain:'universalplus.com', c:'F5C518', i:'U+', al:'universal plus'},
+  'ViX Premium': {k:'vix', slug:null, domain:'vix.com', c:'F5C518', i:'ViX', al:'vix premium'},
+  'CapCut': {k:'capcut', slug:'capcut', domain:'capcut.com', c:'FFFFFF', i:'CC', al:'capcut'},
+  'ChatGPT': {k:'chatgpt', slug:'openai', domain:'chatgpt.com', c:'10A37F', i:'GPT', al:'chatgpt'},
+  'YouTube Premium': {k:'youtube', slug:'youtube', domain:'youtube.com', c:'FF0033', i:'YT', al:'youtube premium'},
+  'Spotify Premium': {k:'spotify', slug:'spotify', domain:'spotify.com', c:'1ED760', i:'S', al:'spotify premium'},
+  'Apple TV+ Premium con MLS': {k:'appletv', slug:'appletv', domain:'tv.apple.com', c:'A5A5A5', i:'TV', al:'apple tv mls'},
+  'Perplexity Premium': {k:'perplexity', slug:'perplexity', domain:'perplexity.ai', c:'20B8A5', i:'P', al:'perplexity'},
+  'Deezer': {k:'deezer', slug:'deezer', domain:'deezer.com', c:'A238FF', i:'D', al:'deezer música'},
+  'Surfshark VPN': {k:'surfshark', slug:'surfshark', domain:'surfshark.com', c:'28B5B0', i:'S', al:'surfshark vpn'},
+  'Viki Rakuten': {k:'viki', slug:'rakutenviki', domain:'viki.com', c:'F04462', i:'V', al:'viki rakuten'},
+  'Flujo TV': {k:'flujotv', slug:null, domain:'', c:'22E5FF', i:'F', al:'flujo tv', category:'TV digital'},
+  'Stella TV': {k:'stellatv', slug:null, domain:'', c:'A78BFA', i:'S', al:'stella tv', category:'TV digital'},
+  'PS Next': {k:'psnext', slug:null, domain:'play.google.com', c:'FF4FD8', i:'PS', al:'ps next playstore', category:'TV digital'},
+  'Canva Pro': {k:'canva', slug:'canva', domain:'canva.com', c:'7D2AE8', i:'C', al:'canva pro'}
+};
+function sources(n){
+  var b = BRANDS[n] || {slug:null,domain:'',c:'8f9ab5',i:'+'}, s = [];
+  if (b.slug) s.push('https://cdn.simpleicons.org/' + b.slug + '/' + b.c);
+  s.push('https://www.google.com/s2/favicons?domain=' + b.domain + '&sz=128');
+  return s;
+}
+function fallback(n){ var b=BRANDS[n] || {c:'8f9ab5',i:'+'}; return '<span class="fbm" style="--c:#' + b.c + '">' + b.i + '</span>'; }
+function img(n){ return '<img class="ic" src="' + (sources(n)[0] || '') + '" alt="" loading="lazy" referrerpolicy="no-referrer" data-n="' + n + '" data-s="0">'; }
+function logo(n, size){ return '<span class="chip ' + (size || 'm') + '" style="--c:#' + BRANDS[n].c + '" title="' + n + '">' + img(n) + '<span>' + n + '</span></span>'; }
+function ico(n){ return '<span class="ico" title="' + n + '" style="border-color:#' + BRANDS[n].c + '66">' + img(n) + '</span>'; }
+document.addEventListener('error', function(e){
+  var t = e.target; if (!t || t.tagName !== 'IMG' || !t.dataset.n) return;
+  var next = sources(t.dataset.n)[+t.dataset.s + 1];
+  if (next) { t.dataset.s = +t.dataset.s + 1; t.src = next; } else t.outerHTML = fallback(t.dataset.n);
+}, true);
+
+/* ---------- INFO DE PLATAFORMAS (editable) · Destacados al 2/11/2026 ---------- */
+var INFO = {
+  'Netflix': {one:'Series, películas y documentales originales con estrenos cada semana.',
+    more:'Incluye series y películas originales, documentales, contenido infantil y juegos. Podés verlo en celular, tele, tablet y compu.',
+    hot:{t:'Palomas negras – Temporada 2', d:'Vuelve el thriller de espías con Keira Knightley. Estreno el 5 de noviembre.'}},
+  'Disney+': {one:'Disney, Pixar, Marvel, Star Wars y National Geographic en un solo lugar.',
+    more:'Todo el universo Disney para toda la familia: clásicos animados, estrenos Pixar, series de Marvel y Star Wars, y documentales de National Geographic.',
+    hot:{t:'VisionQuest (Marvel)', d:'La serie de Visión se acerca a su final: episodio final el 10 de noviembre. También llega La emperatriz divorciada el 4 de noviembre.'}},
+  'Prime Video': {one:'Series y películas originales de Amazon, más cine de estreno y clásicos.',
+    more:'Producciones originales de Prime, películas, series y títulos para alquilar o ver incluidos. Ideal para mirar en cualquier dispositivo.',
+    hot:{t:'Los anillos de poder – Temporada 3', d:'Vuelve la serie más ambiciosa de la plataforma durante noviembre.'}},
+  'Paramount+': {one:'Series, cine de Paramount, Nickelodeon y deportes en vivo.',
+    more:'Series originales, películas de estudio, contenido infantil de Nickelodeon y transmisiones deportivas en vivo como fútbol, tenis y combate.',
+    hot:{t:'Yellowjackets – Temporada 4 (final)', d:'Regresa el 20 de noviembre con su última temporada. El 21 se juega la final de la Sudamericana.'}},
+  'HBO Max': {one:'Series premium de HBO, cine de Warner y DC y contenido original.',
+    more:'Las series más premiadas de HBO, películas de Warner Bros. y DC, documentales y estrenos originales de la plataforma.',
+    hot:{t:'La edad dorada – Temporada 4', d:'Llega la nueva temporada del drama de época, uno de los grandes estrenos de noviembre.'}},
+  'Universal+': {one:'Series policiales, dramas médicos y lo mejor de Universal y NBC.',
+    more:'Series policiales y médicas, comedias y documentales, con estrenos exclusivos y programas de NBC como Saturday Night Live.',
+    hot:{t:'One Chicago – Nuevas temporadas', d:'Desde el 2 de noviembre se estrenan nuevas temporadas de la franquicia. También llega la temporada 52 de SNL.'}},
+  'ViX Premium': {one:'Series, películas, novelas y entretenimiento en español.',
+    more:'Producciones originales, novelas, películas, deportes y contenidos latinoamericanos.',
+    hot:{t:'Historias en español', d:'Elegí entre novelas, series, películas y entretenimiento latino.'}},
+  'CapCut': {one:'Herramientas creativas para editar videos y crear contenido.',
+    more:'Funciones de edición, efectos, subtítulos y herramientas creativas de CapCut.',
+    hot:{t:'Edición de video', d:'Herramientas para crear y editar contenido.'}},
+  'ChatGPT': {one:'Asistente de inteligencia artificial para estudiar, crear y trabajar.',
+    more:'Herramientas de IA para conversar, redactar, analizar y generar ideas.',
+    hot:{t:'Asistencia con IA', d:'Ideas, aprendizaje y productividad.'}},
+  'YouTube Premium': {one:'Videos y música en YouTube con beneficios Premium.',
+    more:'Experiencia Premium de YouTube con reproducción en segundo plano y contenido sin anuncios, según disponibilidad del plan.',
+    hot:{t:'Tu contenido', d:'Disfrutá de YouTube Premium.'}},
+  'Spotify Premium': {one:'Música, podcasts y reproducción Premium.',
+    more:'Escuchá música y podcasts con las funciones disponibles de Spotify Premium.',
+    hot:{t:'Tu música', d:'Música y podcasts en una experiencia Premium.'}},
+  'Canva Pro': {one:'Herramientas de diseño y creación de contenido con Canva Pro.',
+    more:'Consultá por planes disponibles, características y opciones de acceso.',
+    hot:{t:'Diseñá con Canva Pro', d:'Consultá planes y disponibilidad por WhatsApp.'}}
+};
+
+/* ---------- PRECIOS ORIGINALES Y COMBOS (descuentos: 2 = 10%, 3-4 = 20%, 5-6 = 25%) ---------- */
+var P = {'Netflix':8500,'Disney+':7500,'Prime Video':5000,'Paramount+':5000,'HBO Max':5000,'Universal+':5000,'ViX Premium':5000,'CapCut':8900,'ChatGPT':15000,'YouTube Premium':4500,'Spotify Premium':4500,'Apple TV+ Premium con MLS':5000,'Perplexity Premium':5000,'Deezer':5000,'Surfshark VPN':5000,'Viki Rakuten':5000,'Flujo TV':9000,'Stella TV':9000,'PS Next':9000};
+var PCT = {2:0.10, 3:0.20, 4:0.20, 5:0.25, 6:0.25};
+var DEF = [
+  ['d1','Dúo Peli & Serie',['Prime Video','HBO Max']],
+  ['d2','Dúo Premium',['Netflix','Disney+']],
+  ['d3','Dúo Maratón',['Netflix','HBO Max']],
+  ['d4','Dúo Familiar',['Disney+','Paramount+']],
+  ['t1','Trío Maratón',['Prime Video','Paramount+','HBO Max']],
+  ['t2','Trío Estrenos',['Netflix','Prime Video','HBO Max']],
+  ['t3','Trío Familiar',['Netflix','Disney+','Paramount+']],
+  ['c1','Cuarteto Top',['Netflix','Disney+','Prime Video','HBO Max']],
+  ['c2','Cuarteto Ahorro',['Prime Video','Paramount+','HBO Max','Universal+']],
+  ['c3','Cuarteto Series',['Netflix','Prime Video','Paramount+','HBO Max']],
+  ['q1','Quinteto Sin Netflix',['Disney+','Prime Video','Paramount+','HBO Max','Universal+']],
+  ['q2','Quinteto Sin Disney+',['Netflix','Prime Video','Paramount+','HBO Max','Universal+']],
+  ['q3','Quinteto Sin Universal+',['Netflix','Disney+','Prime Video','Paramount+','HBO Max']],
+  ['pase','Pase Total (6 plataformas)',['Netflix','Disney+','Prime Video','Paramount+','HBO Max','Universal+']],
+  ['vix-duo','Dúo Latino',['ViX Premium','Prime Video']],
+  ['vix-trio','Trío Latino',['ViX Premium','Netflix','HBO Max']]
+];
+var combos = DEF.map(function(d){
+  var reg = d[2].reduce(function(a,n){ return a + P[n]; }, 0), pct = PCT[d[2].length];
+  return {id:d[0], name:d[1], items:d[2], reg:reg, pct:pct, price:Math.round(reg * (1 - pct))};
+});
+var singles = Object.keys(P).map(function(n){ return {id:BRANDS[n].k, name:n, price:P[n], category:BRANDS[n].category || 'Otros servicios'}; }).concat([{id:'canva',name:'Canva Pro',price:null,consult:true}]);
+
+/* ---------- ESTADO ---------- */
+var selC = new Set(), selS = {}, expanded = new Set();
+var filterSize = 'all', query = '', cur = 'home', pending = null;
+var TITLES = {home:'MISAK<span class="neon-c">ROOS</span>', combos:'Combos', perfiles:'Perfiles', pedido:'Tu pedido'};
+var SCREENS = ['home','combos','perfiles','pedido'];
+
+function calc(){
+  var cs = combos.filter(function(c){ return selC.has(c.id); });
+  var ss = [];
+  singles.forEach(function(s){
+    var qty = Math.max(0, Number(selS[s.id] || 0));
+    for (var j = 0; j < qty; j++) ss.push({id:s.id, name:s.name, price:profileUnitPrice(s.name,j+1), base:s.price, unit:j+1});
+  });
+  var regular = cs.reduce(function(a,c){ return a + c.reg; }, 0) + ss.reduce(function(a,s){ return a + s.base; }, 0);
+  var total = cs.reduce(function(a,c){ return a + c.price; }, 0) + ss.reduce(function(a,s){ return a + s.price; }, 0);
+  var comboCount = {}, profileCount = {};
+  cs.forEach(function(c){ c.items.forEach(function(i){ comboCount[i] = (comboCount[i] || 0) + 1; }); });
+  ss.forEach(function(s){ profileCount[s.name] = (profileCount[s.name] || 0) + 1; });
+  var dups = Object.keys(profileCount).filter(function(k){ return comboCount[k] && profileCount[k]; });
+  var count = Object.assign({}, comboCount, profileCount);
+  Object.keys(profileCount).forEach(function(k){ count[k] = (comboCount[k] || 0) + profileCount[k]; });
+  return {cs:cs, ss:ss, n:cs.length + ss.length, regular:regular, total:total, saved:regular - total, dups:dups, names:Object.keys(count)};
+}
+
+/* ---------- BARRA FLOTANTE, NAV Y TOAST ---------- */
+function renderSel(){
+  var r = calc(), el = $('sel');
+  el.className = r.n ? '' : 'empty';
+  if (!r.n) { el.innerHTML = '<span class="text-xl">🍿</span><span class="flex-1 text-sm text-[var(--mut)]">Tu carrito está vacío. Elegí perfiles o un combo.</span>'; return; }
+  var shown = r.names.slice(0, 5), extra = r.names.length - shown.length;
+  el.innerHTML = '<span class="stack flex items-center">' + shown.map(ico).join('') + (extra > 0 ? '<span class="ico text-xs font-bold" style="margin-left:-8px">+' + extra + '</span>' : '') + '</span>' +
+    '<span class="flex-1 min-w-0"><span class="block text-xs text-[var(--mut)]">' + r.n + (r.n === 1 ? ' selección' : ' selecciones') + (r.saved > 0 ? ' · ahorrás ' + fmt(r.saved) : '') + '</span><span class="block disp font-bold text-lg neon-c leading-tight">' + fmt(r.total) + '</span></span>' +
+    '<span class="btn rounded-xl px-3 text-sm" style="min-height:40px">Ver</span>';
+}
+function renderNav(){
+  var r = calc();
+  Array.prototype.forEach.call(document.querySelectorAll('.navb'), function(b){ b.classList.toggle('on', b.dataset.nav === cur); });
+  var bd = $('badge'); bd.style.display = r.n ? 'grid' : 'none'; bd.textContent = r.n;
+}
+var toastT;
+function toast(msg){
+  var t = $('toast'); t.textContent = msg; t.classList.add('on');
+  clearTimeout(toastT); toastT = setTimeout(function(){ t.classList.remove('on'); }, 1500);
+}
+
+/* ---------- INICIO ---------- */
+var PHRASES = ['⚡ Entrega inmediata','🛡️ Garantía de activación','✅ Cuentas originales','🍿 Todo listo para maratonear'];
+function initHome(){
+  var h = new Date().getHours();
+  $('greet').textContent = (h >= 5 && h < 12 ? 'Buen día ☀️' : h >= 12 && h < 20 ? 'Buenas tardes 🍿' : 'Buenas noches 🌙') + ' · ¿Qué vemos hoy?';
+  $('wa-help').href = 'https://wa.me/' + WA + '?text=' + encodeURIComponent('¡Hola Misakroos! Quería hacerles una consulta.');
+  $('home-logos').innerHTML = Object.keys(BRANDS).map(function(n){ return '<button data-svc="' + BRANDS[n].k + '" aria-label="Ver ' + n + '">' + logo(n,'l') + '</button>'; }).join('');
+  $('home-hot').innerHTML = Object.keys(INFO).map(function(n){
+    var i = INFO[n];
+    return '<button data-svc="' + BRANDS[n].k + '" class="mini hotc card" style="border-color:#' + BRANDS[n].c + '88">' + logo(n,'s') +
+      '<span class="block font-semibold text-sm mt-2 leading-snug">' + i.hot.t + '</span><span class="block text-xs text-[var(--mut)] mt-1 leading-snug">' + i.hot.d + '</span></button>';
+  }).join('');
+  var k = 0; $('phrase').textContent = PHRASES[0];
+  setInterval(function(){ k = (k + 1) % PHRASES.length; $('phrase').textContent = PHRASES[k]; }, 2800);
+}
+
+/* ---------- COMBOS ---------- */
+function renderCombos(){
+  $('filters').innerHTML = ['all',2,3,4,5,6].map(function(s){
+    return '<button data-f="' + s + '" class="card rounded-full px-4 py-2.5 text-sm font-semibold whitespace-nowrap ' + (filterSize == s ? 'btn' : 'text-[var(--mut)]') + '" style="' + (filterSize == s ? 'min-height:0' : '') + '">' + (s === 'all' ? 'Todos' : s + ' servicios') + '</button>';
+  }).join('');
+  $('combos-grid').innerHTML = combos.filter(function(c){ return filterSize === 'all' || c.items.length == filterSize; }).map(function(c){
+    var on = selC.has(c.id);
+    return '<article class="card rounded-2xl p-4 ' + (on ? 'sel' : '') + '">' +
+      '<div class="flex items-start justify-between gap-2"><div><h3 class="text-lg font-bold leading-snug">' + c.name + '</h3><p class="text-xs text-[var(--mut)] mt-0.5">' + c.items.length + ' servicios</p>' + (c.id === 'c1' ? '<span class="rank-tag mt-2">🏆 MÁS VENDIDO</span>' : '') + '</div>' +
+      '<span class="pill shrink-0 rounded-full text-xs font-bold px-2.5 py-1">' + Math.round(c.pct*100) + '% OFF</span></div>' +
+      '<div class="flex flex-wrap gap-2 mt-3">' + c.items.map(function(i){ return logo(i,'m'); }).join('') + '</div>' +
+      '<div class="mt-4 flex items-end gap-3"><span class="disp text-3xl font-bold neon-c">' + fmt(c.price) + '</span><span class="text-sm text-[var(--mut)] line-through pb-1">' + fmt(c.reg) + '</span><span class="text-xs text-emerald-400 pb-1 ml-auto">Ahorrás ' + fmt(c.reg - c.price) + '</span></div>' +
+      '<button data-c="' + c.id + '" class="' + (on ? 'btn-off' : 'btn') + ' w-full mt-3 rounded-xl text-sm">' + (on ? '✓ En tu pedido · Quitar' : 'Agregar combo') + '</button></article>';
+  }).join('') + upsellHTML();
+}
+
+/* ---------- PERFILES ---------- */
+function renderPerfiles(){
+  var keep = Array.prototype.map.call(document.querySelectorAll('.mini-row'), function(e){ return e.scrollLeft; });
+  var q = norm(query.trim());
+  var list = singles.filter(function(s){ return !q || norm(s.name).indexOf(q) !== -1 || norm(BRANDS[s.name].al).indexOf(q) !== -1; });
+  $('singles-grid').innerHTML = list.length ? list.map(function(s, idx){
+    var startsCategory = idx === 0 || s.category !== list[idx-1].category;
+    var isTV = s.category === 'TV digital';
+    var heading = startsCategory ? (isTV ? '<section id="tv-digital-section" class="mt-6 rounded-2xl border border-[var(--line)] p-3"><h3 class="sec mb-3">TV digital</h3>' : '<h3 class="sec mt-2">' + s.category + '</h3>') : '';
+    var endSection = isTV && (idx === list.length - 1 || list[idx+1].category !== 'TV digital') ? '</section>' : '';
+    var qty = Number(selS[s.id] || 0), on = qty > 0, op = expanded.has(s.id), i = INFO[s.name] || {one:'Servicio digital disponible.',more:'Consultá los detalles de este servicio.',hot:{t:'Disponible',d:'Consultá disponibilidad y activación.'}};
+    var cb = combos.filter(function(c){ return c.items.indexOf(s.name) !== -1; });
+    if (s.consult) {
+      return heading + '<article id="svc-' + s.id + '" class="svc card rounded-2xl p-4">' +
+        '<div class="flex items-center justify-between gap-2">' + logo(s.name,'l') + '<span class="pill rounded-full px-3 py-1 text-xs font-bold">Precio a consultar</span></div>' +
+        '<p class="mt-3 text-[15px] leading-snug">' + i.one + '</p>' +
+        '<p class="text-xs text-[var(--mut)] mt-2">Consultá directamente por WhatsApp los planes y precios disponibles.</p>' +
+        '<button data-canva-consult="1" class="btn w-full rounded-xl mt-4 text-sm">💬 Consultar precio por WhatsApp</button></article>' + endSection;
+    }
+    var discountLine = hasProfileDiscount(s.name)
+      ? '<p class="text-xs text-emerald-400 mt-1">2 perfiles: ' + fmt(s.price + profileUnitPrice(s.name,2)) + ' · 2.º perfil con ' + (secondProfileDiscount()*100).toFixed(2).replace('.',',') + '% OFF</p>'
+      : '<p class="text-xs text-[var(--mut)] mt-1">Cada perfil adicional mantiene el precio original.</p>';
+    return heading + '<article id="svc-' + s.id + '" class="svc card rounded-2xl p-4 ' + (on ? 'sel' : '') + '">' +
+      '<div class="flex items-center justify-between gap-2">' + logo(s.name,'l') + '<div class="flex flex-col items-end gap-1">' + (s.name === 'Netflix' ? '<span class="rank-tag">🔥 MÁS VENDIDO</span>' : '') + '<span class="disp text-2xl font-bold">' + fmt(s.price) + '</span></div></div>' +
+      discountLine +
+      '<p class="mt-3 text-[15px] leading-snug">' + i.one + '</p>' +
+      '<button data-more="' + s.id + '" aria-expanded="' + op + '" class="mt-1 flex items-center gap-1.5 text-sm neon-c" style="min-height:44px"><svg class="chev" width="18" height="18" style="stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round"><use href="#i-chev"/></svg>Más info y lo destacado ahora</button>' +
+      '<div id="more-' + s.id + '" class="' + (op ? '' : 'hidden') + ' mb-3 rounded-xl border border-[var(--line)] bg-[#0b1020] p-3 text-sm"><p class="text-[var(--mut)]">' + i.more + '</p>' +
+        '<div class="mt-3 rounded-lg p-3" style="border:1px solid var(--pink);box-shadow:0 0 14px rgba(255,79,216,.3)"><p class="text-xs font-semibold" style="color:var(--pink);text-shadow:0 0 10px rgba(255,79,216,.7)">🔥 Lo más destacado ahora</p><p class="font-semibold mt-1">' + i.hot.t + '</p><p class="text-[var(--mut)] mt-0.5">' + i.hot.d + '</p></div></div>' +
+      '<div class="flex items-center gap-2 mt-2"><button data-s="' + s.id + '" class="btn flex-1 rounded-xl text-sm">＋ Agregar perfil</button>' +
+      '<div class="qty"><button data-s-dec="' + s.id + '" aria-label="Quitar un perfil">−</button><strong>' + qty + '</strong><button data-s-inc="' + s.id + '" aria-label="Agregar un perfil">＋</button></div></div>' +
+      (qty > 0 ? '<p class="text-xs text-[var(--mut)] mt-2">Tenés ' + qty + ' perfil' + (qty === 1 ? '' : 'es') + ' de ' + s.name + ' en tu pedido.</p>' : '') +
+      '<p class="mt-4 mb-1 text-sm font-semibold">Combos con <span class="neon-v">' + s.name + '</span> <span class="text-[var(--mut)] font-normal">· deslizá</span></p>' +
+      '<div class="mini-row">' + cb.map(function(c){
+        var o = selC.has(c.id);
+        return '<button data-c="' + c.id + '" class="mini card ' + (o ? 'sel' : '') + '"><span class="flex justify-between gap-1"><span class="block text-sm font-semibold leading-tight">' + c.name + '</span><span class="text-xs font-bold neon-v">-' + Math.round(c.pct*100) + '%</span></span>' +
+          '<span class="stack flex items-center mt-2">' + c.items.map(ico).join('') + '</span>' +
+          '<span class="flex items-end justify-between mt-2"><span class="disp font-bold neon-c">' + fmt(c.price) + '</span><span class="text-xs ' + (o ? 'neon-c' : 'text-[var(--mut)]') + '">' + (o ? '✓ Sumado' : '+ Sumar') + '</span></span></button>';
+      }).join('') + '</div></article>' + endSection;
+  }).join('') : '<p class="text-sm text-[var(--mut)]">No encontramos esa plataforma. Probá con otro nombre.</p>';
+  $('singles-grid').innerHTML += upsellHTML();
+  Array.prototype.forEach.call(document.querySelectorAll('.mini-row'), function(e, i){ e.scrollLeft = keep[i] || 0; });
+}
+
+/* ---------- PEDIDO ---------- */
+function getUpsell(){
+  var r = calc();
+  if (!r.n) return null;
+  var selected = r.names;
+  var candidates = combos.filter(function(c){
+    return c.items.length > selected.length && selected.every(function(n){ return c.items.indexOf(n) !== -1; });
+  }).sort(function(a,b){
+    if (a.items.length !== b.items.length) return a.items.length - b.items.length;
+    return a.price - b.price;
+  });
+  return candidates.length ? candidates[0] : null;
+}
+function upsellHTML(){
+  var c = getUpsell();
+  if (!c) return '';
+  var r = calc();
+  var extra = c.price - r.total;
+  var extraText = extra > 0 ? 'Por solo ' + fmt(extra) + ' más que tu selección actual' :
+    (extra === 0 ? 'Por el mismo total que tu selección actual' : 'Además, pagarías ' + fmt(Math.abs(extra)) + ' menos');
+  return '<div class="upsell rounded-2xl p-4 mt-4"><p class="text-xs font-bold neon-v">✨ UNA MEJORA PARA TU PEDIDO</p>' +
+    '<h3 class="font-bold text-lg mt-1">¡Podés subir a ' + c.name + '!</h3>' +
+    '<div class="flex flex-wrap gap-2 mt-2">' + c.items.map(function(n){ return logo(n,'s'); }).join('') + '</div>' +
+    '<p class="text-sm text-[var(--mut)] mt-3">' + extraText + '.</p>' +
+    '<div class="flex items-end justify-between mt-2"><span class="text-sm text-[var(--mut)]">Plan completo</span><span class="disp text-2xl font-bold neon-c">' + fmt(c.price) + '</span></div>' +
+    '<p class="text-xs text-emerald-400 mt-1">Incluye ' + c.items.length + ' servicios y ' + Math.round(c.pct*100) + '% OFF.</p>' +
+    '<button data-upsell="' + c.id + '" class="btn w-full rounded-xl mt-3 text-sm">Ver este plan</button></div>';
+}
+function renderPedido(){
+  var r = calc(), el = $('pedido-body');
+  if (!r.n) {
+    el.innerHTML = '<div class="card rounded-2xl p-6 text-center"><div class="text-4xl">🍿</div><p class="font-semibold mt-2">Todavía no elegiste nada</p><p class="text-sm text-[var(--mut)] mt-1">Sumá perfiles individuales o un combo con descuento.</p>' +
+      '<div class="grid grid-cols-2 gap-2 mt-4"><button data-nav="perfiles" class="btn-off rounded-xl text-sm">Ver perfiles</button><button data-nav="combos" class="btn rounded-xl text-sm">Ver combos</button></div></div>';
+    return;
+  }
+  var rows = r.cs.map(function(c){
+    return '<li class="card rounded-xl p-3"><div class="flex items-start justify-between gap-2"><div><p class="font-semibold">' + c.name + ' <span class="text-xs neon-v">-' + Math.round(c.pct*100) + '%</span></p><div class="stack flex items-center mt-1.5">' + c.items.map(ico).join('') + '</div></div>' +
+      '<div class="text-right"><p class="font-bold">' + fmt(c.price) + '</p><p class="text-xs text-[var(--mut)] line-through">' + fmt(c.reg) + '</p><button data-rc="' + c.id + '" class="text-xs text-red-400 mt-1" style="min-height:32px">Quitar</button></div></div></li>';
+  }).concat(r.ss.map(function(s){
+    return '<li class="card rounded-xl p-3 flex items-center justify-between gap-2">' + logo(s.name,'m') + '<div class="text-right"><p class="text-xs text-[var(--mut)]">Perfil ' + s.unit + '</p><p class="font-bold">' + fmt(s.price) + '</p><button data-rs="' + s.id + '" class="text-xs text-red-400" style="min-height:32px">Quitar uno</button></div></li>';
+  }));
+  el.innerHTML = '<ul class="grid gap-2">' + rows.join('') + '</ul>' + upsellHTML() +
+    (r.dups.length ? '<div class="pill rounded-xl p-3 text-sm mt-3">Ojo: <b>' + r.dups.join(', ') + '</b> está repetido en tu pedido (por ejemplo en un combo y como perfil individual).</div>' : '') +
+    '<div class="card rounded-2xl p-4 mt-4" style="border-color:var(--violet);box-shadow:0 0 22px rgba(167,139,250,.25)"><div class="space-y-1.5 text-sm">' +
+      '<div class="flex justify-between text-[var(--mut)]"><span>Precio original</span><span' + (r.saved > 0 ? ' class="line-through"' : '') + '>' + fmt(r.regular) + '</span></div>' +
+      (r.saved > 0 ? '<div class="flex justify-between font-semibold text-emerald-400"><span>Ahorrás en total</span><span>-' + fmt(r.saved) + '</span></div>' : '') +
+      '<div class="flex justify-between items-end pt-2 border-t border-[var(--line)]"><span class="text-[var(--mut)]">Total a pagar</span><span class="disp text-3xl font-bold neon-c">' + fmt(r.total) + '</span></div></div>' +
+      '<button data-wa="1" class="btn w-full rounded-xl mt-4 text-base">Completar pedido por WhatsApp</button>' +
+      '<p class="text-xs text-[var(--mut)] mt-2 text-center">Te respondemos al instante con los medios de pago.</p></div>' +
+    '<button data-clear="1" class="w-full mt-3 text-sm text-[var(--mut)]" style="min-height:44px">Vaciar pedido</button>';
+}
+
+function sendWA(){
+  var r = calc(); if (!r.n) return;
+  var items = [];
+  r.cs.forEach(function(c){ items.push('- ' + c.name + ' (' + Math.round(c.pct*100) + '% OFF): ' + c.items.join(' + ')); });
+  r.ss.forEach(function(s){
+    items.push('- ' + s.name + ' · Perfil ' + s.unit + ': ' + fmt(s.price) +
+      (s.unit > 1 && hasProfileDiscount(s.name) ? ' (' + (secondProfileDiscount()*100).toFixed(2).replace('.',',') + '% OFF)' : ''));
+  });
+  var msg = '¡Hola Misakroos! 👋 Quiero hacer este pedido:\n\n📦 Mi pedido:\n' + items.join('\n') + '\n\n💰 Total a pagar: ' + fmt(r.total);
+  if (r.saved > 0) msg += '\n🎉 Me ahorré: ' + fmt(r.saved);
+  msg += '\n\n¿Cuáles son los medios de pago disponibles para activar ya mismo?';
+  window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+}
+
+/* ---------- NAVEGACIÓN (pantallas con hash: el botón atrás del celular también funciona) ---------- */
+function render(){
+  var fn = {home:function(){}, combos:renderCombos, perfiles:renderPerfiles, pedido:renderPedido}[cur];
+  [fn, renderSel, renderNav].forEach(function(f){ try { f(); } catch (err) { showErr(err); } });
+}
+function applyFocus(){
+  if (!pending) return;
+  var el = $('svc-' + pending); pending = null;
+  if (!el) return;
+  setTimeout(function(){ el.scrollIntoView({behavior:'smooth', block:'start'}); el.classList.remove('pulse'); void el.offsetWidth; el.classList.add('pulse'); }, 80);
+}
+function show(name){
+  if (SCREENS.indexOf(name) === -1) name = 'home';
+  cur = name;
+  SCREENS.forEach(function(n){ $('s-' + n).classList.toggle('on', n === name); });
+  $('title').innerHTML = TITLES[name];
+  $('btn-back').style.visibility = name === 'home' ? 'hidden' : 'visible';
+  $('screens').scrollTop = 0;
+  render(); applyFocus();
+}
+function go(name, focus){
+  pending = focus || null;
+  if (cur === name) { applyFocus(); return; }
+  location.hash = name;
+}
+window.addEventListener('hashchange', function(){ show(location.hash.replace('#','')); });
+
+function toggle(set, id, label){
+  var had = set.has(id);
+  if (had) set.delete(id); else set.add(id);
+  if (!had) toast(label + ' agregado ✓');
+  render();
+}
+document.addEventListener('click', function(e){
+  var t = e.target.closest ? e.target.closest('button') : null; if (!t) return;
+  var d = t.dataset;
+  if (d.country) setCountry(COUNTRY === 'AR' ? 'UY' : 'AR');
+  else if (d.nav) go(d.nav);
+  else if (d.back) { if (history.length > 1) history.back(); else go('home'); }
+  else if (d.svc) { query = ''; $('q').value = ''; go('perfiles', d.svc); if (cur !== 'perfiles') {} }
+  else if (d.c) { var c = combos.filter(function(x){ return x.id === d.c; })[0]; toggle(selC, d.c, c.name); }
+  else if (d.s) { selS[d.s] = Number(selS[d.s] || 0) + 1; toast('Perfil agregado ✓'); render(); }
+  else if (d.sInc) { selS[d.sInc] = Number(selS[d.sInc] || 0) + 1; toast('Sumaste otro perfil ✓'); render(); }
+  else if (d.sDec) { selS[d.sDec] = Math.max(0, Number(selS[d.sDec] || 0) - 1); render(); }
+  else if (d.f) { filterSize = d.f; render(); }
+  else if (d.rc) { selC.delete(d.rc); render(); }
+  else if (d.rs) { selS[d.rs] = Math.max(0, Number(selS[d.rs] || 0) - 1); render(); }
+  else if (d.clear) { selC = new Set(); selS = {}; render(); }
+  else if (d.upsell) { go('combos'); toast('Buscá ' + (combos.filter(function(c){return c.id===d.upsell;})[0] || {}).name); }
+  else if (d.canvaConsult) consultCanva();
+  else if (d.wa) sendWA();
+  else if (d.more) {
+    if (expanded.has(d.more)) expanded.delete(d.more); else expanded.add(d.more);
+    t.setAttribute('aria-expanded', expanded.has(d.more));
+    $('more-' + d.more).classList.toggle('hidden', !expanded.has(d.more));
+  }
+});
+$('q').addEventListener('input', function(e){ query = e.target.value; try { renderPerfiles(); } catch (err) { showErr(err); } });
+$('opinion-form').addEventListener('submit', function(e){ e.preventDefault(); var f=e.currentTarget; var name=f.elements.nombre.value.trim(); var comment=f.elements.comentario.value.trim(); if(!name || !comment) return; $('opinion-feedback').textContent='¡Gracias por compartir tu opinión! 💜'; f.reset(); });
+
+var socialReviews = [
+  {name:'Ramiro G.', message:'¡Excelente servicio! Me atendieron enseguida y quedó todo funcionando perfecto.', time:'18:42'},
+  {name:'Carla M.', message:'Muy buena atención, me tuvieron paciencia y me explicaron todo paso a paso.', time:'12:16'},
+  {name:'Alejandro R.', message:'En menos de cinco minutos ya tenía todo conectado. Súper rápido, gracias.', time:'20:08'},
+  {name:'Andrés P.', message:'Se nota la responsabilidad. Me asesoraron muy bien antes de elegir el servicio.', time:'16:31'},
+  {name:'Victoria L.', message:'La atención fue muy amable y personalizada. Además, tienen precios accesibles.', time:'10:54'},
+  {name:'Lucía F.', message:'Me acompañaron hasta que quedó todo listo. ¡Muy atentos y recomendables!', time:'19:23'}
+];
+var socialIndex = 0;
+window.setInterval(function(){
+  var client = $('social-client'), message = $('social-message'), time = $('social-time');
+  if(!client || !message || !time) return;
+  socialIndex = (socialIndex + 1) % socialReviews.length;
+  var review = socialReviews[socialIndex];
+  var panel = message.parentElement;
+  panel.style.opacity = '0'; panel.style.transform = 'translateY(5px)';
+  window.setTimeout(function(){
+    client.textContent = review.name;
+    message.textContent = review.message;
+    time.textContent = review.time;
+    panel.style.transition = 'opacity .25s ease, transform .25s ease';
+    panel.style.opacity = '1'; panel.style.transform = 'translateY(0)';
+  }, 220);
+}, 4200);
+
+try { initHome(); } catch (err) { showErr(err); }
+$('country-switch').textContent = 'AR$';
+var initialFoot=document.querySelector('#s-home .text-center.text-xs');
+if(initialFoot) initialFoot.innerHTML='© MISAKROOS · Servicios digitales · '+priceLabel()+'<br>Las marcas pertenecen a sus respectivos dueños.';
+show(location.hash.replace('#',''));
+</script>
+</body>
+</html>
